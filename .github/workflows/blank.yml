@@ -6,12 +6,26 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# If your repo has the files in a subfolder, set this to that folder (e.g. udigit-kb)
+# defaults:
+#   run:
+#     working-directory: .
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      # Debug step: shows where files actually are
+      - name: Show workspace tree
+        run: |
+          pwd
+          ls -la
+          echo "---- tree ----"
+          sudo apt-get update && sudo apt-get install -y tree
+          tree -L 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,8 +39,6 @@ jobs:
         run: python kb_ci_runner.py
 
       - name: Bundle ZIP
-        # We still build even if lint errors occurred locally. If you want to fail hard on errors,
-        # add a non-zero exit in your runner or split the steps.
         run: python kb_ci_runner.py --bundle
 
       - name: Upload bundle & indexes as artifacts
@@ -38,13 +50,3 @@ jobs:
             kb_export/bundle/**
             kb_export/reports/**
           if-no-files-found: warn
-
-          - name: Show workspace tree
-  run: |
-    pwd
-    ls -la
-    echo "---- tree ----"
-    sudo apt-get update && sudo apt-get install -y tree
-    tree -L 2
-
-
