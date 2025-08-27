@@ -1,0 +1,26 @@
+{
+  "schema": "udigit.kb.config/1.0",
+  "project": "U-Dig It KB",
+  "lint": {
+    "require_synthesis_links": 3,
+    "warn_on_orphans": true,
+    "warn_on_low_bridge": true
+  },
+  "paths": {
+    "root": "./kb_export",
+    "encyclopedia": "./kb_export/encyclopedia",
+    "synthesis": "./kb_export/synthesis",
+    "indexes": "./kb_export/indexes",
+    "reports": "./kb_export/reports",
+    "bundle": "./kb_export/bundle"
+  },
+  "bundle": {
+    "include_reports": true,
+    "checksum": "sha256",
+    "manifest": "indexes/bundle.json"
+  },
+  "ci": {
+    "strict": true,
+    "exit_on_errors": true
+  }
+}
