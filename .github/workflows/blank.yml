@@ -39,3 +39,12 @@ jobs:
             kb_export/reports/**
           if-no-files-found: warn
 
+          - name: Show workspace tree
+  run: |
+    pwd
+    ls -la
+    echo "---- tree ----"
+    sudo apt-get update && sudo apt-get install -y tree
+    tree -L 2
+
+
