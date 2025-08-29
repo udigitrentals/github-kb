@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KB Live Viewer</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; margin: 2rem; line-height: 1.4; }
+    pre { background: #111; color: #eee; padding: 1rem; overflow:auto; border-radius: 10px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+    a { color: #0b7; }
+  </style>
+</head>
+<body>
+  <h1>KB Live Viewer</h1>
+  <p>This page fetches and displays the three live JSON files from <code>/kb/</code>.</p>
+  <ul>
+    <li><a href="./registry.json" target="_blank">registry.json</a></li>
+    <li><a href="./cross_links.json" target="_blank">cross_links.json</a></li>
+    <li><a href="./search.json" target="_blank">search.json</a></li>
+  </ul>
+  <h2>registry.json</h2>
+  <pre id="reg">Loading…</pre>
+  <h2>cross_links.json</h2>
+  <pre id="xln">Loading…</pre>
+  <h2>search.json</h2>
+  <pre id="srch">Loading…</pre>
+<script>
+async function load(id, path){
+  try{
+    const res = await fetch(path, { cache: 'no-store' });
+    const txt = await res.text();
+    document.getElementById(id).textContent = txt;
+  }catch(e){
+    document.getElementById(id).textContent = 'Error: ' + e.message;
+  }
+}
+load('reg','./registry.json');
+load('xln','./cross_links.json');
+load('srch','./search.json');
+</script>
+</body>
+</html>
