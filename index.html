@@ -60,20 +60,46 @@
     .hint{border-bottom:1px dotted var(--muted)}
     .right{margin-left:auto}
     @media (max-width:1060px){.grid3,.json-grid{grid-template-columns:1fr}}
-  </style>
+</style>
 </head>
 <body>
-  <div class="toast-wrap" id="toasts" aria-live="polite" aria-atomic="true"></div>
+  <!-- Toasts: announce transient messages to assistive tech -->
+  <div
+    class="toast-wrap"
+    id="toasts"
+    aria-live="polite"
+    aria-atomic="true"
+    role="status">
+  </div>
 
-  <header>
-    <div class="row">
+  <header role="banner" aria-label="KB dashboard header">
+    <div class="row" aria-label="KB status">
       <h1>KB Live Viewer</h1>
-      <span class="pill">Base: <span class="small mono" id="basePill">—</span></span>
-      <span class="pill small" id="countsPill">—</span>
+
+      <span class="pill">
+        Base:
+        <span class="small mono" id="basePill">—</span>
+      </span>
+
+      <!-- Counts change over time: mark as a status region so updates are announced politely -->
+      <span class="pill small" id="countsPill" role="status" aria-live="polite">—</span>
     </div>
-    <div class="row">
-      <button class="btn ghost" id="themeBtn" aria-label="Toggle theme">Toggle theme</button>
-      <button class="btn secondary" id="reloadBtn" aria-keyshortcuts="R" title="Reload (r)">Reload</button>
+
+    <div class="row" aria-label="KB actions">
+      <button
+        class="btn ghost"
+        id="themeBtn"
+        aria-label="Toggle between dark and light theme">
+        Toggle theme
+      </button>
+
+      <button
+        class="btn secondary"
+        id="reloadBtn"
+        aria-keyshortcuts="R"
+        aria-label="Reload knowledge base (shortcut R)">
+        Reload
+      </button>
     </div>
   </header>
 
