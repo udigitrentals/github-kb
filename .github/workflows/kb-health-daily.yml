@@ -1,0 +1,27 @@
+name: KB Health (daily)
+
+on:
+  schedule:
+    - cron: "7 7 * * *"   # daily @ 07:07 UTC
+  workflow_dispatch:
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run health script
+        run: node scripts/kb_health_report.js
+      - name: Commit health files
+        run: |
+          set -e
+          git config user.name "kb-bot"
+          git config user.email "kb-bot@users.noreply.github.com"
+          git add docs/kb_stats.json docs/kb_health_history.json
+          git commit -m "KB health: update stats/history [skip ci]" || echo "No changes"
+          git push

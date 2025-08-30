@@ -69,6 +69,16 @@
     </div>
 
     <div class="card">
+  <h3>Diagnostics</h3>
+  <div class="row">
+    <button id="btnHealth" class="secondary">Run Health Check</button>
+    <button id="btnDlStats" class="secondary">Download kb_stats.json</button>
+  </div>
+  <pre id="health">Click “Run Health Check”</pre>
+</div>
+
+
+    <div class="card">
       <h3>Debug / Direct Links</h3>
       <ul>
         <li><a id="linkReg" href="/docs/registry.json" target="_blank">/docs/registry.json</a></li>
@@ -115,6 +125,26 @@
 /* ------------------------------
    Small utilities
 --------------------------------*/
+
+async function runHealth() {
+  const r = await fetch('/api/kb/health', { cache: 'no-store' });
+  const j = await r.json();
+  document.getElementById('health').textContent = JSON.stringify(j, null, 2);
+  beacon('health_checked', { ok: j.ok, elapsed_ms: j.elapsed_ms });
+}
+document.getElementById('btnHealth').addEventListener('click', runHealth);
+
+document.getElementById('btnDlStats').addEventListener('click', async () => {
+  try {
+    const r = await fetch(`${BASE}/kb_stats.json`, { cache: 'no-store' });
+    if (!r.ok) throw new Error('not found');
+    const j = await r.json();
+    downloadJSON(j, 'kb_stats.json');
+  } catch {
+    alert('Stats not found yet. Commit once or run health first.');
+  }
+});
+
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const ts = () => Date.now();
 const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -441,6 +471,20 @@ els.downloadCross   .addEventListener('click', () => {
 loadAll().catch(err => {
   els.log.textContent = `Failed to load: ${err.message}\nCheck that /docs/*.json exist and Vercel rewrites are correct.`;
 });
+
+function beacon(type, extra = {}) {
+  return fetch('/api/kb/telemetry', {
+    method: 'POST',
+    headers: {'content-type':'application/json'},
+    body: JSON.stringify({ type, ...extra })
+  }).catch(()=>{});
+}
+
+// fire on key actions
+document.getElementById('btnValidate').addEventListener('click', () => beacon('validate_click'));
+document.getElementById('btnCommit').addEventListener('click', () => beacon('commit_click'));
+document.getElementById('fileInput').addEventListener('change', (e) => beacon('upload_files', { files: e.target.files?.length || 0 }));
+
 </script>
 </body>
 </html>
