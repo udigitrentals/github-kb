@@ -27,9 +27,6 @@
     { "source": "/cross_links.json", "destination": "/kb/cross_links.json" },
     { "source": "/ml/kb/:path*", "destination": "/kb/:path*" }
 
-    /* Optional SPA fallback (uncomment if you want every unknown path to go to index.html)
-    ,{ "source": "/((?!kb/|registry\\.json|search\\.json|cross_links\\.json).*)",
-       "destination": "/index.html" }
-    */
+    
   ]
 }
