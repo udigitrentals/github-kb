@@ -1,0 +1,38 @@
+name: KB CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+      - 'scripts/**'
+      - '.github/workflows/kb-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+      - 'scripts/**'
+
+jobs:
+  validate-kb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install ajv-cli
+        run: npm i -g ajv-cli@5
+      - name: Validate registry.json
+        run: ajv validate -s schemas/registry.schema.json -d docs/registry.json --spec=draft7
+      - name: Validate cross_links.json
+        run: ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json --spec=draft7
+      - name: Validate search.json
+        run: ajv validate -s schemas/search.schema.json -d docs/search.json --spec=draft7
+      - name: Check raw endpoints (HTTP 200)
+        run: |
+          set -e
+          for f in registry.json cross_links.json search.json; do
+            curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/main/docs/${f}" >/dev/null
+          done
+  

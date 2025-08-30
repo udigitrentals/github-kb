@@ -1,0 +1,17 @@
+{
+  "name": "udigit-kb-integration",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "kb:fetch": "node scripts/kb_fetch_current.js",
+    "kb:merge": "node scripts/kb_sync_merge.js --in ./kb_current --delta ./kb_deltas --out ./kb_merged",
+    "kb:version": "node scripts/kb_write_versioned.js --version ${KB_VERSION:-1}",
+    "kb:build-bundle": "node scripts/kb_build_bundle.js --src ./docs --out ./bundle.json",
+    "kb:validate": "ajv validate -s schemas/registry.schema.json -d docs/registry.json --spec=draft7 && ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json --spec=draft7 && ajv validate -s schemas/search.schema.json -d docs/search.json --spec=draft7"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
