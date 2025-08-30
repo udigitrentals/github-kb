@@ -14,8 +14,11 @@ function compute(registry, search, cross) {
                     : Array.isArray(cross?.graph?.edges) ? cross.graph.edges : [];
   const nodes       = Array.isArray(cross?.nodes) ? cross.nodes
                     : Array.isArray(cross?.graph?.nodes) ? cross.graph.nodes : [];
-  const uniqueTags  = new Set();
-  for (const d of searchArr) if (Array.isArray(d.tags)) for (const t of d.tags) uniqueTags.add(String(t).toLowerCase());
+
+  const uniqueTags = new Set();
+  for (const d of searchArr) if (Array.isArray(d?.tags)) for (const t of d.tags) uniqueTags.add(String(t).toLowerCase());
+
+  const unresolved = edges.filter(e => !e?.source || !e?.target).length;
 
   return {
     ts: new Date().toISOString(),
@@ -24,14 +27,14 @@ function compute(registry, search, cross) {
       search_docs: searchArr.length,
       nodes: nodes.length,
       edges: edges.length,
-      unique_tags: uniqueTags.size
+      unique_tags: uniqueTags.size,
+      unresolved_edges: unresolved
     }
   };
 }
 
 (function main() {
-  const root = process.cwd();
-  const docsDir = path.join(root, 'docs');
+  const docsDir = path.join(process.cwd(), 'docs');
   const reg = readJson(path.join(docsDir, 'registry.json'));
   const sea = readJson(path.join(docsDir, 'search.json'));
   const xln = readJson(path.join(docsDir, 'cross_links.json'));

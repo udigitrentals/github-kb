@@ -3,37 +3,27 @@ name: KB CI
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'docs/**'
-      - 'schemas/**'
-      - 'scripts/**'
-      - '.github/workflows/kb-ci.yml'
+    paths: [ 'docs/**', 'schemas/**', 'scripts/**', '.github/workflows/kb-ci.yml', 'index.html' ]
   pull_request:
     branches: [ main ]
-    paths:
-      - 'docs/**'
-      - 'schemas/**'
-      - 'scripts/**'
+    paths: [ 'docs/**', 'schemas/**', 'scripts/**', 'index.html' ]
 
 jobs:
   validate-kb:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
+    permissions: { contents: read }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
-        with:
-          node-version: 20
+        with: { node-version: 20 }
 
       - name: Install ajv-cli (Ajv v8)
         run: npm i -g ajv-cli@5
 
-      # ---- JSON Schema Validation (Ajv auto-detects draft via $schema) ----
+      # ---- Canonical JSON schema validation ----
       - name: Validate registry.json
         run: ajv validate -s schemas/registry.schema.json -d docs/registry.json
 
@@ -43,32 +33,44 @@ jobs:
       - name: Validate search.json
         run: ajv validate -s schemas/search.schema.json -d docs/search.json
 
+      # ---- Metrics schema validation (optional) ----
+      - name: Validate kb_stats.json
+        run: |
+          if [ -f docs/kb_stats.json ]; then
+            ajv validate -s schemas/kb_stats.schema.json -d docs/kb_stats.json
+          else
+            echo "kb_stats.json not present (ok)"
+          fi
+
+      - name: Validate kb_health_history.json
+        run: |
+          if [ -f docs/kb_health_history.json ]; then
+            ajv validate -s schemas/kb_health_history.schema.json -d docs/kb_health_history.json
+          else
+            echo "kb_health_history.json not present (ok)"
+          fi
+
       # ---- Guardrails (size & integrity) ----
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Guardrails (size & integrity)
+      - name: Guardrails (size & unresolved edges)
         shell: bash
         run: |
           set -euo pipefail
           RKB=$(wc -c < docs/registry.json)
           SKB=$(wc -c < docs/search.json)
           XKB=$(wc -c < docs/cross_links.json)
-
           echo "registry.json bytes: $RKB"
           echo "search.json   bytes: $SKB"
           echo "cross_links   bytes: $XKB"
-
-          # ~5MB soft cap for search, adjust if needed
           test "$SKB" -le $((5 * 1024 * 1024)) || { echo "search.json too large"; exit 1; }
-
-          # Orphans / unresolved edges (graph integrity)
           EDGES=$(jq -r '.edges // .graph.edges // [] | length' docs/cross_links.json)
           UNRES=$(jq -r '.edges // .graph.edges // [] | map(select((.source|not) or (.target|not))) | length' docs/cross_links.json)
           echo "edges: $EDGES unresolved: $UNRES"
           test "$UNRES" -le 250 || { echo "too many unresolved edges"; exit 1; }
 
-      # ---- RAW endpoints must be fetchable for THIS revision ----
+      # ---- RAW endpoints (current revision) must be fetchable ----
       - name: Check RAW endpoints (HTTP 200)
         shell: bash
         run: |
@@ -76,3 +78,14 @@ jobs:
           for f in registry.json cross_links.json search.json; do
             curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/docs/${f}" >/dev/null
           done
+
+  a11y:
+    needs: validate-kb
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Serve static site
+        run: npx http-server -p 5050 -c-1 . & sleep 2
+      - name: Run pa11y-ci (WCAG2AA, fail on serious+)
+        run: npx pa11y-ci "http://localhost:5050/index.html" --threshold 0
