@@ -1,16 +1,7 @@
 {
-  "./KB-Bundle-Spec.md": [],
-  "./vMeta-KB-Canonical-Mode.md": [],
   "/blocks/block-10-summary": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/blocks/block-11-summary": [],
-  "/blocks/block-12-summary": [],
-  "/blocks/block-13-summary": [],
-  "/blocks/block-14-summary": [],
-  "/blocks/block-15-summary": [],
-  "/blocks/block-16-summary": [],
-  "/blocks/block-17-summary": [],
   "/blocks/block-2-summary": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -25,37 +16,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/blocks/block-314-summary": [],
-  "/blocks/block-322-summary": [],
-  "/blocks/block-324-summary": [],
-  "/blocks/block-327-summary": [],
-  "/blocks/block-330-summary": [],
-  "/blocks/block-345-summary": [],
-  "/blocks/block-346-summary": [],
-  "/blocks/block-347-summary": [],
-  "/blocks/block-355-summary": [],
-  "/blocks/block-356-summary": [],
-  "/blocks/block-357-summary": [],
-  "/blocks/block-358-summary": [],
-  "/blocks/block-359-summary": [],
-  "/blocks/block-361-summary": [],
-  "/blocks/block-363-summary": [],
-  "/blocks/block-364-summary": [],
-  "/blocks/block-365-summary": [],
-  "/blocks/block-366-summary": [],
-  "/blocks/block-367-summary": [],
-  "/blocks/block-368-summary": [],
-  "/blocks/block-369-summary": [],
-  "/blocks/block-370-summary": [],
-  "/blocks/block-371-summary": [],
-  "/blocks/block-372-summary": [],
-  "/blocks/block-373-summary": [],
-  "/blocks/block-374-summary": [],
-  "/blocks/block-375-summary": [],
-  "/blocks/block-376-summary": [],
-  "/blocks/block-377-summary": [],
-  "/blocks/block-378-summary": [],
-  "/blocks/block-379-summary": [],
   "/blocks/block-4-summary": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -63,11 +23,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/blocks/block-5-summary": [],
-  "/blocks/block-6-summary": [],
-  "/blocks/block-7-summary": [],
-  "/blocks/block-8-summary": [],
-  "/blocks/block-9-summary": [],
   "/encyclopedia/v01-innovation-foundation": [
     "/blocks/block-2-summary",
     "/blocks/block-3-summary",
@@ -341,7 +296,6 @@
   "/encyclopedia/v09-momentum-mastery": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v10-scaling-early-systems": [],
   "/encyclopedia/v100-growth-velocity": [
     "/encyclopedia/v101-strategic-leverage",
     "/encyclopedia/v102-customer-ecosystems",
@@ -395,7 +349,6 @@
     "/encyclopedia/v109-growth-reserves",
     "/encyclopedia/v110-adaptive-systems"
   ],
-  "/encyclopedia/v109-adaptive-finance": [],
   "/encyclopedia/v109-growth-reserves": [
     "/encyclopedia/v106-scaling-ladders-2",
     "/encyclopedia/v107-customer-resilience",
@@ -590,7 +543,6 @@
   "/encyclopedia/v14-decision-frameworks": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v140-growth-velocity-2": [],
   "/encyclopedia/v141-strategic-redundancy": [
     "/synthesis/transmission-systems-v1-370"
   ],
@@ -637,7 +589,6 @@
   "/encyclopedia/v153-adaptive-resilience-loops": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v153-resilience-anchors": [],
   "/encyclopedia/v154-financial-anchors": [
     "/synthesis/anchoring-systems-v1-210"
   ],
@@ -656,8 +607,6 @@
   "/encyclopedia/v159-growth-anchors": [
     "/synthesis/anchoring-systems-v1-210"
   ],
-  "/encyclopedia/v16-execution-discipline": [],
-  "/encyclopedia/v160-financial-anchors": [],
   "/encyclopedia/v160-system-anchors": [
     "/synthesis/transmission-systems-v1-370"
   ],
@@ -694,7 +643,6 @@
   "/encyclopedia/v166-growth-ecosystem-flywheels": [
     "/synthesis/ecosystem-systems-v1-190"
   ],
-  "/encyclopedia/v167-resilience-ecosystems": [],
   "/encyclopedia/v168-adaptive-financial-loops": [
     "/synthesis/transmission-systems-v1-370"
   ],
@@ -714,7 +662,6 @@
     "/synthesis/synergy-systems-v1-290",
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v17-financial-reserves": [],
   "/encyclopedia/v17-trust-systems": [
     "/synthesis/transmission-systems-v1-370"
   ],
@@ -767,12 +714,9 @@
   "/encyclopedia/v175-growth-leverage": [
     "/synthesis/momentum-systems-v1-200"
   ],
-  "/encyclopedia/v176-resilience-anchors": [],
-  "/encyclopedia/v177-strategic-ecosystems": [],
   "/encyclopedia/v178-adaptive-growth-loops": [
     "/synthesis/adaptive-systems-v1-180"
   ],
-  "/encyclopedia/v179-financial-ecosystems": [],
   "/encyclopedia/v18-adaptability": [
     "/synthesis/adaptive-systems-v1-180",
     "/synthesis/resilience-systems-v1-130"
@@ -786,267 +730,72 @@
   "/encyclopedia/v182-customer-momentum": [
     "/synthesis/momentum-systems-v1-200"
   ],
-  "/encyclopedia/v183-adaptive-leadership-loops": [],
-  "/encyclopedia/v184-growth-anchoring-flywheels": [],
   "/encyclopedia/v185-resilience-momentum": [
     "/synthesis/momentum-systems-v1-200"
   ],
-  "/encyclopedia/v186-strategic-anchoring": [],
-  "/encyclopedia/v187-customer-ecosystem-flywheels": [],
-  "/encyclopedia/v188-leadership-anchoring-flywheels": [],
-  "/encyclopedia/v189-financial-momentum": [],
-  "/encyclopedia/v19-delegation-systems": [],
-  "/encyclopedia/v190-systemic-flywheels": [],
-  "/encyclopedia/v191-strategic-momentum": [],
-  "/encyclopedia/v192-customer-anchoring-loops": [],
-  "/encyclopedia/v193-adaptive-momentum": [],
-  "/encyclopedia/v194-leadership-reserves": [],
-  "/encyclopedia/v195-growth-stacking-loops": [],
-  "/encyclopedia/v196-resilience-anchoring-flywheels": [],
   "/encyclopedia/v197-strategic-leverage": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v198-customer-recovery-loops": [],
-  "/encyclopedia/v199-financial-anchoring-flywheels": [],
-  "/encyclopedia/v20-scaling-ladder": [],
-  "/encyclopedia/v200-systemic-momentum": [],
-  "/encyclopedia/v201-strategic-anchoring-loops": [],
-  "/encyclopedia/v202-customer-anchoring-flywheels": [],
-  "/encyclopedia/v203-adaptive-anchors": [],
-  "/encyclopedia/v204-leadership-anchoring-loops": [],
-  "/encyclopedia/v205-growth-anchoring-loops": [],
-  "/encyclopedia/v206-financial-anchoring-loops": [],
-  "/encyclopedia/v207-cultural-anchoring-loops": [],
-  "/encyclopedia/v208-resilience-anchoring-loops": [],
-  "/encyclopedia/v209-systemic-anchoring": [],
   "/encyclopedia/v21-brand-trust": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v210-anchoring-flywheels": [],
-  "/encyclopedia/v211-strategic-loops": [],
-  "/encyclopedia/v212-customer-trust-loops": [],
-  "/encyclopedia/v213-leadership-feedback-loops": [],
-  "/encyclopedia/v214-growth-feedback-loops": [],
-  "/encyclopedia/v215-financial-feedback-loops": [],
-  "/encyclopedia/v216-cultural-feedback-loops": [],
-  "/encyclopedia/v217-resilience-feedback-loops": [],
-  "/encyclopedia/v218-adaptive-feedback-loops": [],
-  "/encyclopedia/v219-systemic-feedback-loops": [],
-  "/encyclopedia/v22-execution-mastery": [],
-  "/encyclopedia/v220-loop-flywheels": [],
-  "/encyclopedia/v221-strategic-flywheels": [],
-  "/encyclopedia/v222-customer-flywheel-anchors": [],
-  "/encyclopedia/v223-leadership-flywheels": [],
-  "/encyclopedia/v224-growth-flywheels": [],
-  "/encyclopedia/v225-financial-flywheels": [],
-  "/encyclopedia/v226-cultural-flywheels": [],
-  "/encyclopedia/v227-resilience-flywheels": [],
-  "/encyclopedia/v228-adaptive-flywheels": [],
-  "/encyclopedia/v229-systemic-flywheel-anchors": [],
   "/encyclopedia/v23-customer-segmentation": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v230-flywheel-compounding": [],
-  "/encyclopedia/v231-strategic-integration": [],
-  "/encyclopedia/v232-customer-integration": [],
-  "/encyclopedia/v233-leadership-integration": [],
-  "/encyclopedia/v234-growth-integration": [],
-  "/encyclopedia/v235-financial-integration": [],
-  "/encyclopedia/v236-cultural-integration": [],
-  "/encyclopedia/v237-resilience-integration": [],
-  "/encyclopedia/v238-adaptive-integration": [],
-  "/encyclopedia/v239-systemic-integration": [],
   "/encyclopedia/v24-resilience-systems": [
     "/synthesis/resilience-systems-v1-130"
   ],
-  "/encyclopedia/v240-integration-flywheels": [],
-  "/encyclopedia/v241-strategic-compounding": [],
-  "/encyclopedia/v242-customer-compounding": [],
-  "/encyclopedia/v243-leadership-compounding": [],
-  "/encyclopedia/v244-growth-compounding": [],
-  "/encyclopedia/v245-financial-compounding": [],
-  "/encyclopedia/v246-cultural-compounding": [],
-  "/encyclopedia/v247-resilience-compounding": [],
-  "/encyclopedia/v248-adaptive-compounding": [],
-  "/encyclopedia/v249-systemic-compounding": [],
   "/encyclopedia/v25-scaling-flywheel": [
     "/synthesis/growth-systems-v1-140"
   ],
-  "/encyclopedia/v250-compounding-flywheels": [],
-  "/encyclopedia/v251-strategic-networks": [],
-  "/encyclopedia/v252-customer-networks": [],
-  "/encyclopedia/v253-leadership-networks": [],
-  "/encyclopedia/v254-growth-networks": [],
-  "/encyclopedia/v255-financial-networks": [],
-  "/encyclopedia/v256-cultural-networks": [],
-  "/encyclopedia/v257-resilience-networks": [],
-  "/encyclopedia/v258-adaptive-networks": [],
-  "/encyclopedia/v259-systemic-networks": [],
   "/encyclopedia/v26-unique-advantage": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v260-network-flywheels": [],
-  "/encyclopedia/v261-strategic-ecosystems": [],
-  "/encyclopedia/v262-customer-ecosystems": [],
-  "/encyclopedia/v263-leadership-ecosystems": [],
-  "/encyclopedia/v264-growth-ecosystems": [],
-  "/encyclopedia/v265-financial-ecosystems": [],
-  "/encyclopedia/v266-cultural-ecosystems": [],
-  "/encyclopedia/v267-resilience-ecosystems": [],
-  "/encyclopedia/v268-adaptive-ecosystems": [],
-  "/encyclopedia/v269-systemic-ecosystems": [],
   "/encyclopedia/v27-competitive-edge": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v27-leadership-systems": [],
-  "/encyclopedia/v270-ecosystem-convergence": [],
-  "/encyclopedia/v271-strategic-resonance": [],
-  "/encyclopedia/v272-customer-resonance": [],
-  "/encyclopedia/v273-leadership-resonance": [],
-  "/encyclopedia/v274-growth-resonance": [],
-  "/encyclopedia/v275-financial-resonance": [],
-  "/encyclopedia/v276-cultural-resonance": [],
-  "/encyclopedia/v277-resilience-resonance": [],
-  "/encyclopedia/v278-adaptive-resonance": [],
-  "/encyclopedia/v279-systemic-resonance": [],
   "/encyclopedia/v28-market-positioning": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v28-reinvestment": [],
-  "/encyclopedia/v280-resonant-flywheels": [],
-  "/encyclopedia/v281-strategic-synergy": [],
-  "/encyclopedia/v282-customer-synergy": [],
-  "/encyclopedia/v283-leadership-synergy": [],
-  "/encyclopedia/v284-growth-synergy": [],
-  "/encyclopedia/v285-financial-synergy": [],
-  "/encyclopedia/v286-cultural-synergy": [],
-  "/encyclopedia/v287-resilience-synergy": [],
-  "/encyclopedia/v288-adaptive-synergy": [],
-  "/encyclopedia/v289-systemic-synergy": [],
-  "/encyclopedia/v29-cultural-systems": [],
   "/encyclopedia/v29-systems-thinking": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v290-synergistic-flywheels": [],
-  "/encyclopedia/v291-strategic-harmony": [],
-  "/encyclopedia/v292-customer-harmony": [],
-  "/encyclopedia/v293-leadership-harmony": [],
-  "/encyclopedia/v294-growth-harmony": [],
-  "/encyclopedia/v295-financial-harmony": [],
-  "/encyclopedia/v296-cultural-harmony": [],
-  "/encyclopedia/v297-resilience-harmony": [],
-  "/encyclopedia/v298-adaptive-harmony": [],
-  "/encyclopedia/v299-systemic-harmony": [],
-  "/encyclopedia/v3-focus-prioritization": [],
   "/encyclopedia/v30-customer-experience-flywheel": [
     "/synthesis/customer-systems-v1-110"
   ],
-  "/encyclopedia/v300-harmonized-flywheels": [],
-  "/encyclopedia/v301-strategic-flow": [],
-  "/encyclopedia/v302-customer-flow": [],
-  "/encyclopedia/v303-leadership-flow": [],
-  "/encyclopedia/v304-growth-flow": [],
-  "/encyclopedia/v305-financial-flow": [],
-  "/encyclopedia/v306-cultural-flow": [],
-  "/encyclopedia/v307-resilience-flow": [],
-  "/encyclopedia/v308-adaptive-flow": [],
-  "/encyclopedia/v309-systemic-flow": [],
   "/encyclopedia/v31-strategic-partnerships": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v310-flow-flywheels": [],
-  "/encyclopedia/v311-strategic-circulation": [],
-  "/encyclopedia/v312-customer-circulation": [],
-  "/encyclopedia/v313-leadership-circulation": [],
-  "/encyclopedia/v314-growth-circulation": [],
-  "/encyclopedia/v315-financial-circulation": [],
-  "/encyclopedia/v316-cultural-circulation": [],
-  "/encyclopedia/v317-resilience-circulation": [],
-  "/encyclopedia/v318-adaptive-circulation": [],
-  "/encyclopedia/v319-systemic-circulation": [],
   "/encyclopedia/v32-pricing-strategy": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v320-circulating-flywheels": [],
-  "/encyclopedia/v321-strategic-continuity": [],
-  "/encyclopedia/v322-customer-continuity": [],
-  "/encyclopedia/v323-leadership-continuity": [],
-  "/encyclopedia/v324-growth-continuity": [],
-  "/encyclopedia/v325-financial-continuity": [],
-  "/encyclopedia/v326-cultural-continuity": [],
-  "/encyclopedia/v327-resilience-continuity": [],
-  "/encyclopedia/v328-adaptive-continuity": [],
-  "/encyclopedia/v329-systemic-continuity": [],
   "/encyclopedia/v33-capital-strategy": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v330-continuity-flywheels": [],
-  "/encyclopedia/v331-strategic-permanence": [],
-  "/encyclopedia/v332-customer-permanence": [],
-  "/encyclopedia/v333-leadership-permanence": [],
-  "/encyclopedia/v334-growth-permanence": [],
-  "/encyclopedia/v335-financial-permanence": [],
-  "/encyclopedia/v336-cultural-permanence": [],
-  "/encyclopedia/v337-resilience-permanence": [],
-  "/encyclopedia/v338-adaptive-permanence": [],
-  "/encyclopedia/v339-systemic-permanence": [],
   "/encyclopedia/v34-risk-management": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v340-permanent-flywheels": [],
-  "/encyclopedia/v341-strategic-legacy": [],
-  "/encyclopedia/v342-customer-legacy": [],
-  "/encyclopedia/v343-leadership-legacy": [],
-  "/encyclopedia/v344-growth-legacy": [],
-  "/encyclopedia/v345-financial-legacy": [],
-  "/encyclopedia/v346-cultural-legacy": [],
-  "/encyclopedia/v347-resilience-legacy": [],
-  "/encyclopedia/v348-adaptive-legacy": [],
-  "/encyclopedia/v349-systemic-legacy": [],
   "/encyclopedia/v35-technology-leverage": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v350-legacy-flywheels": [],
-  "/encyclopedia/v351-strategic-stewardship": [],
-  "/encyclopedia/v352-customer-stewardship": [],
-  "/encyclopedia/v353-leadership-stewardship": [],
-  "/encyclopedia/v354-growth-stewardship": [],
-  "/encyclopedia/v355-financial-stewardship": [],
-  "/encyclopedia/v356-cultural-stewardship": [],
-  "/encyclopedia/v357-resilience-stewardship": [],
-  "/encyclopedia/v358-adaptive-stewardship": [],
-  "/encyclopedia/v359-systemic-stewardship": [],
   "/encyclopedia/v36-customer-retention": [
     "/synthesis/customer-systems-v1-110"
   ],
-  "/encyclopedia/v360-stewardship-flywheels": [],
-  "/encyclopedia/v361-strategic-transmission": [],
-  "/encyclopedia/v362-customer-transmission": [],
-  "/encyclopedia/v363-leadership-transmission": [],
-  "/encyclopedia/v364-growth-transmission": [],
-  "/encyclopedia/v365-financial-transmission": [],
-  "/encyclopedia/v366-cultural-transmission": [],
-  "/encyclopedia/v367-resilience-transmission": [],
-  "/encyclopedia/v368-adaptive-transmission": [],
-  "/encyclopedia/v369-systemic-transmission": [],
   "/encyclopedia/v37-talent-development": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v370-transmission-flywheels": [],
   "/encyclopedia/v38-leadership": [
     "/synthesis/transmission-systems-v1-370"
   ],
   "/encyclopedia/v39-market-intelligence": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v40-growth-flywheel": [],
   "/encyclopedia/v40-quality-systems": [
     "/synthesis/transmission-systems-v1-370"
   ],
   "/encyclopedia/v41-culture-systems": [
     "/synthesis/transmission-systems-v1-370"
   ],
-  "/encyclopedia/v42-cultural-discipline": [],
   "/encyclopedia/v42-execution-flywheel": [
     "/encyclopedia/v45-incentive-systems"
   ],
@@ -1066,7 +815,6 @@
     "/encyclopedia/v46-financial-leverage",
     "/encyclopedia/v47-growth-loops"
   ],
-  "/encyclopedia/v45-leadership-clarity": [],
   "/encyclopedia/v46-financial-leverage": [
     "/encyclopedia/v43-communication-systems",
     "/encyclopedia/v44-strategic-clarity",
@@ -1123,7 +871,6 @@
     "/encyclopedia/v54-operational-excellence",
     "/encyclopedia/v55-adaptive-strategy"
   ],
-  "/encyclopedia/v52-financial-discipline": [],
   "/encyclopedia/v53-data-driven-decisions": [
     "/encyclopedia/v50-continuous-improvement",
     "/encyclopedia/v51-strategic-innovation",
@@ -1132,7 +879,6 @@
     "/encyclopedia/v55-adaptive-strategy",
     "/encyclopedia/v56-financial-resilience"
   ],
-  "/encyclopedia/v54-growth-loops": [],
   "/encyclopedia/v54-operational-excellence": [
     "/encyclopedia/v51-strategic-innovation",
     "/encyclopedia/v52-customer-advocacy",
@@ -1175,7 +921,6 @@
     "/encyclopedia/v61-strategic-focus",
     "/encyclopedia/v62-customer-value-ladder"
   ],
-  "/encyclopedia/v6-operational-discipline": [],
   "/encyclopedia/v60-continuous-learning": [
     "/encyclopedia/v57-systemized-scaling",
     "/encyclopedia/v58-team-resilience",
@@ -1201,7 +946,6 @@
     "/encyclopedia/v63-scenario-planning",
     "/encyclopedia/v64-execution-velocity"
   ],
-  "/encyclopedia/v63-leadership-trust": [],
   "/encyclopedia/v63-scenario-planning": [
     "/encyclopedia/v60-continuous-learning",
     "/encyclopedia/v61-strategic-focus",
@@ -1233,7 +977,6 @@
     "/encyclopedia/v68-talent-flywheel",
     "/encyclopedia/v69-decision-velocity"
   ],
-  "/encyclopedia/v67-cultural-alignment": [],
   "/encyclopedia/v67-data-systems": [
     "/encyclopedia/v64-execution-velocity",
     "/encyclopedia/v65-customer-systems",
@@ -1286,7 +1029,6 @@
     "/encyclopedia/v75-strategic-redundancy",
     "/encyclopedia/v76-adaptive-leadership"
   ],
-  "/encyclopedia/v73-growth-momentum": [],
   "/encyclopedia/v74-growth-resilience": [
     "/encyclopedia/v73-financial-agility",
     "/encyclopedia/v75-strategic-redundancy",
@@ -1320,7 +1062,6 @@
     "/encyclopedia/v80-market-agility",
     "/encyclopedia/v81-execution-compounding"
   ],
-  "/encyclopedia/v79-leadership-culture": [],
   "/encyclopedia/v79-strategic-storytelling": [
     "/encyclopedia/v76-adaptive-leadership",
     "/encyclopedia/v77-customer-communities",
@@ -1383,7 +1124,6 @@
     "/encyclopedia/v90-continuous-adaptation",
     "/encyclopedia/v91-strategic-iteration"
   ],
-  "/encyclopedia/v9-growth-engines": [],
   "/encyclopedia/v90-continuous-adaptation": [
     "/encyclopedia/v87-execution-filters",
     "/encyclopedia/v88-strategic-reserves",
@@ -1445,18 +1185,20 @@
     "/encyclopedia/v97-adaptive-execution",
     "/encyclopedia/v98-strategic-compounding"
   ],
-  "/foundations/core-values": [],
-  "/foundations/core-values-card": [],
-  "/foundations/core-values-map": [],
-  "/foundations/guardrails-risks": [],
-  "/foundations/risks-matrix": [],
-  "/kb/docs/Pivot_Override_v1_TaskGuard_JHA_SaaS_KBReady.md": [],
   "/ops/contributor-playbook": [
     "/path#anchor`",
     "/path`",
     "/path`."
   ],
-  "/playbooks/ab-testing": [],
+  "/path#anchor`": [
+    "/ops/contributor-playbook"
+  ],
+  "/path`": [
+    "/ops/contributor-playbook"
+  ],
+  "/path`.": [
+    "/ops/contributor-playbook"
+  ],
   "/playbooks/accessibility-mobile-first": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1478,27 +1220,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/advanced-financial-engineering": [],
-  "/playbooks/advanced-financial-engineering-map": [],
-  "/playbooks/advanced-financial-engineering-quick-reference": [],
-  "/playbooks/ai-agent-fundamentals": [],
-  "/playbooks/ai-agent-fundamentals-map": [],
-  "/playbooks/ai-agent-fundamentals-quick-reference": [],
-  "/playbooks/ai-agent-governance": [],
-  "/playbooks/ai-agent-governance-map": [],
-  "/playbooks/ai-agent-governance-quick-reference": [],
-  "/playbooks/ai-assisted-design-ux": [],
-  "/playbooks/ai-assisted-design-ux-map": [],
-  "/playbooks/ai-assisted-design-ux-quick-reference": [],
-  "/playbooks/ai-content-seo-automation": [],
-  "/playbooks/ai-content-seo-automation-map": [],
-  "/playbooks/ai-content-seo-automation-quick-reference": [],
-  "/playbooks/ai-dev-workflows": [],
-  "/playbooks/ai-dev-workflows-map": [],
-  "/playbooks/ai-dev-workflows-quick-reference": [],
-  "/playbooks/ai-driven-enterprise": [],
-  "/playbooks/ai-driven-enterprise-map": [],
-  "/playbooks/ai-driven-enterprise-quick-reference": [],
   "/playbooks/ai-webdev-fundamentals": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1520,9 +1241,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/automation-first-scaling": [],
-  "/playbooks/automation-first-scaling-map": [],
-  "/playbooks/automation-first-scaling-quick-reference": [],
   "/playbooks/booking-flow-map": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1544,16 +1262,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/business-foundations": [],
-  "/playbooks/business-foundations-map": [],
-  "/playbooks/business-foundations-quick-reference": [],
-  "/playbooks/climate-sustainability-strategy": [],
-  "/playbooks/climate-sustainability-strategy-map": [],
-  "/playbooks/climate-sustainability-strategy-quick-reference": [],
-  "/playbooks/coding-practices-quick-reference": [],
-  "/playbooks/coding-practices-standards": [],
-  "/playbooks/coding-practices-standards-map": [],
-  "/playbooks/conversion-optimization": [],
   "/playbooks/crisis-response": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1561,11 +1269,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/cro-funnel-map": [],
-  "/playbooks/cro-quick-reference": [],
-  "/playbooks/cultural-foundations": [],
-  "/playbooks/cultural-foundations-map": [],
-  "/playbooks/cultural-foundations-quick-reference": [],
   "/playbooks/customer-experience-flywheel": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1587,15 +1290,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/customer-facing-agents": [],
-  "/playbooks/customer-facing-agents-map": [],
-  "/playbooks/customer-facing-agents-quick-reference": [],
-  "/playbooks/cybersecurity-foundations": [],
-  "/playbooks/cybersecurity-foundations-map": [],
-  "/playbooks/cybersecurity-foundations-quick-reference": [],
-  "/playbooks/dashboards-tracking": [],
-  "/playbooks/dashboards-tracking-map": [],
-  "/playbooks/dashboards-tracking-quick-reference": [],
   "/playbooks/decision-journal": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1617,9 +1311,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/defensibility-moats": [],
-  "/playbooks/defensibility-moats-map": [],
-  "/playbooks/defensibility-moats-quick-reference": [],
   "/playbooks/delegation-matrix": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1669,103 +1360,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/economics-foundations": [],
-  "/playbooks/economics-foundations-map": [],
-  "/playbooks/economics-foundations-quick-reference": [],
-  "/playbooks/education-learning-foundations": [],
-  "/playbooks/education-learning-foundations-map": [],
-  "/playbooks/education-learning-foundations-quick-reference": [],
-  "/playbooks/enterprise-playbooks": [],
-  "/playbooks/enterprise-playbooks-map": [],
-  "/playbooks/enterprise-playbooks-quick-reference": [],
-  "/playbooks/environment-ecology-foundations": [],
-  "/playbooks/environment-ecology-foundations-map": [],
-  "/playbooks/environment-ecology-foundations-quick-reference": [],
-  "/playbooks/ethics-foundations": [],
-  "/playbooks/ethics-foundations-map": [],
-  "/playbooks/ethics-foundations-quick-reference": [],
-  "/playbooks/exponential-growth-levers": [],
-  "/playbooks/exponential-growth-levers-map": [],
-  "/playbooks/exponential-growth-levers-quick-reference": [],
-  "/playbooks/feedback-adaptation-loops": [],
-  "/playbooks/feedback-adaptation-loops-map": [],
-  "/playbooks/feedback-adaptation-loops-quick-reference": [],
-  "/playbooks/finance-foundations": [],
-  "/playbooks/finance-foundations-map": [],
-  "/playbooks/finance-foundations-quick-reference": [],
-  "/playbooks/finance-quick-reference": [],
-  "/playbooks/financial-compounding": [],
-  "/playbooks/frontier-tech-commercialization": [],
-  "/playbooks/frontier-tech-commercialization-map": [],
-  "/playbooks/frontier-tech-commercialization-quick-reference": [],
-  "/playbooks/geopolitical-resilience": [],
-  "/playbooks/geopolitical-resilience-map": [],
-  "/playbooks/geopolitical-resilience-quick-reference": [],
-  "/playbooks/global-economics-trade": [],
-  "/playbooks/global-economics-trade-map": [],
-  "/playbooks/global-economics-trade-quick-reference": [],
-  "/playbooks/global-expansion-strategy": [],
-  "/playbooks/global-expansion-strategy-map": [],
-  "/playbooks/global-expansion-strategy-quick-reference": [],
-  "/playbooks/governance-accountability": [],
-  "/playbooks/governance-accountability-map": [],
-  "/playbooks/governance-accountability-quick-reference": [],
-  "/playbooks/growth-loops": [],
-  "/playbooks/growth-loops-quick-reference": [],
-  "/playbooks/health-energy-foundations": [],
-  "/playbooks/health-energy-foundations-map": [],
-  "/playbooks/health-energy-foundations-quick-reference": [],
-  "/playbooks/history-foundations": [],
-  "/playbooks/history-foundations-map": [],
-  "/playbooks/history-foundations-quick-reference": [],
-  "/playbooks/incident-response-bc": [],
-  "/playbooks/incident-response-bc-map": [],
-  "/playbooks/incident-response-bc-quick-reference": [],
-  "/playbooks/information-foundations": [],
-  "/playbooks/information-foundations-map": [],
-  "/playbooks/information-foundations-quick-reference": [],
-  "/playbooks/integration-daily-ops": [],
-  "/playbooks/integration-daily-ops-map": [],
-  "/playbooks/integration-daily-ops-quick-reference": [],
-  "/playbooks/integration-future-proofing": [],
-  "/playbooks/integration-future-proofing-map": [],
-  "/playbooks/integration-future-proofing-quick-reference": [],
-  "/playbooks/internal-ops-agents": [],
-  "/playbooks/internal-ops-agents-map": [],
-  "/playbooks/internal-ops-agents-quick-reference": [],
-  "/playbooks/kb-ai-augmented": [],
-  "/playbooks/kb-ai-augmented-map": [],
-  "/playbooks/kb-ai-augmented-quick-reference": [],
-  "/playbooks/kb-architecture-indexing": [],
-  "/playbooks/kb-architecture-indexing-map": [],
-  "/playbooks/kb-architecture-indexing-quick-reference": [],
-  "/playbooks/kb-automation-updating": [],
-  "/playbooks/kb-automation-updating-map": [],
-  "/playbooks/kb-automation-updating-quick-reference": [],
-  "/playbooks/kb-knowledge-graph": [],
-  "/playbooks/kb-knowledge-graph-map": [],
-  "/playbooks/kb-knowledge-graph-quick-reference": [],
-  "/playbooks/kb-personalization-context": [],
-  "/playbooks/kb-personalization-context-map": [],
-  "/playbooks/kb-personalization-context-quick-reference": [],
-  "/playbooks/kb-quality-control": [],
-  "/playbooks/kb-quality-control-map": [],
-  "/playbooks/kb-quality-control-quick-reference": [],
-  "/playbooks/kb-resilience-redundancy": [],
-  "/playbooks/kb-resilience-redundancy-map": [],
-  "/playbooks/kb-resilience-redundancy-quick-reference": [],
-  "/playbooks/kb-search-retrieval": [],
-  "/playbooks/kb-search-retrieval-map": [],
-  "/playbooks/kb-search-retrieval-quick-reference": [],
-  "/playbooks/kb-versioning-archive": [],
-  "/playbooks/kb-versioning-archive-map": [],
-  "/playbooks/kb-versioning-archive-quick-reference": [],
-  "/playbooks/kb-visualization-ui": [],
-  "/playbooks/kb-visualization-ui-map": [],
-  "/playbooks/kb-visualization-ui-quick-reference": [],
-  "/playbooks/law-governance-foundations": [],
-  "/playbooks/law-governance-foundations-map": [],
-  "/playbooks/law-governance-foundations-quick-reference": [],
   "/playbooks/leadership-quick-reference": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1780,7 +1374,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/leverage-ladder": [],
   "/playbooks/local-seo": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1802,26 +1395,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/ma-growth-engine": [],
-  "/playbooks/ma-growth-engine-map": [],
-  "/playbooks/ma-growth-engine-quick-reference": [],
-  "/playbooks/marketing-foundations": [],
-  "/playbooks/marketing-foundations-map": [],
-  "/playbooks/marketing-foundations-quick-reference": [],
-  "/playbooks/mathematics-logic-foundations": [],
-  "/playbooks/mathematics-logic-foundations-map": [],
-  "/playbooks/mathematics-logic-foundations-quick-reference": [],
-  "/playbooks/multi-agent-systems": [],
-  "/playbooks/multi-agent-systems-map": [],
-  "/playbooks/multi-agent-systems-quick-reference": [],
-  "/playbooks/network-effects-ecosystems": [],
-  "/playbooks/network-effects-ecosystems-map": [],
-  "/playbooks/network-effects-ecosystems-quick-reference": [],
-  "/playbooks/okrs-metrics-framework": [],
-  "/playbooks/okrs-metrics-framework-map": [],
-  "/playbooks/okrs-metrics-framework-quick-reference": [],
-  "/playbooks/ops-automation-map": [],
-  "/playbooks/ops-efficiency-automation": [],
   "/playbooks/partnerships-map": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1843,18 +1416,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/personal-mastery-performance": [],
-  "/playbooks/personal-mastery-performance-map": [],
-  "/playbooks/personal-mastery-performance-quick-reference": [],
-  "/playbooks/philosophy-foundations": [],
-  "/playbooks/philosophy-foundations-map": [],
-  "/playbooks/philosophy-foundations-quick-reference": [],
-  "/playbooks/platformization-apis": [],
-  "/playbooks/platformization-apis-map": [],
-  "/playbooks/platformization-apis-quick-reference": [],
-  "/playbooks/political-foundations": [],
-  "/playbooks/political-foundations-map": [],
-  "/playbooks/political-foundations-quick-reference": [],
   "/playbooks/pricing-packaging": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1876,10 +1437,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/psychology-foundations": [],
-  "/playbooks/psychology-foundations-map": [],
-  "/playbooks/psychology-foundations-quick-reference": [],
-  "/playbooks/rental-flywheel": [],
   "/playbooks/resilience": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1894,20 +1451,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/sales-foundations": [],
-  "/playbooks/sales-foundations-map": [],
-  "/playbooks/sales-foundations-quick-reference": [],
-  "/playbooks/scaling-ladder": [],
-  "/playbooks/scaling-ladder-diagram": [],
-  "/playbooks/science-foundations": [],
-  "/playbooks/science-foundations-map": [],
-  "/playbooks/science-foundations-quick-reference": [],
-  "/playbooks/sdlc": [],
-  "/playbooks/sdlc-map": [],
-  "/playbooks/sdlc-quick-reference": [],
-  "/playbooks/systems-thinking-foundations": [],
-  "/playbooks/systems-thinking-foundations-map": [],
-  "/playbooks/systems-thinking-foundations-quick-reference": [],
   "/playbooks/technology-data-systems": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1929,9 +1472,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/technology-foundations": [],
-  "/playbooks/technology-foundations-map": [],
-  "/playbooks/technology-foundations-quick-reference": [],
   "/playbooks/uiux-principles": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -1974,9 +1514,6 @@
     "/encyclopedia/v04-lead-generation",
     "/encyclopedia/v05-conversion-engine"
   ],
-  "/playbooks/webapp-api-security": [],
-  "/playbooks/webapp-api-security-map": [],
-  "/playbooks/webapp-api-security-quick-reference": [],
   "/process/deep-learning-sprint-system": [
     "/encyclopedia/v01-innovation-foundation",
     "/encyclopedia/v02-cadence-consistency",
@@ -2047,7 +1584,6 @@
     "/encyclopedia/v48-customer-success",
     "/encyclopedia/v65-customer-systems"
   ],
-  "/synthesis/decision-systems-v1-120": [],
   "/synthesis/ecosystem-convergence-systems-v1-270": [
     "/encyclopedia/v132-cultural-flywheels",
     "/encyclopedia/v163-adaptive-execution-loops",
@@ -2062,7 +1598,6 @@
     "/encyclopedia/v164-leadership-ecosystems",
     "/encyclopedia/v166-growth-ecosystem-flywheels"
   ],
-  "/synthesis/execution-systems-v1-100": [],
   "/synthesis/financial-systems-v1-160": [
     "/encyclopedia/v117-financial-flywheels",
     "/encyclopedia/v137-resilient-finance",
@@ -2161,8 +1696,6 @@
     "/encyclopedia/v172-customer-flywheels",
     "/encyclopedia/v173-adaptive-strategy-loops"
   ],
-  "/synthesis/scaling-systems-v1-110": [],
-  "/synthesis/strategy-focus-systems-v1-110": [],
   "/synthesis/synergy-systems-v1-290": [
     "/encyclopedia/v132-cultural-flywheels",
     "/encyclopedia/v163-adaptive-execution-loops",
@@ -3482,7 +3015,6 @@
     "v851",
     "v853"
   ],
-  "ai_agent_governance.json": [],
   "annual-income-growth-targeting": [
     "v381",
     "v404",
@@ -4948,7 +4480,6 @@
     "v505",
     "v556"
   ],
-  "crisis_governance.json": [],
   "cross-border-expansion-plan": [
     "v381",
     "v404",
@@ -5238,7 +4769,6 @@
     "v505",
     "v556"
   ],
-  "ecosystem_governance.json": [],
   "email-drip-from-quote-to-advocate": [
     "v381",
     "v404",
@@ -6057,7 +5587,6 @@
     "v657",
     "v659"
   ],
-  "global_arbitrage_governance.json": [],
   "google-ads-skags-for-rentals": [
     "v381",
     "v404",
@@ -6178,8 +5707,6 @@
     "v505",
     "v556"
   ],
-  "https://github.com/udigitrentals/github-kb/actions/workflows/kb-validate.yml": [],
-  "impact_governance.json": [],
   "inbound-content-syndication-network": [
     "v381",
     "v404",
@@ -6190,8 +5717,6 @@
     "v505",
     "v556"
   ],
-  "innovation_governance.json": [],
-  "input_governance.json": [],
   "insurance-claim-fast-track-sop": [
     "v381",
     "v404",
@@ -6442,7 +5967,6 @@
     "v505",
     "v556"
   ],
-  "kb-bundle-spec": [],
   "kb-governance": [
     "ci-guardrail",
     "kb-search-synonyms",
@@ -6498,8 +6022,6 @@
     "v577",
     "v579"
   ],
-  "knowledge_governance.json": [],
-  "kpi_governance.json": [],
   "lead-magnet-diy-vs-pro-calculator": [
     "v381",
     "v404",
@@ -6540,7 +6062,6 @@
     "v505",
     "v556"
   ],
-  "legacy_governance.json": [],
   "legal-compliance-automation": [
     "v381",
     "v404",
@@ -6630,9 +6151,6 @@
     "v505",
     "v556"
   ],
-  "master_wealth_governance.json": [],
-  "meta_ai_governance.json": [],
-  "meta_governance.json": [],
   "micro-geo-targeted-ads": [
     "v381",
     "v404",
@@ -6901,7 +6419,6 @@
     "v556",
     "v600"
   ],
-  "presence_sentinel.json": [],
   "price-guardrails-exceptions": [
     "v381",
     "v404",
@@ -6932,7 +6449,6 @@
     "v543",
     "v556"
   ],
-  "prime_synergy_constitution.json": [],
   "pro-forma-for-unit-2-5": [
     "v381",
     "v404",
@@ -7468,7 +6984,6 @@
     "v666",
     "v668"
   ],
-  "risk_governance.json": [],
   "safety-orientation-micro-course": [
     "v381",
     "v404",
@@ -7489,7 +7004,6 @@
     "v505",
     "v556"
   ],
-  "scaling_governance.json": [],
   "schema-markup-rich-results": [
     "v381",
     "v397",
@@ -7970,7 +7484,6 @@
     "v505",
     "v556"
   ],
-  "team_governance.json": [],
   "telematics-utilization-analytics": [
     "v381",
     "v393",
@@ -7991,7 +7504,6 @@
     "v505",
     "v556"
   ],
-  "toolkit_governance.json": [],
   "truck-trailer-spec-sheet": [
     "v381",
     "v404",
@@ -8012,7 +7524,6 @@
     "v505",
     "v556"
   ],
-  "uploader_audit_autofix_contract.json": [],
   "utilization-leaderboard": [
     "v381",
     "v404",
@@ -8023,108 +7534,24 @@
     "v505",
     "v556"
   ],
-  "vMeta-Governance-Automated-Wealth": [
-    "vMeta-Override-TaskGuard-JHA-v1"
-  ],
-  "vMeta-KB-Canonical-Mode": [
-    "vMeta-Override-TaskGuard-JHA-v1"
-  ],
-  "vMeta-Override-TaskGuard-JHA-v1": [
-    "vMeta-Governance-Automated-Wealth",
-    "vMeta-KB-Canonical-Mode"
-  ],
-  "vendor-diversification-playbook": [
-    "v381",
-    "v404",
-    "v420",
-    "v455",
-    "v480",
-    "v482",
-    "v505",
-    "v556"
-  ],
-  "vmeta-kb-canonical-mode": [],
-  "waitlist-gap-fill-mechanism": [
-    "v381",
-    "v404",
-    "v420",
-    "v424",
-    "v426",
-    "v455",
-    "v505",
-    "v556"
-  ],
-  "weather-triggered-demand-campaigns": [
-    "v381",
-    "v394",
-    "v396",
-    "v404",
-    "v420",
-    "v455",
-    "v505",
-    "v556"
-  ],
-  "website-conversion-rate-benchmarks": [
-    "v381",
-    "v404",
-    "v420",
-    "v455",
-    "v505",
-    "v507",
-    "v556"
-  ],
-  "white-label-partnerships": [
-    "v381",
-    "v404",
-    "v420",
-    "v455",
-    "v486",
-    "v488",
-    "v505",
-    "v556"
-  ],
-  "wholesale-attachment-supplier-deals": [
-    "v381",
-    "v404",
-    "v420",
-    "v440",
-    "v442",
-    "v455",
-    "v505",
-    "v556"
-  ],
-  "workforce-planning-dashboard": [
-    "v381",
-    "v404",
-    "v420",
-    "v455",
-    "v505",
-    "v543",
-    "v545",
-    "v556"
-  ],
-  "workforce-retention-incentives": [
-    "v381",
-    "v404",
-    "v420",
-    "v455",
-    "v505",
-    "v556",
-    "v612",
-    "v614"
-  ],
-  "/path#anchor`": [
-    "/ops/contributor-playbook"
-  ],
-  "/path`": [
-    "/ops/contributor-playbook"
-  ],
-  "/path`.": [
-    "/ops/contributor-playbook"
+  "v376": [
+    "sms-quote-to-contract-funnel"
   ],
   "v377": [
     "ai-phone-agent-for-24-7-bookings",
     "local-seo-cluster-saint-john-surrounding-areas"
+  ],
+  "v378": [
+    "google-business-profile-dominance-playbook",
+    "sms-quote-to-contract-funnel"
+  ],
+  "v379": [
+    "local-seo-cluster-saint-john-surrounding-areas",
+    "review-velocity-engine"
+  ],
+  "v380": [
+    "dynamic-pricing-algorithm-v1",
+    "google-business-profile-dominance-playbook"
   ],
   "v381": [
     "360-customer-review-showcase",
@@ -8712,6 +8139,94 @@
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
   ],
+  "v382": [
+    "dynamic-pricing-algorithm-v1",
+    "fuel-float-surcharges-optimization"
+  ],
+  "v383": [
+    "after-hours-weekend-premiums",
+    "attachment-roi-ladder"
+  ],
+  "v384": [
+    "fuel-float-surcharges-optimization",
+    "rental-bundles-upsell-paths"
+  ],
+  "v385": [
+    "attachment-roi-ladder",
+    "subscription-retainer-model-for-contractors"
+  ],
+  "v386": [
+    "annual-multi-month-contracts",
+    "rental-bundles-upsell-paths"
+  ],
+  "v387": [
+    "public-procurement-tenders-starter",
+    "subscription-retainer-model-for-contractors"
+  ],
+  "v388": [
+    "annual-multi-month-contracts",
+    "enterprise-accounts-net-30-onboarding"
+  ],
+  "v389": [
+    "credit-financing-options-for-clients",
+    "public-procurement-tenders-starter"
+  ],
+  "v390": [
+    "enterprise-accounts-net-30-onboarding",
+    "risk-fraud-controls-id-deposit-e-sign"
+  ],
+  "v391": [
+    "credit-financing-options-for-clients",
+    "insurance-strategy-renter-coverage-options"
+  ],
+  "v392": [
+    "maintenance-uptime-schedule-pm-program",
+    "risk-fraud-controls-id-deposit-e-sign"
+  ],
+  "v393": [
+    "insurance-strategy-renter-coverage-options",
+    "telematics-utilization-analytics"
+  ],
+  "v394": [
+    "maintenance-uptime-schedule-pm-program",
+    "weather-triggered-demand-campaigns"
+  ],
+  "v395": [
+    "seasonality-calendar-promo-plan",
+    "telematics-utilization-analytics"
+  ],
+  "v396": [
+    "content-flywheel-evergreen-how-to-library-v2",
+    "weather-triggered-demand-campaigns"
+  ],
+  "v397": [
+    "schema-markup-rich-results",
+    "seasonality-calendar-promo-plan"
+  ],
+  "v398": [
+    "content-flywheel-evergreen-how-to-library-v2",
+    "on-page-cro-experiments-a-b-plan"
+  ],
+  "v399": [
+    "quote-template-v3-instant-transparent-pricing",
+    "schema-markup-rich-results"
+  ],
+  "v400": [
+    "on-page-cro-experiments-a-b-plan",
+    "payments-e-sign-pipeline-wpforms-stripe"
+  ],
+  "v401": [
+    "inventory-calendar-conflict-prevention",
+    "quote-template-v3-instant-transparent-pricing"
+  ],
+  "v402": [
+    "payments-e-sign-pipeline-wpforms-stripe",
+    "revenue-forecasting-scenario-planner"
+  ],
+  "v403": [
+    "breakeven-utilization-calculator",
+    "inventory-calendar-conflict-prevention"
+  ],
   "v404": [
     "360-customer-review-showcase",
     "after-action-reviews-aars",
@@ -9297,6 +8812,66 @@
     "wholesale-attachment-supplier-deals",
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
+  ],
+  "v405": [
+    "breakeven-utilization-calculator",
+    "tax-optimization-cca-itcs-strategy"
+  ],
+  "v406": [
+    "capital-stack-lease-vs-loan-vs-loc",
+    "dscr-tracker-lender-ready-dashboard"
+  ],
+  "v407": [
+    "second-unit-acquisition-timing-rule",
+    "tax-optimization-cca-itcs-strategy"
+  ],
+  "v408": [
+    "capital-stack-lease-vs-loan-vs-loc",
+    "strategic-partnerships-program"
+  ],
+  "v409": [
+    "referral-program-v2-tiered-rewards",
+    "second-unit-acquisition-timing-rule"
+  ],
+  "v410": [
+    "facebook-ig-retargeting-framework",
+    "strategic-partnerships-program"
+  ],
+  "v411": [
+    "google-ads-skags-for-rentals",
+    "referral-program-v2-tiered-rewards"
+  ],
+  "v412": [
+    "facebook-ig-retargeting-framework",
+    "marketplace-syndication-kijiji-fb-marketplace"
+  ],
+  "v413": [
+    "google-ads-skags-for-rentals",
+    "trust-assets-safety-training-compliance"
+  ],
+  "v414": [
+    "customer-onboarding-success-path",
+    "marketplace-syndication-kijiji-fb-marketplace"
+  ],
+  "v415": [
+    "post-rental-follow-up-reactivation",
+    "trust-assets-safety-training-compliance"
+  ],
+  "v416": [
+    "customer-onboarding-success-path",
+    "knowledge-ops-registry-cross-links-qa"
+  ],
+  "v417": [
+    "data-warehouse-kpi-definitions",
+    "post-rental-follow-up-reactivation"
+  ],
+  "v418": [
+    "knowledge-ops-registry-cross-links-qa",
+    "ops-playbooks-delivery-setup-recovery"
+  ],
+  "v419": [
+    "data-warehouse-kpi-definitions",
+    "growth-governance-weekly-income-levers-review"
   ],
   "v420": [
     "360-customer-review-showcase",
@@ -9884,6 +9459,142 @@
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
   ],
+  "v421": [
+    "contractor-tier-pricing-matrix",
+    "growth-governance-weekly-income-levers-review"
+  ],
+  "v422": [
+    "attachment-photo-library-fit-guides",
+    "partner-portal-api-hooks"
+  ],
+  "v423": [
+    "contractor-tier-pricing-matrix",
+    "service-area-heatmap-route-stacking"
+  ],
+  "v424": [
+    "attachment-photo-library-fit-guides",
+    "waitlist-gap-fill-mechanism"
+  ],
+  "v425": [
+    "same-day-quick-start-bundle",
+    "service-area-heatmap-route-stacking"
+  ],
+  "v426": [
+    "safety-orientation-micro-course",
+    "waitlist-gap-fill-mechanism"
+  ],
+  "v427": [
+    "rental-risk-scoring-v1",
+    "same-day-quick-start-bundle"
+  ],
+  "v428": [
+    "attachment-wear-part-inventory-sop",
+    "safety-orientation-micro-course"
+  ],
+  "v429": [
+    "fuel-idle-policy-communication",
+    "rental-risk-scoring-v1"
+  ],
+  "v430": [
+    "attachment-wear-part-inventory-sop",
+    "lead-source-attribution-map"
+  ],
+  "v431": [
+    "fuel-idle-policy-communication",
+    "quote-expiry-scarcity-controls"
+  ],
+  "v432": [
+    "calendar-extension-offers",
+    "lead-source-attribution-map"
+  ],
+  "v433": [
+    "enterprise-msa-sow-templates",
+    "quote-expiry-scarcity-controls"
+  ],
+  "v434": [
+    "calendar-extension-offers",
+    "collections-dso-sop"
+  ],
+  "v435": [
+    "damage-assessment-matrix",
+    "enterprise-msa-sow-templates"
+  ],
+  "v436": [
+    "collections-dso-sop",
+    "photo-video-evidence-protocol"
+  ],
+  "v437": [
+    "damage-assessment-matrix",
+    "insurance-coi-intake-automation"
+  ],
+  "v438": [
+    "hazard-underground-utility-checklist",
+    "photo-video-evidence-protocol"
+  ],
+  "v439": [
+    "insurance-coi-intake-automation",
+    "seasonal-capacity-reservation"
+  ],
+  "v440": [
+    "hazard-underground-utility-checklist",
+    "wholesale-attachment-supplier-deals"
+  ],
+  "v441": [
+    "cross-rent-agreements",
+    "seasonal-capacity-reservation"
+  ],
+  "v442": [
+    "repair-vendor-slas",
+    "wholesale-attachment-supplier-deals"
+  ],
+  "v443": [
+    "cross-rent-agreements",
+    "parts-lead-time-tracker"
+  ],
+  "v444": [
+    "repair-vendor-slas",
+    "utilization-leaderboard"
+  ],
+  "v445": [
+    "parts-lead-time-tracker",
+    "pro-forma-for-unit-2-5"
+  ],
+  "v446": [
+    "cash-buffer-policy",
+    "utilization-leaderboard"
+  ],
+  "v447": [
+    "price-guardrails-exceptions",
+    "pro-forma-for-unit-2-5"
+  ],
+  "v448": [
+    "cash-buffer-policy",
+    "mobile-first-landing-pages-v2"
+  ],
+  "v449": [
+    "lead-magnet-diy-vs-pro-calculator",
+    "price-guardrails-exceptions"
+  ],
+  "v450": [
+    "case-studies-library",
+    "mobile-first-landing-pages-v2"
+  ],
+  "v451": [
+    "lead-magnet-diy-vs-pro-calculator",
+    "organic-video-sop-reels-shorts"
+  ],
+  "v452": [
+    "case-studies-library",
+    "email-drip-from-quote-to-advocate"
+  ],
+  "v453": [
+    "local-pr-community-projects",
+    "organic-video-sop-reels-shorts"
+  ],
+  "v454": [
+    "email-drip-from-quote-to-advocate",
+    "pricing-benchmark-tracker-nb"
+  ],
   "v455": [
     "360-customer-review-showcase",
     "after-action-reviews-aars",
@@ -10469,6 +10180,202 @@
     "wholesale-attachment-supplier-deals",
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
+  ],
+  "v456": [
+    "booking-window-analytics",
+    "pricing-benchmark-tracker-nb"
+  ],
+  "v457": [
+    "multi-unit-scheduling-logic",
+    "revenue-mix-dashboard"
+  ],
+  "v458": [
+    "attachment-cross-sell-rules",
+    "booking-window-analytics"
+  ],
+  "v459": [
+    "multi-unit-scheduling-logic",
+    "outbound-sales-cadence-b2b"
+  ],
+  "v460": [
+    "attachment-cross-sell-rules",
+    "tender-calendar-win-loss-review"
+  ],
+  "v461": [
+    "fleet-branding-signage-kit",
+    "outbound-sales-cadence-b2b"
+  ],
+  "v462": [
+    "tender-calendar-win-loss-review",
+    "truck-trailer-spec-sheet"
+  ],
+  "v463": [
+    "after-action-reviews-aars",
+    "fleet-branding-signage-kit"
+  ],
+  "v464": [
+    "quarterly-strategy-offsite",
+    "truck-trailer-spec-sheet"
+  ],
+  "v465": [
+    "after-action-reviews-aars",
+    "ai-chatbot-v2-for-web-quotes"
+  ],
+  "v466": [
+    "integrated-crm-pipeline",
+    "quarterly-strategy-offsite"
+  ],
+  "v467": [
+    "ai-chatbot-v2-for-web-quotes",
+    "enterprise-rfp-response-templates"
+  ],
+  "v468": [
+    "fleet-expansion-playbook-unit-3-5",
+    "integrated-crm-pipeline"
+  ],
+  "v469": [
+    "after-hours-dispatch-sop",
+    "enterprise-rfp-response-templates"
+  ],
+  "v470": [
+    "cross-province-expansion-feasibility",
+    "fleet-expansion-playbook-unit-3-5"
+  ],
+  "v471": [
+    "after-hours-dispatch-sop",
+    "attachment-rental-roi-dashboard"
+  ],
+  "v472": [
+    "cross-province-expansion-feasibility",
+    "dynamic-tax-strategy-updates"
+  ],
+  "v473": [
+    "attachment-rental-roi-dashboard",
+    "cashflow-snowball-model"
+  ],
+  "v474": [
+    "content-calendar-generator-ai-driven",
+    "dynamic-tax-strategy-updates"
+  ],
+  "v475": [
+    "cashflow-snowball-model",
+    "seasonal-attachment-promotion-plan"
+  ],
+  "v476": [
+    "content-calendar-generator-ai-driven",
+    "on-site-operator-upsell-program"
+  ],
+  "v477": [
+    "client-training-academy",
+    "seasonal-attachment-promotion-plan"
+  ],
+  "v478": [
+    "linkedin-b2b-outreach-funnel",
+    "on-site-operator-upsell-program"
+  ],
+  "v479": [
+    "client-training-academy",
+    "insurance-premium-negotiation-tactics"
+  ],
+  "v480": [
+    "linkedin-b2b-outreach-funnel",
+    "vendor-diversification-playbook"
+  ],
+  "v481": [
+    "insurance-premium-negotiation-tactics",
+    "mobile-app-mvp-for-clients"
+  ],
+  "v482": [
+    "retention-cohort-analysis",
+    "vendor-diversification-playbook"
+  ],
+  "v483": [
+    "lead-velocity-kpi-tracker",
+    "mobile-app-mvp-for-clients"
+  ],
+  "v484": [
+    "public-speaking-community-authority",
+    "retention-cohort-analysis"
+  ],
+  "v485": [
+    "franchise-license-expansion-model",
+    "lead-velocity-kpi-tracker"
+  ],
+  "v486": [
+    "public-speaking-community-authority",
+    "white-label-partnerships"
+  ],
+  "v487": [
+    "credit-line-ladder-strategy",
+    "franchise-license-expansion-model"
+  ],
+  "v488": [
+    "client-segmentation-matrix",
+    "white-label-partnerships"
+  ],
+  "v489": [
+    "credit-line-ladder-strategy",
+    "pro-services-division-value-add"
+  ],
+  "v490": [
+    "client-segmentation-matrix",
+    "seasonal-prepay-discount-packages"
+  ],
+  "v491": [
+    "inbound-content-syndication-network",
+    "pro-services-division-value-add"
+  ],
+  "v492": [
+    "360-customer-review-showcase",
+    "seasonal-prepay-discount-packages"
+  ],
+  "v493": [
+    "employee-incentive-compensation-model",
+    "inbound-content-syndication-network"
+  ],
+  "v494": [
+    "360-customer-review-showcase",
+    "succession-leadership-development"
+  ],
+  "v495": [
+    "employee-incentive-compensation-model",
+    "legal-risk-heatmap"
+  ],
+  "v496": [
+    "municipal-utility-long-term-contracts",
+    "succession-leadership-development"
+  ],
+  "v497": [
+    "ai-powered-ad-optimization",
+    "legal-risk-heatmap"
+  ],
+  "v498": [
+    "financial-stress-test-protocol",
+    "municipal-utility-long-term-contracts"
+  ],
+  "v499": [
+    "ai-powered-ad-optimization",
+    "attachment-lifecycle-profit-tracking"
+  ],
+  "v500": [
+    "emergency-response-partnership-plan",
+    "financial-stress-test-protocol"
+  ],
+  "v501": [
+    "attachment-lifecycle-profit-tracking",
+    "on-site-safety-consultant-program"
+  ],
+  "v502": [
+    "client-net-promoter-system",
+    "emergency-response-partnership-plan"
+  ],
+  "v503": [
+    "on-site-safety-consultant-program",
+    "repeat-customer-club"
+  ],
+  "v504": [
+    "client-net-promoter-system",
+    "predictive-utilization-forecasting"
   ],
   "v505": [
     "360-customer-review-showcase",
@@ -11056,6 +10963,206 @@
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
   ],
+  "v506": [
+    "cross-sell-rental-marketplace",
+    "predictive-utilization-forecasting"
+  ],
+  "v507": [
+    "strategic-storage-facility-acquisition",
+    "website-conversion-rate-benchmarks"
+  ],
+  "v508": [
+    "cross-sell-rental-marketplace",
+    "renter-background-verification-v2"
+  ],
+  "v509": [
+    "equipment-upgrade-cycle-strategy",
+    "strategic-storage-facility-acquisition"
+  ],
+  "v510": [
+    "ai-powered-pricing-optimizer",
+    "renter-background-verification-v2"
+  ],
+  "v511": [
+    "contractor-loyalty-rewards-program",
+    "equipment-upgrade-cycle-strategy"
+  ],
+  "v512": [
+    "ai-powered-pricing-optimizer",
+    "enterprise-sales-playbook"
+  ],
+  "v513": [
+    "contractor-loyalty-rewards-program",
+    "seasonal-fleet-augmentation-strategy"
+  ],
+  "v514": [
+    "enterprise-sales-playbook",
+    "regional-expansion-risk-map"
+  ],
+  "v515": [
+    "attachment-subscription-bundles",
+    "seasonal-fleet-augmentation-strategy"
+  ],
+  "v516": [
+    "automated-invoice-reconciliation",
+    "regional-expansion-risk-map"
+  ],
+  "v517": [
+    "attachment-subscription-bundles",
+    "community-builder-sponsorship-program"
+  ],
+  "v518": [
+    "automated-invoice-reconciliation",
+    "predictive-maintenance-ai"
+  ],
+  "v519": [
+    "community-builder-sponsorship-program",
+    "partnership-expansion-tracker"
+  ],
+  "v520": [
+    "knowledge-capture-sop",
+    "predictive-maintenance-ai"
+  ],
+  "v521": [
+    "ai-powered-customer-segmentation",
+    "partnership-expansion-tracker"
+  ],
+  "v522": [
+    "knowledge-capture-sop",
+    "municipal-lobbying-policy-playbook"
+  ],
+  "v523": [
+    "ai-powered-customer-segmentation",
+    "insurance-claim-fast-track-sop"
+  ],
+  "v524": [
+    "municipal-lobbying-policy-playbook",
+    "ops-dashboard-v3-real-time-kpis"
+  ],
+  "v525": [
+    "insurance-claim-fast-track-sop",
+    "rental-marketplace-api-integration"
+  ],
+  "v526": [
+    "ops-dashboard-v3-real-time-kpis",
+    "repeat-client-revenue-tracking"
+  ],
+  "v527": [
+    "rental-marketplace-api-integration",
+    "skid-steer-operator-certification-path"
+  ],
+  "v528": [
+    "financial-covenants-tracker",
+    "repeat-client-revenue-tracking"
+  ],
+  "v529": [
+    "customer-education-video-series",
+    "skid-steer-operator-certification-path"
+  ],
+  "v530": [
+    "financial-covenants-tracker",
+    "strategic-storage-hub-expansion"
+  ],
+  "v531": [
+    "ai-enhanced-forecasting-engine",
+    "customer-education-video-series"
+  ],
+  "v532": [
+    "capital-allocation-committee-charter",
+    "strategic-storage-hub-expansion"
+  ],
+  "v533": [
+    "ai-enhanced-forecasting-engine",
+    "client-lifetime-value-model"
+  ],
+  "v534": [
+    "capital-allocation-committee-charter",
+    "fleet-upgrade-resale-playbook"
+  ],
+  "v535": [
+    "client-lifetime-value-model",
+    "referral-engine-automation"
+  ],
+  "v536": [
+    "field-tech-training-playbook",
+    "fleet-upgrade-resale-playbook"
+  ],
+  "v537": [
+    "referral-engine-automation",
+    "revenue-assurance-audit"
+  ],
+  "v538": [
+    "client-retention-experiments",
+    "field-tech-training-playbook"
+  ],
+  "v539": [
+    "cross-border-expansion-plan",
+    "revenue-assurance-audit"
+  ],
+  "v540": [
+    "ai-knowledge-assistant-for-ops",
+    "client-retention-experiments"
+  ],
+  "v541": [
+    "cross-border-expansion-plan",
+    "pricing-ladder-experiments"
+  ],
+  "v542": [
+    "ai-knowledge-assistant-for-ops",
+    "seo-backlink-syndication-hub"
+  ],
+  "v543": [
+    "pricing-ladder-experiments",
+    "workforce-planning-dashboard"
+  ],
+  "v544": [
+    "enterprise-sla-monitoring",
+    "seo-backlink-syndication-hub"
+  ],
+  "v545": [
+    "partnership-renewal-sop",
+    "workforce-planning-dashboard"
+  ],
+  "v546": [
+    "enterprise-sla-monitoring",
+    "renter-safety-gamification"
+  ],
+  "v547": [
+    "attachment-residual-value-model",
+    "partnership-renewal-sop"
+  ],
+  "v548": [
+    "annual-income-growth-targeting",
+    "renter-safety-gamification"
+  ],
+  "v549": [
+    "attachment-residual-value-model",
+    "emergency-standby-service-package"
+  ],
+  "v550": [
+    "annual-income-growth-targeting",
+    "insurance-deductible-optimization"
+  ],
+  "v551": [
+    "emergency-standby-service-package",
+    "lead-qualification-ai-agent"
+  ],
+  "v552": [
+    "insurance-deductible-optimization",
+    "public-tender-win-database"
+  ],
+  "v553": [
+    "client-segmentation-heatmap",
+    "lead-qualification-ai-agent"
+  ],
+  "v554": [
+    "fleet-maintenance-outsourcing-policy",
+    "public-tender-win-database"
+  ],
+  "v555": [
+    "ai-chatbot-v3-voice-web",
+    "client-segmentation-heatmap"
+  ],
   "v556": [
     "360-customer-review-showcase",
     "after-action-reviews-aars",
@@ -11642,711 +11749,6 @@
     "workforce-planning-dashboard",
     "workforce-retention-incentives"
   ],
-  "v376": [
-    "sms-quote-to-contract-funnel"
-  ],
-  "v378": [
-    "google-business-profile-dominance-playbook",
-    "sms-quote-to-contract-funnel"
-  ],
-  "v379": [
-    "local-seo-cluster-saint-john-surrounding-areas",
-    "review-velocity-engine"
-  ],
-  "v380": [
-    "dynamic-pricing-algorithm-v1",
-    "google-business-profile-dominance-playbook"
-  ],
-  "v382": [
-    "dynamic-pricing-algorithm-v1",
-    "fuel-float-surcharges-optimization"
-  ],
-  "v600": [
-    "ai-attachment-demand-predictor",
-    "ai-chatbot-v3-voice-web",
-    "ai-fleet-dispatch-optimizer",
-    "breakeven-utilization-calculator",
-    "dynamic-pricing-algorithm-v1",
-    "growth-governance-weekly-income-levers-review",
-    "predictive-utilization-forecasting",
-    "pricing-benchmark-tracker-nb"
-  ],
-  "v383": [
-    "after-hours-weekend-premiums",
-    "attachment-roi-ladder"
-  ],
-  "v384": [
-    "fuel-float-surcharges-optimization",
-    "rental-bundles-upsell-paths"
-  ],
-  "v385": [
-    "attachment-roi-ladder",
-    "subscription-retainer-model-for-contractors"
-  ],
-  "v386": [
-    "annual-multi-month-contracts",
-    "rental-bundles-upsell-paths"
-  ],
-  "v387": [
-    "public-procurement-tenders-starter",
-    "subscription-retainer-model-for-contractors"
-  ],
-  "v388": [
-    "annual-multi-month-contracts",
-    "enterprise-accounts-net-30-onboarding"
-  ],
-  "v389": [
-    "credit-financing-options-for-clients",
-    "public-procurement-tenders-starter"
-  ],
-  "v390": [
-    "enterprise-accounts-net-30-onboarding",
-    "risk-fraud-controls-id-deposit-e-sign"
-  ],
-  "v391": [
-    "credit-financing-options-for-clients",
-    "insurance-strategy-renter-coverage-options"
-  ],
-  "v392": [
-    "maintenance-uptime-schedule-pm-program",
-    "risk-fraud-controls-id-deposit-e-sign"
-  ],
-  "v393": [
-    "insurance-strategy-renter-coverage-options",
-    "telematics-utilization-analytics"
-  ],
-  "v394": [
-    "maintenance-uptime-schedule-pm-program",
-    "weather-triggered-demand-campaigns"
-  ],
-  "v395": [
-    "seasonality-calendar-promo-plan",
-    "telematics-utilization-analytics"
-  ],
-  "v396": [
-    "content-flywheel-evergreen-how-to-library-v2",
-    "weather-triggered-demand-campaigns"
-  ],
-  "v397": [
-    "schema-markup-rich-results",
-    "seasonality-calendar-promo-plan"
-  ],
-  "v398": [
-    "content-flywheel-evergreen-how-to-library-v2",
-    "on-page-cro-experiments-a-b-plan"
-  ],
-  "v399": [
-    "quote-template-v3-instant-transparent-pricing",
-    "schema-markup-rich-results"
-  ],
-  "v400": [
-    "on-page-cro-experiments-a-b-plan",
-    "payments-e-sign-pipeline-wpforms-stripe"
-  ],
-  "v401": [
-    "inventory-calendar-conflict-prevention",
-    "quote-template-v3-instant-transparent-pricing"
-  ],
-  "v402": [
-    "payments-e-sign-pipeline-wpforms-stripe",
-    "revenue-forecasting-scenario-planner"
-  ],
-  "v403": [
-    "breakeven-utilization-calculator",
-    "inventory-calendar-conflict-prevention"
-  ],
-  "v405": [
-    "breakeven-utilization-calculator",
-    "tax-optimization-cca-itcs-strategy"
-  ],
-  "v406": [
-    "capital-stack-lease-vs-loan-vs-loc",
-    "dscr-tracker-lender-ready-dashboard"
-  ],
-  "v407": [
-    "second-unit-acquisition-timing-rule",
-    "tax-optimization-cca-itcs-strategy"
-  ],
-  "v408": [
-    "capital-stack-lease-vs-loan-vs-loc",
-    "strategic-partnerships-program"
-  ],
-  "v409": [
-    "referral-program-v2-tiered-rewards",
-    "second-unit-acquisition-timing-rule"
-  ],
-  "v410": [
-    "facebook-ig-retargeting-framework",
-    "strategic-partnerships-program"
-  ],
-  "v411": [
-    "google-ads-skags-for-rentals",
-    "referral-program-v2-tiered-rewards"
-  ],
-  "v412": [
-    "facebook-ig-retargeting-framework",
-    "marketplace-syndication-kijiji-fb-marketplace"
-  ],
-  "v413": [
-    "google-ads-skags-for-rentals",
-    "trust-assets-safety-training-compliance"
-  ],
-  "v414": [
-    "customer-onboarding-success-path",
-    "marketplace-syndication-kijiji-fb-marketplace"
-  ],
-  "v415": [
-    "post-rental-follow-up-reactivation",
-    "trust-assets-safety-training-compliance"
-  ],
-  "v416": [
-    "customer-onboarding-success-path",
-    "knowledge-ops-registry-cross-links-qa"
-  ],
-  "v417": [
-    "data-warehouse-kpi-definitions",
-    "post-rental-follow-up-reactivation"
-  ],
-  "v418": [
-    "knowledge-ops-registry-cross-links-qa",
-    "ops-playbooks-delivery-setup-recovery"
-  ],
-  "v419": [
-    "data-warehouse-kpi-definitions",
-    "growth-governance-weekly-income-levers-review"
-  ],
-  "v421": [
-    "contractor-tier-pricing-matrix",
-    "growth-governance-weekly-income-levers-review"
-  ],
-  "v422": [
-    "attachment-photo-library-fit-guides",
-    "partner-portal-api-hooks"
-  ],
-  "v423": [
-    "contractor-tier-pricing-matrix",
-    "service-area-heatmap-route-stacking"
-  ],
-  "v424": [
-    "attachment-photo-library-fit-guides",
-    "waitlist-gap-fill-mechanism"
-  ],
-  "v425": [
-    "same-day-quick-start-bundle",
-    "service-area-heatmap-route-stacking"
-  ],
-  "v426": [
-    "safety-orientation-micro-course",
-    "waitlist-gap-fill-mechanism"
-  ],
-  "v427": [
-    "rental-risk-scoring-v1",
-    "same-day-quick-start-bundle"
-  ],
-  "v428": [
-    "attachment-wear-part-inventory-sop",
-    "safety-orientation-micro-course"
-  ],
-  "v429": [
-    "fuel-idle-policy-communication",
-    "rental-risk-scoring-v1"
-  ],
-  "v430": [
-    "attachment-wear-part-inventory-sop",
-    "lead-source-attribution-map"
-  ],
-  "v431": [
-    "fuel-idle-policy-communication",
-    "quote-expiry-scarcity-controls"
-  ],
-  "v432": [
-    "calendar-extension-offers",
-    "lead-source-attribution-map"
-  ],
-  "v433": [
-    "enterprise-msa-sow-templates",
-    "quote-expiry-scarcity-controls"
-  ],
-  "v434": [
-    "calendar-extension-offers",
-    "collections-dso-sop"
-  ],
-  "v435": [
-    "damage-assessment-matrix",
-    "enterprise-msa-sow-templates"
-  ],
-  "v436": [
-    "collections-dso-sop",
-    "photo-video-evidence-protocol"
-  ],
-  "v437": [
-    "damage-assessment-matrix",
-    "insurance-coi-intake-automation"
-  ],
-  "v438": [
-    "hazard-underground-utility-checklist",
-    "photo-video-evidence-protocol"
-  ],
-  "v439": [
-    "insurance-coi-intake-automation",
-    "seasonal-capacity-reservation"
-  ],
-  "v440": [
-    "hazard-underground-utility-checklist",
-    "wholesale-attachment-supplier-deals"
-  ],
-  "v441": [
-    "cross-rent-agreements",
-    "seasonal-capacity-reservation"
-  ],
-  "v442": [
-    "repair-vendor-slas",
-    "wholesale-attachment-supplier-deals"
-  ],
-  "v443": [
-    "cross-rent-agreements",
-    "parts-lead-time-tracker"
-  ],
-  "v444": [
-    "repair-vendor-slas",
-    "utilization-leaderboard"
-  ],
-  "v445": [
-    "parts-lead-time-tracker",
-    "pro-forma-for-unit-2-5"
-  ],
-  "v446": [
-    "cash-buffer-policy",
-    "utilization-leaderboard"
-  ],
-  "v447": [
-    "price-guardrails-exceptions",
-    "pro-forma-for-unit-2-5"
-  ],
-  "v448": [
-    "cash-buffer-policy",
-    "mobile-first-landing-pages-v2"
-  ],
-  "v449": [
-    "lead-magnet-diy-vs-pro-calculator",
-    "price-guardrails-exceptions"
-  ],
-  "v450": [
-    "case-studies-library",
-    "mobile-first-landing-pages-v2"
-  ],
-  "v451": [
-    "lead-magnet-diy-vs-pro-calculator",
-    "organic-video-sop-reels-shorts"
-  ],
-  "v452": [
-    "case-studies-library",
-    "email-drip-from-quote-to-advocate"
-  ],
-  "v453": [
-    "local-pr-community-projects",
-    "organic-video-sop-reels-shorts"
-  ],
-  "v454": [
-    "email-drip-from-quote-to-advocate",
-    "pricing-benchmark-tracker-nb"
-  ],
-  "v456": [
-    "booking-window-analytics",
-    "pricing-benchmark-tracker-nb"
-  ],
-  "v457": [
-    "multi-unit-scheduling-logic",
-    "revenue-mix-dashboard"
-  ],
-  "v458": [
-    "attachment-cross-sell-rules",
-    "booking-window-analytics"
-  ],
-  "v459": [
-    "multi-unit-scheduling-logic",
-    "outbound-sales-cadence-b2b"
-  ],
-  "v460": [
-    "attachment-cross-sell-rules",
-    "tender-calendar-win-loss-review"
-  ],
-  "v461": [
-    "fleet-branding-signage-kit",
-    "outbound-sales-cadence-b2b"
-  ],
-  "v462": [
-    "tender-calendar-win-loss-review",
-    "truck-trailer-spec-sheet"
-  ],
-  "v463": [
-    "after-action-reviews-aars",
-    "fleet-branding-signage-kit"
-  ],
-  "v464": [
-    "quarterly-strategy-offsite",
-    "truck-trailer-spec-sheet"
-  ],
-  "v465": [
-    "after-action-reviews-aars",
-    "ai-chatbot-v2-for-web-quotes"
-  ],
-  "v466": [
-    "integrated-crm-pipeline",
-    "quarterly-strategy-offsite"
-  ],
-  "v467": [
-    "ai-chatbot-v2-for-web-quotes",
-    "enterprise-rfp-response-templates"
-  ],
-  "v468": [
-    "fleet-expansion-playbook-unit-3-5",
-    "integrated-crm-pipeline"
-  ],
-  "v469": [
-    "after-hours-dispatch-sop",
-    "enterprise-rfp-response-templates"
-  ],
-  "v470": [
-    "cross-province-expansion-feasibility",
-    "fleet-expansion-playbook-unit-3-5"
-  ],
-  "v471": [
-    "after-hours-dispatch-sop",
-    "attachment-rental-roi-dashboard"
-  ],
-  "v472": [
-    "cross-province-expansion-feasibility",
-    "dynamic-tax-strategy-updates"
-  ],
-  "v473": [
-    "attachment-rental-roi-dashboard",
-    "cashflow-snowball-model"
-  ],
-  "v474": [
-    "content-calendar-generator-ai-driven",
-    "dynamic-tax-strategy-updates"
-  ],
-  "v475": [
-    "cashflow-snowball-model",
-    "seasonal-attachment-promotion-plan"
-  ],
-  "v476": [
-    "content-calendar-generator-ai-driven",
-    "on-site-operator-upsell-program"
-  ],
-  "v477": [
-    "client-training-academy",
-    "seasonal-attachment-promotion-plan"
-  ],
-  "v478": [
-    "linkedin-b2b-outreach-funnel",
-    "on-site-operator-upsell-program"
-  ],
-  "v479": [
-    "client-training-academy",
-    "insurance-premium-negotiation-tactics"
-  ],
-  "v480": [
-    "linkedin-b2b-outreach-funnel",
-    "vendor-diversification-playbook"
-  ],
-  "v481": [
-    "insurance-premium-negotiation-tactics",
-    "mobile-app-mvp-for-clients"
-  ],
-  "v482": [
-    "retention-cohort-analysis",
-    "vendor-diversification-playbook"
-  ],
-  "v483": [
-    "lead-velocity-kpi-tracker",
-    "mobile-app-mvp-for-clients"
-  ],
-  "v484": [
-    "public-speaking-community-authority",
-    "retention-cohort-analysis"
-  ],
-  "v485": [
-    "franchise-license-expansion-model",
-    "lead-velocity-kpi-tracker"
-  ],
-  "v486": [
-    "public-speaking-community-authority",
-    "white-label-partnerships"
-  ],
-  "v487": [
-    "credit-line-ladder-strategy",
-    "franchise-license-expansion-model"
-  ],
-  "v488": [
-    "client-segmentation-matrix",
-    "white-label-partnerships"
-  ],
-  "v489": [
-    "credit-line-ladder-strategy",
-    "pro-services-division-value-add"
-  ],
-  "v490": [
-    "client-segmentation-matrix",
-    "seasonal-prepay-discount-packages"
-  ],
-  "v491": [
-    "inbound-content-syndication-network",
-    "pro-services-division-value-add"
-  ],
-  "v492": [
-    "360-customer-review-showcase",
-    "seasonal-prepay-discount-packages"
-  ],
-  "v493": [
-    "employee-incentive-compensation-model",
-    "inbound-content-syndication-network"
-  ],
-  "v494": [
-    "360-customer-review-showcase",
-    "succession-leadership-development"
-  ],
-  "v495": [
-    "employee-incentive-compensation-model",
-    "legal-risk-heatmap"
-  ],
-  "v496": [
-    "municipal-utility-long-term-contracts",
-    "succession-leadership-development"
-  ],
-  "v497": [
-    "ai-powered-ad-optimization",
-    "legal-risk-heatmap"
-  ],
-  "v498": [
-    "financial-stress-test-protocol",
-    "municipal-utility-long-term-contracts"
-  ],
-  "v499": [
-    "ai-powered-ad-optimization",
-    "attachment-lifecycle-profit-tracking"
-  ],
-  "v500": [
-    "emergency-response-partnership-plan",
-    "financial-stress-test-protocol"
-  ],
-  "v501": [
-    "attachment-lifecycle-profit-tracking",
-    "on-site-safety-consultant-program"
-  ],
-  "v502": [
-    "client-net-promoter-system",
-    "emergency-response-partnership-plan"
-  ],
-  "v503": [
-    "on-site-safety-consultant-program",
-    "repeat-customer-club"
-  ],
-  "v504": [
-    "client-net-promoter-system",
-    "predictive-utilization-forecasting"
-  ],
-  "v506": [
-    "cross-sell-rental-marketplace",
-    "predictive-utilization-forecasting"
-  ],
-  "v507": [
-    "strategic-storage-facility-acquisition",
-    "website-conversion-rate-benchmarks"
-  ],
-  "v508": [
-    "cross-sell-rental-marketplace",
-    "renter-background-verification-v2"
-  ],
-  "v509": [
-    "equipment-upgrade-cycle-strategy",
-    "strategic-storage-facility-acquisition"
-  ],
-  "v510": [
-    "ai-powered-pricing-optimizer",
-    "renter-background-verification-v2"
-  ],
-  "v511": [
-    "contractor-loyalty-rewards-program",
-    "equipment-upgrade-cycle-strategy"
-  ],
-  "v512": [
-    "ai-powered-pricing-optimizer",
-    "enterprise-sales-playbook"
-  ],
-  "v513": [
-    "contractor-loyalty-rewards-program",
-    "seasonal-fleet-augmentation-strategy"
-  ],
-  "v514": [
-    "enterprise-sales-playbook",
-    "regional-expansion-risk-map"
-  ],
-  "v515": [
-    "attachment-subscription-bundles",
-    "seasonal-fleet-augmentation-strategy"
-  ],
-  "v516": [
-    "automated-invoice-reconciliation",
-    "regional-expansion-risk-map"
-  ],
-  "v517": [
-    "attachment-subscription-bundles",
-    "community-builder-sponsorship-program"
-  ],
-  "v518": [
-    "automated-invoice-reconciliation",
-    "predictive-maintenance-ai"
-  ],
-  "v519": [
-    "community-builder-sponsorship-program",
-    "partnership-expansion-tracker"
-  ],
-  "v520": [
-    "knowledge-capture-sop",
-    "predictive-maintenance-ai"
-  ],
-  "v521": [
-    "ai-powered-customer-segmentation",
-    "partnership-expansion-tracker"
-  ],
-  "v522": [
-    "knowledge-capture-sop",
-    "municipal-lobbying-policy-playbook"
-  ],
-  "v523": [
-    "ai-powered-customer-segmentation",
-    "insurance-claim-fast-track-sop"
-  ],
-  "v524": [
-    "municipal-lobbying-policy-playbook",
-    "ops-dashboard-v3-real-time-kpis"
-  ],
-  "v525": [
-    "insurance-claim-fast-track-sop",
-    "rental-marketplace-api-integration"
-  ],
-  "v526": [
-    "ops-dashboard-v3-real-time-kpis",
-    "repeat-client-revenue-tracking"
-  ],
-  "v527": [
-    "rental-marketplace-api-integration",
-    "skid-steer-operator-certification-path"
-  ],
-  "v528": [
-    "financial-covenants-tracker",
-    "repeat-client-revenue-tracking"
-  ],
-  "v529": [
-    "customer-education-video-series",
-    "skid-steer-operator-certification-path"
-  ],
-  "v530": [
-    "financial-covenants-tracker",
-    "strategic-storage-hub-expansion"
-  ],
-  "v531": [
-    "ai-enhanced-forecasting-engine",
-    "customer-education-video-series"
-  ],
-  "v532": [
-    "capital-allocation-committee-charter",
-    "strategic-storage-hub-expansion"
-  ],
-  "v533": [
-    "ai-enhanced-forecasting-engine",
-    "client-lifetime-value-model"
-  ],
-  "v534": [
-    "capital-allocation-committee-charter",
-    "fleet-upgrade-resale-playbook"
-  ],
-  "v535": [
-    "client-lifetime-value-model",
-    "referral-engine-automation"
-  ],
-  "v536": [
-    "field-tech-training-playbook",
-    "fleet-upgrade-resale-playbook"
-  ],
-  "v537": [
-    "referral-engine-automation",
-    "revenue-assurance-audit"
-  ],
-  "v538": [
-    "client-retention-experiments",
-    "field-tech-training-playbook"
-  ],
-  "v539": [
-    "cross-border-expansion-plan",
-    "revenue-assurance-audit"
-  ],
-  "v540": [
-    "ai-knowledge-assistant-for-ops",
-    "client-retention-experiments"
-  ],
-  "v541": [
-    "cross-border-expansion-plan",
-    "pricing-ladder-experiments"
-  ],
-  "v542": [
-    "ai-knowledge-assistant-for-ops",
-    "seo-backlink-syndication-hub"
-  ],
-  "v543": [
-    "pricing-ladder-experiments",
-    "workforce-planning-dashboard"
-  ],
-  "v544": [
-    "enterprise-sla-monitoring",
-    "seo-backlink-syndication-hub"
-  ],
-  "v545": [
-    "partnership-renewal-sop",
-    "workforce-planning-dashboard"
-  ],
-  "v546": [
-    "enterprise-sla-monitoring",
-    "renter-safety-gamification"
-  ],
-  "v547": [
-    "attachment-residual-value-model",
-    "partnership-renewal-sop"
-  ],
-  "v548": [
-    "annual-income-growth-targeting",
-    "renter-safety-gamification"
-  ],
-  "v549": [
-    "attachment-residual-value-model",
-    "emergency-standby-service-package"
-  ],
-  "v550": [
-    "annual-income-growth-targeting",
-    "insurance-deductible-optimization"
-  ],
-  "v551": [
-    "emergency-standby-service-package",
-    "lead-qualification-ai-agent"
-  ],
-  "v552": [
-    "insurance-deductible-optimization",
-    "public-tender-win-database"
-  ],
-  "v553": [
-    "client-segmentation-heatmap",
-    "lead-qualification-ai-agent"
-  ],
-  "v554": [
-    "fleet-maintenance-outsourcing-policy",
-    "public-tender-win-database"
-  ],
-  "v555": [
-    "ai-chatbot-v3-voice-web",
-    "client-segmentation-heatmap"
-  ],
   "v557": [
     "ai-chatbot-v3-voice-web",
     "client-loyalty-tier-system"
@@ -12518,6 +11920,16 @@
   "v599": [
     "insurance-claim-prevention-analytics",
     "succession-planning-framework"
+  ],
+  "v600": [
+    "ai-attachment-demand-predictor",
+    "ai-chatbot-v3-voice-web",
+    "ai-fleet-dispatch-optimizer",
+    "breakeven-utilization-calculator",
+    "dynamic-pricing-algorithm-v1",
+    "growth-governance-weekly-income-levers-review",
+    "predictive-utilization-forecasting",
+    "pricing-benchmark-tracker-nb"
   ],
   "v601": [
     "customer-referral-marketplace",
@@ -13957,5 +13369,94 @@
   ],
   "v960": [
     "ai-dynamic-pricing-sandbox"
+  ],
+  "vMeta-Governance-Automated-Wealth": [
+    "vMeta-Override-TaskGuard-JHA-v1"
+  ],
+  "vMeta-KB-Canonical-Mode": [
+    "vMeta-Override-TaskGuard-JHA-v1"
+  ],
+  "vMeta-Override-TaskGuard-JHA-v1": [
+    "vMeta-Governance-Automated-Wealth",
+    "vMeta-KB-Canonical-Mode"
+  ],
+  "vendor-diversification-playbook": [
+    "v381",
+    "v404",
+    "v420",
+    "v455",
+    "v480",
+    "v482",
+    "v505",
+    "v556"
+  ],
+  "waitlist-gap-fill-mechanism": [
+    "v381",
+    "v404",
+    "v420",
+    "v424",
+    "v426",
+    "v455",
+    "v505",
+    "v556"
+  ],
+  "weather-triggered-demand-campaigns": [
+    "v381",
+    "v394",
+    "v396",
+    "v404",
+    "v420",
+    "v455",
+    "v505",
+    "v556"
+  ],
+  "website-conversion-rate-benchmarks": [
+    "v381",
+    "v404",
+    "v420",
+    "v455",
+    "v505",
+    "v507",
+    "v556"
+  ],
+  "white-label-partnerships": [
+    "v381",
+    "v404",
+    "v420",
+    "v455",
+    "v486",
+    "v488",
+    "v505",
+    "v556"
+  ],
+  "wholesale-attachment-supplier-deals": [
+    "v381",
+    "v404",
+    "v420",
+    "v440",
+    "v442",
+    "v455",
+    "v505",
+    "v556"
+  ],
+  "workforce-planning-dashboard": [
+    "v381",
+    "v404",
+    "v420",
+    "v455",
+    "v505",
+    "v543",
+    "v545",
+    "v556"
+  ],
+  "workforce-retention-incentives": [
+    "v381",
+    "v404",
+    "v420",
+    "v455",
+    "v505",
+    "v556",
+    "v612",
+    "v614"
   ]
 }
