@@ -1,6 +1,35 @@
 {
   "version": 2,
+  "headers": [
+    {
+      "source": "/(kb|ml/kb)/(.*)\\.json",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/(registry|search|cross_links)\\.json",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/kb/v1/(.*)\\.json",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800" },
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+      ]
+    }
+  ],
   "routes": [
+    { "src": "/registry.json", "dest": "/kb/registry.json" },
+    { "src": "/search.json", "dest": "/kb/search.json" },
+    { "src": "/cross_links.json", "dest": "/kb/cross_links.json" },
     { "src": "/ml/kb/(.*)", "dest": "/kb/$1" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
