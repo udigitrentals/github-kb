@@ -100,3 +100,29 @@ a11y:
 
     - name: Run pa11y-ci (WCAG2AA audit)
       run: pa11y-ci --config .pa11yci.json
+name: KB CI
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm i ajv@^8.12.0 ajv-cli@^5.0.0
+      - name: Validate schemas
+        run: |
+          npx ajv validate -s schemas/registry.schema.json    -d docs/registry.json
+          if [ -f docs/search.json ]; then npx ajv validate -s schemas/search.schema.json -d docs/search.json; fi
+          if [ -f docs/search/index.json ]; then
+            for f in docs/search/search-*.json; do
+              npx ajv validate -s schemas/search.schema.json -d "$f"; done
+          fi
+          npx ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json
+      - name: Enforce shard size budgets
+        run: |
+          if [ -d docs/search ]; then
+            for f in docs/search/search-*.json; do
+              sz=$(wc -c < "$f"); test $sz -le 5242880 || (echo "Shard $f exceeds 5MB" && exit 1)
+            done
+          fi
