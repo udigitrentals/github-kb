@@ -163,7 +163,7 @@ function downloadJSON(obj, filename) {
 let BASE = '/kb'; // preferred
 let registryRaw = null, registryArr = []; // normalized array
 let searchRaw = null, searchArr = [];
-let crossRaw = null, crossObj = { nodes: [], edges: [] };
+let crossRaw = null, crossObj = { nodes: [], edges: [] }, crossMap = null, crossKind = 'graph';
 
 const els = {
   reg: document.getElementById('reg'),
@@ -181,7 +181,7 @@ const els = {
 function setCounts() {
   const r = registryArr?.length ?? 0;
   const s = searchArr?.length ?? 0;
-  const n = (crossObj?.nodes || []).length;
+  const n = (crossKind === 'map') ? Object.keys(crossMap || {}).length : (crossObj?.nodes || []).length;
   els.counts.textContent = `registry: ${r} • search: ${s} • nodes: ${n}`;
 }
 
@@ -209,11 +209,25 @@ async function tryLoadFrom(base) {
 }
 
 function normalizeRegistry(raw) {
-  if (Array.isArray(raw)) return raw;
-  if (raw && Array.isArray(raw.items)) return raw.items;
-  if (raw && Array.isArray(raw.registry)) return raw.registry;
-  return [];
+  // Accepts: array, array-of-arrays, or wrapped {items}/{registry}
+  let arr = [];
+  if (Array.isArray(raw)) arr = raw;
+  else if (raw && Array.isArray(raw.items)) arr = raw.items;
+  else if (raw && Array.isArray(raw.registry)) arr = raw.registry;
+  else return [];
+  // Flatten any nested arrays (some registries nest rows/sections)
+  const flat = [];
+  const stack = [arr];
+  while (stack.length) {
+    const cur = stack.pop();
+    for (const v of cur) {
+      if (Array.isArray(v)) stack.push(v);
+      else flat.push(v);
+    }
+  }
+  return flat;
 }
+
 function denormalizeRegistry(arr, template) {
   // Preserve original envelope if present; else return array
   if (template && !Array.isArray(template) && Array.isArray(template.items)) {
@@ -226,11 +240,24 @@ function denormalizeRegistry(arr, template) {
 }
 
 function normalizeSearch(raw) {
-  if (Array.isArray(raw)) return raw;
-  if (raw && Array.isArray(raw.docs)) return raw.docs;
-  if (raw && Array.isArray(raw.items)) return raw.items;
-  return [];
+  let arr = [];
+  if (Array.isArray(raw)) arr = raw;
+  else if (raw && Array.isArray(raw.docs)) arr = raw.docs;
+  else if (raw && Array.isArray(raw.items)) arr = raw.items;
+  else return [];
+  // Flatten nested arrays if any
+  const flat = [];
+  const stack = [arr];
+  while (stack.length) {
+    const cur = stack.pop();
+    for (const v of cur) {
+      if (Array.isArray(v)) stack.push(v);
+      else flat.push(v);
+    }
+  }
+  return flat;
 }
+
 function denormalizeSearch(arr, template) {
   if (template && !Array.isArray(template) && Array.isArray(template.docs)) {
     return { ...template, docs: arr };
@@ -241,19 +268,55 @@ function denormalizeSearch(arr, template) {
   return arr;
 }
 
+
 function normalizeCross(raw) {
+  // Supports three shapes:
+  // 1) {nodes:[], edges:[]}
+  // 2) {graph:{nodes:[],edges:[]}}
+  // 3) Mapping: {"path": {"neighbors":[...]}, ...}
+  if (!raw) return { kind: 'graph', nodes: [], edges: [], map: null, template: raw };
+
+  // Mapping (neighbors) detection
+  const isMap = !Array.isArray(raw) && !Array.isArray(raw.nodes) && !raw.graph &&
+                typeof raw === 'object' && Object.keys(raw).length > 0 &&
+                Object.values(raw).every(v => v && typeof v === 'object' && Array.isArray(v.neighbors));
+  if (isMap) {
+    return { kind: 'map', nodes: [], edges: [], map: raw, template: raw };
+  }
+
+  // Graph variants
   let nodes = [], edges = [];
-  if (raw && Array.isArray(raw.nodes)) nodes = raw.nodes;
-  if (raw && Array.isArray(raw.edges)) edges = raw.edges;
-  // Some people store as {graph:{nodes,edges}}
-  if (raw && raw.graph) {
+  if (Array.isArray(raw.nodes)) nodes = raw.nodes;
+  if (Array.isArray(raw.edges)) edges = raw.edges;
+  if (raw.graph) {
     if (Array.isArray(raw.graph.nodes)) nodes = raw.graph.nodes;
     if (Array.isArray(raw.graph.edges)) edges = raw.graph.edges;
   }
-  return { nodes, edges, template: raw };
+  return { kind: 'graph', nodes, edges, map: null, template: raw };
 }
+
+
 function denormalizeCross(obj) {
   const t = crossRaw;
+  // If template was a mapping of neighbors, merge new items into that map.
+  const isMap = t && typeof t === 'object' && !Array.isArray(t) && !t.graph &&
+                Object.values(t).every(v => v && typeof v === 'object' && Array.isArray(v.neighbors));
+  if (isMap) {
+    // Build a shallow copy so we don't mutate original
+    const out = { ...t };
+    // For simplicity, ensure new nodes exist in map with any neighbors we computed into crossMap
+    // crossMap holds the up-to-date map when kind==='map'
+    const src = crossMap || {};
+    for (const [path, entry] of Object.entries(src)) {
+      if (!out[path]) out[path] = { neighbors: [] };
+      // merge unique neighbors
+      const set = new Set(out[path].neighbors || []);
+      for (const n of (entry.neighbors || [])) set.add(n);
+      out[path].neighbors = Array.from(set);
+    }
+    return out;
+  }
+  // Graph style envelopes
   if (t && t.graph && Array.isArray(t.graph.nodes) && Array.isArray(t.graph.edges)) {
     return { ...t, graph: { ...t.graph, nodes: obj.nodes, edges: obj.edges } };
   }
@@ -262,6 +325,7 @@ function denormalizeCross(obj) {
   }
   return obj; // minimal {nodes,edges}
 }
+
 
 async function loadAll() {
   els.log.textContent = 'Loading…';
@@ -282,11 +346,20 @@ async function loadAll() {
   document.getElementById('linkS').href = `${BASE}/search.json`;
 
   registryRaw = attempt.r;
+  // Flatten any nested array structure in registry
   registryArr = normalizeRegistry(registryRaw);
   searchRaw = attempt.s;
   searchArr = normalizeSearch(searchRaw);
   crossRaw = attempt.x;
-  crossObj = normalizeCross(crossRaw);
+  const crossParsed = normalizeCross(crossRaw);
+  crossKind = crossParsed.kind;
+  if (crossKind === 'map') {
+    crossMap = JSON.parse(JSON.stringify(crossParsed.map || {}));
+    crossObj = { nodes: [], edges: [] };
+  } else {
+    crossObj = { nodes: crossParsed.nodes, edges: crossParsed.edges };
+    crossMap = null;
+  }
 
   els.reg.textContent = JSON.stringify(registryRaw, null, 2);
   els.srch.textContent = JSON.stringify(searchRaw, null, 2);
@@ -303,6 +376,7 @@ document.getElementById('reloadBtn').addEventListener('click', loadAll);
 /* ------------------------------
    Upload and append logic
 --------------------------------*/
+
 async function handleFiles(fileList) {
   const files = Array.from(fileList).filter(f => /\.md$/i.test(f.name));
   if (!files.length) {
@@ -343,22 +417,34 @@ async function handleFiles(fileList) {
     };
     searchArr.push(searchItem);
 
-    // Append to cross links (node only; edges derive from links if any)
-    const node = { id, title, slug, path: regItem.path };
-    crossObj.nodes.push(node);
-
-    // Naive markdown link edge extraction: [text](...slug...) or [[WikiLink]]
+    // Append to cross links
+    // Extract links from markdown: [text](url) or [[WikiLink]]
     const links = Array.from(text.matchAll(/\[.+?\]\(([^)]+)\)|\[\[([^\]]+)\]\]/g));
+    const neighborPaths = [];
     for (const m of links) {
       const rawTarget = (m[1] || m[2] || '').trim().toLowerCase();
       if (!rawTarget) continue;
-      // try to match by slug/title present in registry
       const target = registryArr.find(it =>
         (it.slug && rawTarget.includes(it.slug.toLowerCase())) ||
-        (it.title && rawTarget.includes(it.title.toLowerCase()))
+        (it.title && rawTarget.includes(it.title.toLowerCase())) ||
+        (it.path && rawTarget.includes((it.path || '').toLowerCase()))
       );
-      if (target) {
-        crossObj.edges.push({ source: id, target: target.id, type: 'ref' });
+      if (target && target.path) neighborPaths.push(target.path);
+    }
+    if (crossKind === 'map') {
+      if (!crossMap) crossMap = {};
+      if (!crossMap[regItem.path]) crossMap[regItem.path] = { neighbors: [] };
+      const set = new Set(crossMap[regItem.path].neighbors || []);
+      for (const p of neighborPaths) set.add(p);
+      crossMap[regItem.path].neighbors = Array.from(set);
+    } else {
+      // graph style
+      const node = { id, title, slug, path: regItem.path };
+      crossObj.nodes.push(node);
+      for (const p of neighborPaths) {
+        const targetNode = crossObj.nodes.find(n => n.path === p) ||
+                           (registryArr.find(it => it.path === p) ? { id: 'unknown', path: p } : null);
+        if (targetNode) crossObj.edges.push({ source: id, target: targetNode.id || 'unknown', type: 'ref' });
       }
     }
     added++;
@@ -370,8 +456,10 @@ async function handleFiles(fileList) {
   // Refresh the pretty JSON panes (show denormalized to preserve original envelopes)
   els.reg.textContent = JSON.stringify(denormalizeRegistry(registryArr, registryRaw), null, 2);
   els.srch.textContent = JSON.stringify(denormalizeSearch(searchArr, searchRaw), null, 2);
-  els.xln.textContent = JSON.stringify(denormalizeCross(crossObj), null, 2);
+  const crossOut = (crossKind === 'map') ? crossMap : denormalizeCross(crossObj);
+  els.xln.textContent = JSON.stringify(crossOut, null, 2);
 }
+
 
 // Drag & drop
 const dropEl = document.getElementById('drop');
@@ -391,7 +479,8 @@ els.downloadSearch.addEventListener('click', () => {
   downloadJSON(denormalizeSearch(searchArr, searchRaw), 'search.json');
 });
 els.downloadCross.addEventListener('click', () => {
-  downloadJSON(denormalizeCross(crossObj), 'cross_links.json');
+  if (crossKind === 'map') downloadJSON(crossMap || {}, 'cross_links.json');
+  else downloadJSON(denormalizeCross(crossObj), 'cross_links.json');
 });
 
 // Boot
