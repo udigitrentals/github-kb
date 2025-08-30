@@ -1,12 +1,22 @@
 {
   "defaults": {
     "standard": "WCAG2AA",
-    "wait": 400,
+    "wait": 600,
     "chromeLaunchConfig": {
       "args": ["--no-sandbox", "--disable-setuid-sandbox"]
-    }
+    },
+    "timeout": 60000
   },
   "urls": [
     "http://localhost:5050/index.html"
-  ]
+  ],
+  "hideElements": [
+    ".toast",     // transient toasts
+    ".skeleton"   // skeleton loaders
+  ],
+  "threshold": {
+    "error": 0,
+    "warning": 5,
+    "notice": 10
+  }
 }

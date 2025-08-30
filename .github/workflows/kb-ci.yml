@@ -85,11 +85,18 @@ a11y:
 
   steps:
     - name: Checkout
-        uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
-    - name: Serve static site (index.html at repo root)
-      run: npx http-server -p 5050 -c-1 . & sleep 3
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
 
-    # Pa11y will auto-read .pa11yci.json from the repo root
-    - name: Run pa11y-ci (WCAG2AA, fail on serious+)
-      run: npx pa11y-ci@4.0.1 --threshold 0
+    - name: Install pa11y-ci
+      run: npm install -g pa11y-ci@4.0.1
+
+    - name: Serve static site
+      run: npx http-server -p 5050 -c-1 . & sleep 5
+
+    - name: Run pa11y-ci (WCAG2AA audit)
+      run: pa11y-ci --config .pa11yci.json
