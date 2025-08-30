@@ -7,10 +7,17 @@ let Ajv;
 try { Ajv = require("ajv"); } catch { Ajv = null; }
 
 module.exports = async (req, res) => {
-  try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ ok: false, error: "method_not_allowed" });
-    }
+  if (req.method === "OPTIONS") {
+    const origin = req.headers.origin || "*";
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers","content-type,x-kb-key,x-roi-rate,x-correlation-id");
+    res.setHeader("Access-Control-Max-Age","86400");
+    return res.status(204).end();
+  }
+  // ...rest of handler
+};
+
 
     // --- Security: key-based protection ---
     const key = req.headers["x-kb-key"];
