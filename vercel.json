@@ -1,22 +1,10 @@
 {
   "version": 2,
-  "headers": [
-    {
-      "source": "/kb/(registry|cross_links|search).json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, must-revalidate"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/json; charset=utf-8"
-        }
-      ]
-    }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "rewrites": [
+    { "source": "/ml/kb/(.*)", "destination": "/kb/$1" }
   ]
 }
