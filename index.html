@@ -4,487 +4,664 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KB Live Viewer + Uploader</title>
+  <meta name="description" content="Upload Markdown, merge into KB, validate + commit to GitHub, and view diagnostics, KPIs, and ROI." />
+
+  <!-- Optional: tiny ZIP helper; if unreachable, we gracefully fall back to multi-file downloads -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
+
   <style>
     :root {
-      --brand-text: #E1BC56;
-      --brand-cta: #A90F0F;
-      --bg: #0b0b0b;
-      --panel: #111;
-      --ink: #e8e8e8;
-      --muted: #a5a5a5;
-      --ok: #1f9d55;
-      --warn: #d39e00;
-      --err: #c0392b;
-      --radius: 12px;
+      --bg: #0b0b0b; --panel: #121212; --ink: #ececec; --muted: #a9a9a9;
+      --accent: #E1BC56; --cta: #C21C1C; --ok: #1f9d55; --warn: #d39e00; --err: #c0392b;
+      --radius: 12px; --border: #1e1e1e; --shadow: 0 10px 20px rgba(0,0,0,0.25);
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 24px; background: var(--bg); color: var(--ink);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans"; }
-    h1 { margin: 0 0 10px; }
-    .sub { color: var(--muted); margin: 0 0 20px; }
-    .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-    button, .btn { background: var(--brand-cta); color: #fff; border: none; border-radius: var(--radius);
-      padding: 10px 14px; cursor: pointer; font-weight: 600; }
-    button.secondary { background: #333; color: var(--ink); }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    .pill { border: 1px solid #333; border-radius: 999px; padding: 6px 10px; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
-    .card { background: var(--panel); border-radius: var(--radius); padding: 16px; }
-    .card h3 { margin-top: 0; }
-    pre { background: #000; color: #e6e6e6; padding: 12px; border-radius: var(--radius);
-      overflow:auto; max-height: 50vh; border: 1px solid #222; }
-    a { color: var(--brand-text); text-decoration: none; }
-    .drop { border: 2px dashed #333; border-radius: var(--radius); padding: 18px; text-align: center; color: var(--muted); }
-    .drop.drag { border-color: var(--brand-text); color: var(--brand-text); }
-    details { border: 1px solid #222; border-radius: var(--radius); padding: 10px 12px; background: #0d0d0d; }
-    details > summary { cursor: pointer; font-weight: 600; }
-    .status.ok { color: var(--ok); }
-    .status.err { color: var(--err); }
-    .status.warn { color: var(--warn); }
-    footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    [data-theme="light"] {
+      --bg: #f7f7f8; --panel: #ffffff; --ink: #1b1b1b; --muted: #5a5a5a;
+      --accent: #7a5c1c; --cta: #b21212; --border: #e7e7e7; --shadow: 0 8px 20px rgba(0,0,0,0.07);
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Roboto,Ubuntu,Inter,Arial}
+    a{color:var(--accent);text-decoration:none}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:18px 20px}
+    h1{margin:0;font-size:20px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 10px;color:var(--muted);background:transparent}
+    .btn{background:var(--cta);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer}
+    .btn.secondary{background:#2a2a2a;color:var(--ink)}
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px;padding:0 20px 20px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .card h3{margin:2px 0 10px}
+    .drop{border:2px dashed var(--border);border-radius:var(--radius);padding:18px;text-align:center;color:var(--muted)}
+    .drop.drag{border-color:var(--accent);color:var(--accent)}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--ink)}
+    .small{font-size:12px;color:var(--muted)}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+    .badge.ok{color:var(--ok);border-color:var(--ok)}
+    .badge.warn{color:var(--warn);border-color:var(--warn)}
+    .badge.err{color:var(--err);border-color:var(--err)}
+    .json-grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px;padding:0 20px 40px}
+    .json-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .json-pane{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-height:240px;max-height:420px;overflow:auto}
+    .tree ul{list-style:none;margin:0;padding-left:18px}
+    .tree .item{cursor:default}
+    .tree .toggle{cursor:pointer;user-select:none;margin-right:6px;font-weight:700}
+    .skeleton{background:linear-gradient(90deg,#0000 0,#00000018 50%,#0000 100%);background-size:200% 100%;animation:sk 1.4s infinite}
+    @keyframes sk{to{background-position:-200% 0}}
+    footer{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:16px 20px;color:var(--muted);border-top:1px solid var(--border)}
+    .toast-wrap{position:fixed;top:16px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+    .toast{padding:10px 12px;border-radius:10px;color:#fff}
+    .toast.ok{background:var(--ok)} .toast.warn{background:var(--warn)} .toast.err{background:var(--err)}
+    .kpi-row{display:flex;gap:8px;flex-wrap:wrap}
+    .kpi{min-width:120px;background:#0001;border:1px solid var(--border);border-radius:10px;padding:8px}
+    .kpi .v{font-weight:700;font-size:16px}
+    .hint{border-bottom:1px dotted var(--muted)}
+    .right{margin-left:auto}
+    @media (max-width:1060px){.grid3,.json-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <h1>KB Live Viewer</h1>
-  <p class="sub">Loads <span class="mono">/docs/registry.json</span>, <span class="mono">/docs/cross_links.json</span>, and <span class="mono">/docs/search.json</span>. Upload Markdown to append entries and download updated JSONs for commit.</p>
+  <div class="toast-wrap" id="toasts" aria-live="polite" aria-atomic="true"></div>
 
-  <div class="row">
-    <button id="reloadBtn">Reload</button>
-    <span id="basePath" class="pill">Base: <span class="mono">/docs</span></span>
-    <span id="counts" class="pill">—</span>
-  </div>
-
-  <div class="grid" style="margin-top:18px">
-    <div class="card">
-      <h3>Upload Markdown</h3>
-      <div id="drop" class="drop">Drag & drop .md here or use picker below</div>
-      <div class="row" style="margin-top:10px">
-        <input id="fileInput" type="file" accept=".md,text/markdown" multiple />
-        <button id="downloadRegistry" class="secondary" disabled>Download updated registry.json</button>
-        <button id="downloadSearch" class="secondary" disabled>Download updated search.json</button>
-        <button id="downloadCross" class="secondary" disabled>Download updated cross_links.json</button>
-      </div>
-      <p id="uploadStatus" class="sub"></p>
+  <header>
+    <div class="row">
+      <h1>KB Live Viewer</h1>
+      <span class="pill">Base: <span class="small mono" id="basePill">—</span></span>
+      <span class="pill small" id="countsPill">—</span>
     </div>
+    <div class="row">
+      <button class="btn ghost" id="themeBtn" aria-label="Toggle theme">Toggle theme</button>
+      <button class="btn secondary" id="reloadBtn" aria-keyshortcuts="R" title="Reload (r)">Reload</button>
+    </div>
+  </header>
 
-    <div class="card">
-  <h3>Diagnostics</h3>
-  <div class="row">
-    <button id="btnHealth" class="secondary">Run Health Check</button>
-    <button id="btnDlStats" class="secondary">Download kb_stats.json</button>
-  </div>
-  <pre id="health">Click “Run Health Check”</pre>
-</div>
+  <noscript>
+    <div style="padding:10px 20px">
+      <div class="card">
+        <h3>JavaScript disabled — fallback uploader</h3>
+        <p class="small">You can still upload a Markdown file and commit via the API.</p>
+        <form action="/api/kb/commit" method="POST">
+          <textarea name="search" hidden>{"docs":[{"title":"Paste title","content":"Paste content"}]}</textarea>
+          <input type="password" name="key" placeholder="KB_PROTECT_KEY" />
+          <button class="btn">Commit</button>
+        </form>
+        <p class="small">Direct data links:</p>
+        <ul>
+          <li><a href="/docs/registry.json" target="_blank">/docs/registry.json</a></li>
+          <li><a href="/docs/search.json" target="_blank">/docs/search.json</a></li>
+          <li><a href="/docs/cross_links.json" target="_blank">/docs/cross_links.json</a></li>
+        </ul>
+      </div>
+    </div>
+  </noscript>
 
+  <main class="grid3" id="top">
+    <!-- Upload & Append -->
+    <section class="card">
+      <h3>Upload & Append</h3>
+      <div id="drop" class="drop" tabindex="0" aria-label="Drop markdown files here">Drag & drop .md here or use picker</div>
+      <div class="controls" style="margin-top:10px">
+        <input id="fileInput" class="input" type="file" accept=".md,text/markdown" multiple aria-label="Choose Markdown files" />
+        <button id="undoBtn" class="btn ghost" title="Undo (Z)" aria-keyshortcuts="Z" disabled>Undo</button>
+        <button id="redoBtn" class="btn ghost" title="Redo (Y)" aria-keyshortcuts="Y" disabled>Redo</button>
+      </div>
+      <div class="controls" style="margin-top:8px">
+        <button id="dlReg" class="btn secondary" disabled>Download updated registry.json</button>
+        <button id="dlSearch" class="btn secondary" disabled>Download updated search.json</button>
+        <button id="dlCross" class="btn secondary" disabled>Download updated cross_links.json</button>
+        <button id="dlZip" class="btn ghost right" disabled title="Download pending as ZIP (fallback to multiple if unavailable)">Download pending</button>
+      </div>
+      <p id="uploadStatus" class="small" role="status" aria-live="polite"></p>
+    </section>
 
-    <div class="card">
-      <h3>Debug / Direct Links</h3>
-      <ul>
+    <!-- Debug & Diagnostics -->
+    <section class="card">
+      <h3>Debug & Diagnostics</h3>
+      <ul class="small" style="margin-top:0">
         <li><a id="linkReg" href="/docs/registry.json" target="_blank">/docs/registry.json</a></li>
-        <li><a id="linkX"  href="/docs/cross_links.json" target="_blank">/docs/cross_links.json</a></li>
-        <li><a id="linkS"  href="/docs/search.json" target="_blank">/docs/search.json</a></li>
+        <li><a id="linkCross" href="/docs/cross_links.json" target="_blank">/docs/cross_links.json</a></li>
+        <li><a id="linkSearch" href="/docs/search.json" target="_blank">/docs/search.json</a></li>
       </ul>
-      <details style="margin-top:8px"><summary>Loader status</summary>
-        <pre id="log">Waiting…</pre>
+      <details style="margin-bottom:8px">
+        <summary class="hint">Loader status</summary>
+        <pre id="log" class="small" style="max-height:140px;overflow:auto">Waiting…</pre>
       </details>
-    </div>
 
-    <div class="card">
-      <h3>Validate & Commit</h3>
-      <div class="row">
-        <input id="commitMsg" placeholder="Commit message" style="padding:6px; flex: 1 1 280px">
-        <input id="kbKey" type="password" placeholder="Key (KB_PROTECT_KEY)" style="padding:6px; flex: 1 1 280px">
+      <div class="row" style="margin-bottom:8px">
+        <button id="healthBtn" class="btn secondary" aria-keyshortcuts="H" title="Run Health Check (H)">Run Health Check</button>
+        <button id="dlStats" class="btn ghost" disabled>Download kb_stats.json</button>
       </div>
+      <div class="kpi-row" id="kpis">
+        <div class="kpi"><div class="small">Registry items</div><div class="v" id="kpiReg">—</div></div>
+        <div class="kpi"><div class="small">Search docs</div><div class="v" id="kpiSearch">—</div></div>
+        <div class="kpi"><div class="small">Edges</div><div class="v" id="kpiEdges">—</div></div>
+        <div class="kpi"><div class="small">Tags</div><div class="v" id="kpiTags">—</div></div>
+        <div class="kpi"><div class="small">Unresolved</div><div class="v" id="kpiUnres">—</div></div>
+      </div>
+
       <div class="row" style="margin-top:8px">
-        <button id="btnValidate" class="secondary">Validate (schemas)</button>
-        <button id="btnCommit">Validate & Commit to GitHub</button>
+        <span id="badgeSize" class="badge">size —</span>
+        <span id="badgeGraph" class="badge">graph —</span>
+        <span class="small right" id="healthMs"></span>
       </div>
-      <pre id="apiLog" style="background:#0f0f0f; padding:8px; max-height:220px; overflow:auto"></pre>
-    </div>
-  </div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>registry.json</h3>
-      <pre id="reg">Loading…</pre>
-    </div>
-    <div class="card">
-      <h3>cross_links.json</h3>
-      <pre id="xln">Loading…</pre>
-    </div>
-    <div class="card">
-      <h3>search.json</h3>
-      <pre id="srch">Loading…</pre>
-    </div>
-  </div>
+      <div class="row" style="gap:12px;margin-top:10px">
+        <div style="flex:1">
+          <div class="small" style="margin-bottom:4px">KB growth (docs & edges)</div>
+          <canvas id="sparkGrowth" height="60" style="width:100%;border:1px solid var(--border);border-radius:10px"></canvas>
+        </div>
+        <div style="flex:1">
+          <div class="small" style="margin-bottom:4px">ROI trend ($/week)</div>
+          <canvas id="sparkROI" height="60" style="width:100%;border:1px solid var(--border);border-radius:10px"></canvas>
+        </div>
+      </div>
+    </section>
 
-  <footer>Tip: If you previously had a service worker, add <span class="mono">?nosw=1</span> to the URL once to bypass it.</footer>
+    <!-- Validate & Commit -->
+    <section class="card">
+      <h3>Validate & Commit</h3>
+      <input id="commitMsg" class="input" placeholder="Commit message" />
+      <input id="kbKey" class="input" type="password" placeholder="Key (KB_PROTECT_KEY)" style="margin-top:8px" />
+      <div class="controls" style="margin-top:10px">
+        <button id="validateBtn" class="btn secondary" aria-keyshortcuts="V" title="Validate (V)">Validate (schemas)</button>
+        <button id="commitBtn" class="btn" aria-keyshortcuts="C" title="Validate & Commit (C)">Validate & Commit to GitHub</button>
+      </div>
+      <div id="commitOut" class="small" style="margin-top:10px"></div>
+    </section>
+  </main>
+
+  <!-- Search & JSON panes -->
+  <section class="json-grid">
+    <div>
+      <div class="json-head">
+        <div class="row"><h3 style="margin:0">registry.json</h3></div>
+        <div class="row">
+          <input id="filterReg" class="input" placeholder="Filter title/tag…" style="width:200px" />
+          <button class="btn ghost" id="expReg">Expand</button>
+        </div>
+      </div>
+      <div id="paneReg" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
+    </div>
+    <div>
+      <div class="json-head">
+        <div class="row"><h3 style="margin:0">cross_links.json</h3></div>
+        <div class="row">
+          <button class="btn ghost" id="expCross">Expand</button>
+        </div>
+      </div>
+      <div id="paneCross" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
+    </div>
+    <div>
+      <div class="json-head">
+        <div class="row"><h3 style="margin:0">search.json</h3></div>
+        <div class="row">
+          <input id="filterSearch" class="input" placeholder="Filter title/tag…" style="width:200px" />
+          <button class="btn ghost" id="expSearch">Expand</button>
+        </div>
+      </div>
+      <div id="paneSearch" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="small">Tip: add <span class="hint">?nosw=1</span> once to bypass any old Service Worker.</div>
+    <div class="small">Shortcuts: <b>U</b>pload • <b>V</b>alidate • <b>C</b>ommit • <b>H</b>ealth • <b>Z</b> Undo • <b>Y</b> Redo</div>
+  </footer>
 
 <script>
-/* ------------------------------
-   Small utilities
---------------------------------*/
-
-async function runHealth() {
-  const r = await fetch('/api/kb/health', { cache: 'no-store' });
-  const j = await r.json();
-  document.getElementById('health').textContent = JSON.stringify(j, null, 2);
-  beacon('health_checked', { ok: j.ok, elapsed_ms: j.elapsed_ms });
-}
-document.getElementById('btnHealth').addEventListener('click', runHealth);
-
-document.getElementById('btnDlStats').addEventListener('click', async () => {
-  try {
-    const r = await fetch(`${BASE}/kb_stats.json`, { cache: 'no-store' });
-    if (!r.ok) throw new Error('not found');
-    const j = await r.json();
-    downloadJSON(j, 'kb_stats.json');
-  } catch {
-    alert('Stats not found yet. Commit once or run health first.');
-  }
-});
-
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+/* =============== Utilities =============== */
+const qs = s => document.querySelector(s);
+const ce = (t,p={}) => Object.assign(document.createElement(t), p);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
 const ts = () => Date.now();
-const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-  const r = crypto.getRandomValues(new Uint8Array(1))[0] & 15;
-  const v = c === 'x' ? r : (r & 0x3 | 0x8);
-  return v.toString(16);
-});
-const slugify = (s) => s.toLowerCase()
-  .replace(/[`~!@#$%^&*()+=\[\]{}|\\'";:,.<>/?]/g,'')
-  .replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+const idle = cb => (window.requestIdleCallback||setTimeout)(cb,1);
+const uuid = ()=>'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>((crypto.getRandomValues(new Uint8Array(1))[0]&15)|(c==='x'?0:8)).toString(16));
+const slugify = s => (s||'').toLowerCase().replace(/[`~!@#$%^&*()+=\[\]{}|\\'";:.,<>/?]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
 
-function extractTitle(md, fallback) {
-  const m = md.match(/^\s*#\s+(.+?)\s*$/m);
-  if (m && m[1]) return m[1].trim();
-  const m2 = md.match(/^\s*(.+)\n=+\s*$/m);
-  if (m2 && m2[1]) return m2[1].trim();
-  return fallback.replace(/\.[^/.]+$/, '');
+function toast(msg, kind='ok'){ const t=ce('div',{className:'toast '+kind,innerText:msg}); qs('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4000); }
+
+function beacon(type, extra={}) {
+  try {
+    fetch('/api/kb/telemetry', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ type, ts: new Date().toISOString(), ...extra })}).catch(()=>{});
+  } catch {}
 }
 
 function downloadJSON(obj, filename) {
-  const blob = new Blob([JSON.stringify(obj, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob); const a=ce('a',{href:url,download:filename}); document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 1000);
 }
 
-/* ------------------------------
-   Canonical loader (/docs first)
---------------------------------*/
-let BASE = '/docs';
-let registryRaw = null, registryArr = [];
-let searchRaw = null, searchArr = [];
-let crossRaw = null, crossObj = { nodes: [], edges: [] }, crossMap = null, crossKind = 'graph';
-
-const els = {
-  reg: document.getElementById('reg'),
-  xln: document.getElementById('xln'),
-  srch: document.getElementById('srch'),
-  log: document.getElementById('log'),
-  counts: document.getElementById('counts'),
-  basePath: document.getElementById('basePath'),
-  downloadRegistry: document.getElementById('downloadRegistry'),
-  downloadSearch: document.getElementById('downloadSearch'),
-  downloadCross: document.getElementById('downloadCross'),
-  uploadStatus: document.getElementById('uploadStatus'),
-  apiLog: document.getElementById('apiLog'),
-};
-
-async function fetchJSON(path) {
-  const url = `${path}?ts=${ts()}${location.search.includes('nosw=1') ? '&nosw=1' : ''}`;
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
-  return res.json();
-}
-
-async function tryLoadFrom(base) {
-  try {
-    const [r, x, s] = await Promise.all([
-      fetchJSON(`${base}/registry.json`),
-      fetchJSON(`${base}/cross_links.json`),
-      fetchJSON(`${base}/search.json`),
-    ]);
-    return { ok: true, base, r, x, s };
-  } catch (e) {
-    return { ok: false, base, err: String(e) };
+async function downloadZip(filesMap /* {name:contentString} */) {
+  if (window.JSZip) {
+    const zip = new JSZip();
+    for (const [name,content] of Object.entries(filesMap)) zip.file(name, content);
+    const blob = await zip.generateAsync({type:'blob'});
+    const url = URL.createObjectURL(blob); const a=ce('a',{href:url,download:'kb_pending.zip'}); document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 1000);
+  } else {
+    // Fallback: multi-file downloads
+    Object.entries(filesMap).forEach(([name,content]) => downloadJSON(JSON.parse(content), name));
   }
 }
 
-function normalizeRegistry(raw) {
-  let arr = [];
-  if (Array.isArray(raw)) arr = raw;
-  else if (raw && Array.isArray(raw.items)) arr = raw.items;
-  else if (raw && Array.isArray(raw.registry)) arr = raw.registry;
-  else return [];
-  const flat = []; const stack = [arr];
-  while (stack.length) {
-    const cur = stack.pop();
-    for (const v of cur) Array.isArray(v) ? stack.push(v) : flat.push(v);
-  }
-  return flat;
-}
+/* =============== JSON tree (light) =============== */
+function renderTree(el, data, {expand=false, cap=250}={}) {
+  el.innerHTML = '';
+  const root = ce('ul'); el.appendChild(root);
+  function node(k,v,depth=0) {
+    const li = ce('li', {className:'item'});
+    const isObj = v && typeof v === 'object';
+    const isArr = Array.isArray(v);
+    const label = ce('span'); const toggle = ce('span',{className:'toggle',innerText: isObj?'▸':''});
+    if (isObj) { label.style.fontWeight='600'; label.innerText = (k!==null? `${k}:` : (isArr?'[ ]':'{ }')); }
+    else { label.innerHTML = `<span style="color:#a6a6a6">${k}:</span> ${escapeHtml(String(v))}`; }
 
-function denormalizeRegistry(arr, template) {
-  if (template && !Array.isArray(template) && Array.isArray(template.items)) return { ...template, items: arr };
-  if (template && !Array.isArray(template) && Array.isArray(template.registry)) return { ...template, registry: arr };
-  return arr;
-}
-
-function normalizeSearch(raw) {
-  let arr = [];
-  if (Array.isArray(raw)) arr = raw;
-  else if (raw && Array.isArray(raw.docs)) arr = raw.docs;
-  else if (raw && Array.isArray(raw.items)) arr = raw.items;
-  else return [];
-  const flat = []; const stack = [arr];
-  while (stack.length) {
-    const cur = stack.pop();
-    for (const v of cur) Array.isArray(v) ? stack.push(v) : flat.push(v);
-  }
-  return flat;
-}
-
-function denormalizeSearch(arr, template) {
-  if (template && !Array.isArray(template) && Array.isArray(template.docs)) return { ...template, docs: arr };
-  if (template && !Array.isArray(template) && Array.isArray(template.items)) return { ...template, items: arr };
-  return arr;
-}
-
-function normalizeCross(raw) {
-  if (!raw) return { kind:'graph', nodes:[], edges:[], map:null, template: raw };
-  const isMap = !Array.isArray(raw) && !Array.isArray(raw.nodes) && !raw.graph &&
-                typeof raw === 'object' && Object.keys(raw).length > 0 &&
-                Object.values(raw).every(v => v && typeof v === 'object' && Array.isArray(v.neighbors));
-  if (isMap) return { kind:'map', nodes:[], edges:[], map:raw, template: raw };
-
-  let nodes = [], edges = [];
-  if (Array.isArray(raw.nodes)) nodes = raw.nodes;
-  if (Array.isArray(raw.edges)) edges = raw.edges;
-  if (raw.graph) {
-    if (Array.isArray(raw.graph.nodes)) nodes = raw.graph.nodes;
-    if (Array.isArray(raw.graph.edges)) edges = raw.graph.edges;
-  }
-  return { kind:'graph', nodes, edges, map:null, template: raw };
-}
-
-function denormalizeCross(obj) {
-  const t = crossRaw;
-  const isMap = t && typeof t === 'object' && !Array.isArray(t) && !t.graph &&
-                Object.values(t).every(v => v && typeof v === 'object' && Array.isArray(v.neighbors));
-  if (isMap) {
-    const out = { ...t };
-    const src = crossMap || {};
-    for (const [path, entry] of Object.entries(src)) {
-      if (!out[path]) out[path] = { neighbors: [] };
-      const set = new Set(out[path].neighbors || []);
-      for (const n of (entry.neighbors || [])) set.add(n);
-      out[path].neighbors = Array.from(set);
+    const head = ce('div'); head.appendChild(toggle); head.appendChild(label); li.appendChild(head);
+    let child;
+    if (isObj) {
+      child = ce('ul', {style:'display:none'});
+      const entries = isArr ? v.slice(0,cap).map((val,i)=>[i,val]) : Object.entries(v).slice(0,cap);
+      for (const [ck,cv] of entries) child.appendChild(node(ck,cv, depth+1));
+      if ((isArr? v.length: Object.keys(v).length) > cap) {
+        child.appendChild( ce('li',{innerHTML:`… <i>${(isArr? v.length: Object.keys(v).length)-cap} more</i>`}) );
+      }
+      li.appendChild(child);
+      const open = expand && depth<1;
+      if (open){ toggle.innerText='▾'; child.style.display='block'; }
+      toggle.onclick = () => {
+        const open = child.style.display==='none';
+        child.style.display = open?'block':'none';
+        toggle.innerText = open?'▾':'▸';
+      };
     }
-    return out;
+    return li;
   }
-  if (t && t.graph && Array.isArray(t.graph.nodes) && Array.isArray(t.graph.edges)) {
-    return { ...t, graph: { ...t.graph, nodes: obj.nodes, edges: obj.edges } };
-  }
-  if (t && Array.isArray(t.nodes) && Array.isArray(t.edges)) {
-    return { ...t, nodes: obj.nodes, edges: obj.edges };
-  }
+  root.appendChild(node(null, data, 0));
+}
+function escapeHtml(s){return s.replace(/[&<>'"]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;' }[c]))}
+
+/* =============== Normalization helpers =============== */
+function normRegistry(r){ if (Array.isArray(r)) return r; if (r?.items && Array.isArray(r.items)) return r.items; if (r?.registry && Array.isArray(r.registry)) return r.registry; return []; }
+function denormRegistry(arr, tmpl){ if (!tmpl || Array.isArray(tmpl)) return arr; if (tmpl.items) return {...tmpl, items: arr}; if (tmpl.registry) return {...tmpl, registry: arr}; return arr; }
+
+function normSearch(s){ if (Array.isArray(s)) return s; if (s?.docs && Array.isArray(s.docs)) return s.docs; if (s?.items && Array.isArray(s.items)) return s.items; return []; }
+function denormSearch(arr, tmpl){ if (!tmpl || Array.isArray(tmpl)) return arr; if (tmpl.docs) return {...tmpl, docs: arr}; if (tmpl.items) return {...tmpl, items: arr}; return arr; }
+
+function parseCross(raw){
+  if (!raw) return {kind:'graph', nodes:[], edges:[], map:null};
+  if (Array.isArray(raw.nodes) || Array.isArray(raw.edges)) return {kind:'graph', nodes: raw.nodes||[], edges: raw.edges||[], map:null};
+  if (raw.graph) return {kind:'graph', nodes: raw.graph.nodes||[], edges: raw.graph.edges||[], map:null};
+  const vals = Object.values(raw||{});
+  const map = vals.length && vals.every(v=>v && typeof v==='object' && Array.isArray(v.neighbors)) ? raw : null;
+  return map ? {kind:'map', nodes:[], edges:[], map} : {kind:'graph', nodes:[], edges:[], map:null};
+}
+function denormCross(obj, rawTmpl, kind, map) {
+  if (kind==='map') return map || {};
+  if (rawTmpl?.graph) return {...rawTmpl, graph:{...rawTmpl.graph, nodes: obj.nodes, edges: obj.edges}};
+  if (Array.isArray(rawTmpl?.nodes) || Array.isArray(rawTmpl?.edges)) return {...rawTmpl, nodes: obj.nodes, edges: obj.edges};
   return obj;
 }
 
-function setCounts() {
-  const r = registryArr?.length ?? 0;
-  const s = searchArr?.length ?? 0;
-  const n = (crossKind === 'map') ? Object.keys(crossMap || {}).length : (crossObj?.nodes || []).length;
-  els.counts.textContent = `registry: ${r} • search: ${s} • nodes: ${n}`;
+/* =============== State =============== */
+let BASE = '/docs';
+let registryRaw=null, searchRaw=null, crossRaw=null;
+let regArr=[], seaArr=[], crossObj={nodes:[],edges:[]}, crossKind='graph', crossMap=null;
+let undoStack=[], redoStack=[];
+const storeKey = 'kb_pending_append_v1';
+
+/* =============== Load pipeline =============== */
+async function tryLoad(base){
+  const to = p => `${base}/${p}?ts=${Date.now()}${location.search.includes('nosw=1') ? '&nosw=1':''}`;
+  const [r,s,x] = await Promise.all([fetch(to('registry.json')), fetch(to('search.json')), fetch(to('cross_links.json'))]);
+  if (!r.ok || !s.ok || !x.ok) throw new Error(`failed: ${r.status}/${s.status}/${x.status}`);
+  return { reg: await r.json(), sea: await s.json(), xln: await x.json(), base };
 }
-
-function buildMerged() {
-  const mergedRegistry = denormalizeRegistry(registryArr, registryRaw);
-  const mergedSearch   = denormalizeSearch(searchArr,  searchRaw);
-  const mergedCross    = (crossKind === 'map') ? (crossMap || {}) : denormalizeCross(crossObj);
-  return { registry: mergedRegistry, search: mergedSearch, cross: mergedCross };
-}
-
-async function loadAll() {
-  els.log.textContent = 'Loading…';
-  let attempt = await tryLoadFrom('/docs');
-  if (!attempt.ok) attempt = await tryLoadFrom('/kb');
-  if (!attempt.ok) attempt = await tryLoadFrom('/ml/kb');
-
-  if (!attempt.ok) {
-    els.log.textContent = `Failed to load from /docs, /kb, or /ml/kb.\n${attempt.err}`;
-    return;
-  }
-  BASE = attempt.base;
-  els.basePath.innerHTML = 'Base: <span class="mono">' + BASE + '</span>';
-  document.getElementById('linkReg').href = `${BASE}/registry.json`;
-  document.getElementById('linkX').href   = `${BASE}/cross_links.json`;
-  document.getElementById('linkS').href   = `${BASE}/search.json`;
-
-  registryRaw = attempt.r; registryArr = normalizeRegistry(registryRaw);
-  searchRaw   = attempt.s; searchArr   = normalizeSearch(searchRaw);
-  crossRaw    = attempt.x;
-  const crossParsed = normalizeCross(crossRaw);
-  crossKind = crossParsed.kind;
-  if (crossKind === 'map') { crossMap = JSON.parse(JSON.stringify(crossParsed.map || {})); crossObj = { nodes: [], edges: [] }; }
-  else { crossObj = { nodes: crossParsed.nodes, edges: crossParsed.edges }; crossMap = null; }
-
-  els.reg.textContent  = JSON.stringify(registryRaw, null, 2);
-  els.srch.textContent = JSON.stringify(searchRaw, null, 2);
-  els.xln.textContent  = JSON.stringify(crossRaw, null, 2);
-
-  setCounts();
-  [els.downloadRegistry, els.downloadSearch, els.downloadCross].forEach(b => b.disabled = false);
-}
-
-/* ------------------------------
-   Upload & append (lossless)
---------------------------------*/
-function tokenizeForSearch(md) {
-  return md.toLowerCase().replace(/[`*_>#\-]/g,' ')
-    .replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
-}
-
-async function handleFiles(fileList) {
-  const files = Array.from(fileList).filter(f => /\.md$/i.test(f.name));
-  if (!files.length) { els.uploadStatus.innerHTML = `<span class="status warn">No .md files detected.</span>`; return; }
-  let added = 0;
-
-  const slugTaken = new Set((registryArr || []).map(it => (it.slug || it.path || '').toString().toLowerCase()));
-
-  for (const file of files) {
-    const text = await file.text();
-    const title = extractTitle(text, file.name);
-    const baseSlug = slugify(title || file.name);
-    let slug = baseSlug;
-    let inc = 2;
-    while (slugTaken.has(`/docs/md/${slug}.md`) || slugTaken.has(slug) || registryArr.some(it => (it.slug || it.title || '').toLowerCase() === slug)) {
-      slug = `${baseSlug}-${inc++}`;
+async function loadAll(){
+  qs('#log').textContent='Loading…';
+  try {
+    let loaded = null;
+    for (const b of ['/docs','/kb','/ml/kb']) {
+      try { loaded = await tryLoad(b); if (loaded) break; } catch {}
     }
+    if (!loaded) throw new Error('Could not load from /docs, /kb, or /ml/kb.');
+    BASE = loaded.base;
+    registryRaw = loaded.reg; searchRaw = loaded.sea; crossRaw = loaded.xln;
 
-    const id = uuid();
-    const when = new Date().toISOString();
+    regArr = normRegistry(registryRaw);
+    seaArr = normSearch(searchRaw);
+    const parsed = parseCross(crossRaw); crossKind=parsed.kind;
+    if (crossKind==='map'){ crossMap = JSON.parse(JSON.stringify(parsed.map||{})); crossObj={nodes:[],edges:[]}; }
+    else { crossObj = {nodes: parsed.nodes, edges: parsed.edges}; crossMap=null; }
 
-    // Append to registry (append-only)
-    const regItem = { id, title, slug, path: `/docs/md/${slug}.md`, tags: [], created_at: when };
-    registryArr.push(regItem); slugTaken.add(slug);
+    // Restore pending appended drafts (session)
+    restorePending();
 
-    // Append to search
-    const searchItem = { id, title, content: text, tokens: tokenizeForSearch(text), created_at: when };
-    searchArr.push(searchItem);
+    // Update UI
+    qs('#basePill').innerText = BASE;
+    qs('#linkReg').href = `${BASE}/registry.json`;
+    qs('#linkSearch').href = `${BASE}/search.json`;
+    qs('#linkCross').href = `${BASE}/cross_links.json`;
+    setCounts(); renderAllTrees();
+    [qs('#dlReg'),qs('#dlSearch'),qs('#dlCross'),qs('#dlZip')].forEach(b=>b.disabled=false);
+    qs('#log').textContent = `Loaded from ${BASE}.`;
+    beacon('viewer_loaded', { base: BASE });
+  } catch (e) {
+    qs('#log').textContent = 'Error: '+ e.message;
+    toast('Failed to load KB JSONs', 'err');
+  }
+}
 
-    // Append to cross links (simple extraction)
-    const links = Array.from(text.matchAll(/\[.+?\]\(([^)]+)\)|\[\[([^\]]+)\]\]/g));
+/* =============== Counts & rendering =============== */
+function setCounts(){
+  const nodesCount = crossKind==='map' ? Object.keys(crossMap||{}).length : (crossObj.nodes||[]).length;
+  qs('#countsPill').innerText = `registry: ${regArr.length} • search: ${seaArr.length} • nodes: ${nodesCount}`;
+  qs('#kpiReg').innerText = regArr.length;
+  qs('#kpiSearch').innerText = seaArr.length;
+  const eCnt = crossKind==='map'
+      ? Object.values(crossMap||{}).reduce((a,v)=>a+((v.neighbors||[]).length),0)
+      : (crossObj.edges||[]).length;
+  qs('#kpiEdges').innerText = eCnt;
+  const tags = new Set(); seaArr.forEach(d=>Array.isArray(d.tags)&&d.tags.forEach(t=>tags.add(String(t).toLowerCase())));
+  qs('#kpiTags').innerText = tags.size;
+  const unres = (crossObj.edges||[]).filter(e=>!e?.source||!e?.target).length;
+  qs('#kpiUnres').innerText = unres;
+}
+
+function renderAllTrees(){
+  idle(()=>renderTree(qs('#paneReg'), registryRaw, {expand:false,cap:300}));
+  idle(()=>renderTree(qs('#paneSearch'), searchRaw, {expand:false,cap:200}));
+  idle(()=>renderTree(qs('#paneCross'), crossRaw, {expand:false,cap:200}));
+}
+
+/* =============== Upload & append =============== */
+function extractTitle(md,fallback) {
+  const m = md.match(/^\s*#\s+(.+?)\s*$/m) || md.match(/^\s*(.+)\n=+\s*$/m);
+  return (m && m[1]) ? m[1].trim() : fallback.replace(/\.[^/.]+$/,'');
+}
+function tokenizeForSearch(md){
+  return md.toLowerCase().replace(/[`*_>#\-]/g,' ').replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function ensureUniqueSlug(base){
+  let slug = base, i=2;
+  const taken = new Set(regArr.map(it=>String(it.slug||it.path||'').toLowerCase()));
+  while (taken.has(slug) || regArr.some(it=>String(it.title||'').toLowerCase()===slug)) slug = `${base}-${i++}`;
+  return slug;
+}
+async function handleFiles(fileList){
+  const files = Array.from(fileList).filter(f=>/\.md$/i.test(f.name));
+  if (!files.length){ toast('No .md files detected','warn'); return; }
+  const t0=ts(); let added=0; const steps=[];
+  for (const f of files){
+    const text = await f.text(); const title = extractTitle(text, f.name);
+    let slug = ensureUniqueSlug(slugify(title||f.name));
+    const id=uuid(); const when=new Date().toISOString();
+    const path = `/docs/md/${slug}.md`;
+    // registry
+    const regItem = { id, title, slug, path, tags: [], created_at: when };
+    regArr.push(regItem);
+    // search
+    const searchItem = { id, title, content: text, tokens: tokenizeForSearch(text), tags: [], created_at: when };
+    seaArr.push(searchItem);
+    // cross (naive link extraction)
+    const links = [...text.matchAll(/\[.+?\]\(([^)]+)\)|\[\[([^\]]+)\]\]/g)];
     const neighborPaths = [];
-    for (const m of links) {
-      const rawTarget = (m[1] || m[2] || '').trim().toLowerCase();
-      if (!rawTarget) continue;
-      const target = registryArr.find(it =>
-        (it.slug && rawTarget.includes(it.slug.toLowerCase())) ||
-        (it.title && rawTarget.includes(it.title.toLowerCase())) ||
-        (it.path && rawTarget.includes((it.path || '').toLowerCase()))
-      );
+    for (const m of links){
+      const rawT = (m[1]||m[2]||'').trim().toLowerCase();
+      if (!rawT) continue;
+      const target = regArr.find(it => (it.slug && rawT.includes(it.slug.toLowerCase())) || (it.title && rawT.includes(it.title.toLowerCase())) || (it.path && rawT.includes((it.path||'').toLowerCase())));
       if (target?.path) neighborPaths.push(target.path);
     }
-    if (crossKind === 'map') {
-      if (!crossMap) crossMap = {};
-      if (!crossMap[regItem.path]) crossMap[regItem.path] = { neighbors: [] };
-      const set = new Set(crossMap[regItem.path].neighbors || []);
-      for (const p of neighborPaths) set.add(p);
-      crossMap[regItem.path].neighbors = Array.from(set);
+    if (crossKind==='map'){
+      if (!crossMap) crossMap={};
+      if (!crossMap[path]) crossMap[path]={neighbors:[]};
+      const set = new Set(crossMap[path].neighbors||[]);
+      neighborPaths.forEach(p=>set.add(p));
+      crossMap[path].neighbors = [...set];
     } else {
-      const node = { id, title, slug, path: regItem.path };
-      crossObj.nodes.push(node);
-      for (const p of neighborPaths) {
-        const targetNode = crossObj.nodes.find(n => n.path === p) ||
-                           (registryArr.find(it => it.path === p) ? { id: 'unknown', path: p } : null);
-        if (targetNode) crossObj.edges.push({ source: id, target: targetNode.id || 'unknown', type: 'ref' });
+      const node = { id, title, slug, path };
+      (crossObj.nodes||[]).push(node);
+      neighborPaths.forEach(p=>{
+        const tNode = (crossObj.nodes||[]).find(n=>n.path===p) || null;
+        (crossObj.edges||[]).push({ source:id, target: tNode?.id || 'unknown', type:'ref' });
+      });
+    }
+    added++; steps.push({type:'add', regItem, searchItem, path});
+  }
+  pushUndo(steps);
+  persistPending(steps);
+  setCounts();
+  // update preview panes with denormalized
+  registryRaw = denormRegistry(regArr, registryRaw);
+  searchRaw = denormSearch(seaArr, searchRaw);
+  const crossOut = crossKind==='map' ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
+  crossRaw = crossOut;
+  renderAllTrees();
+  const dur = ts()-t0;
+  qs('#uploadStatus').innerHTML = `<span class="badge ok">+${added} file(s)</span> appended in ${dur}ms.`;
+  toast(`Appended ${added} Markdown file(s)`, 'ok');
+  beacon('upload_files', {added});
+}
+function pushUndo(steps){ undoStack.push(steps); qs('#undoBtn').disabled = !undoStack.length; redoStack.length=0; qs('#redoBtn').disabled=true; }
+function applySteps(steps, reverse=false){
+  for (const s of steps){
+    const { regItem, searchItem, path } = s;
+    if (!reverse){ /* already applied during add */ }
+    else {
+      // remove from arrays
+      const ri = regArr.findIndex(x=>x.id===regItem.id); if (ri>=0) regArr.splice(ri,1);
+      const si = seaArr.findIndex(x=>x.id===searchItem.id); if (si>=0) seaArr.splice(si,1);
+      if (crossKind==='map'){ if (crossMap?.[path]) delete crossMap[path]; }
+      else {
+        const ni = (crossObj.nodes||[]).findIndex(n=>n.id===regItem.id); if (ni>=0) crossObj.nodes.splice(ni,1);
+        crossObj.edges = (crossObj.edges||[]).filter(e=>e.source!==regItem.id && e.target!==regItem.id);
       }
     }
-    added++;
   }
+  registryRaw = denormRegistry(regArr, registryRaw);
+  searchRaw = denormSearch(seaArr, searchRaw);
+  crossRaw = (crossKind==='map') ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
+  renderAllTrees(); setCounts();
+}
+function undo(){ const steps = undoStack.pop(); if (!steps) return; applySteps(steps, true); redoStack.push(steps); qs('#redoBtn').disabled=false; qs('#undoBtn').disabled=!undoStack.length; saveSession(); toast('Undo', 'warn'); }
+function redo(){ const steps = redoStack.pop(); if (!steps) return; // re-apply
+  for (const s of steps){ // push into arrays again
+    regArr.push(s.regItem); seaArr.push(s.searchItem);
+    if (crossKind==='map'){ if (!crossMap) crossMap={}; crossMap[s.path]={neighbors:[]}; }
+    else (crossObj.nodes||[]).push({id:s.regItem.id,title:s.regItem.title,slug:s.regItem.slug,path:s.path});
+  }
+  registryRaw = denormRegistry(regArr, registryRaw); searchRaw = denormSearch(seaArr, searchRaw);
+  crossRaw = (crossKind==='map') ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
+  renderAllTrees(); setCounts(); undoStack.push(steps); qs('#undoBtn').disabled=false; qs('#redoBtn').disabled=!redoStack.length; saveSession(); toast('Redo','ok'); }
 
-  els.uploadStatus.innerHTML = `<span class="status ok">${added}</span> Markdown file(s) appended. Download JSONs or use Validate & Commit.`;
-  setCounts();
-
-  // refresh preview panes
-  els.reg.textContent  = JSON.stringify(denormalizeRegistry(registryArr, registryRaw), null, 2);
-  els.srch.textContent = JSON.stringify(denormalizeSearch(searchArr,  searchRaw), null, 2);
-  const crossOut = (crossKind === 'map') ? (crossMap || {}) : denormalizeCross(crossObj);
-  els.xln.textContent  = JSON.stringify(crossOut, null, 2);
+/* =============== Session persistence of pending =============== */
+function saveSession(){
+  try {
+    const payload = { regArr, seaArr, crossKind, crossMap, crossObj, pending:true };
+    sessionStorage.setItem(storeKey, JSON.stringify(payload));
+  } catch {}
+}
+function persistPending(steps){ saveSession(); }
+function restorePending(){
+  try{
+    const raw = sessionStorage.getItem(storeKey); if (!raw) return;
+    const s = JSON.parse(raw); if (!s?.pending) return;
+    // NOTE: we simply replace arrays with session arrays (safe because we only append)
+    regArr = s.regArr || regArr; seaArr = s.seaArr || seaArr; crossKind = s.crossKind || crossKind;
+    crossMap = s.crossMap || crossMap; crossObj = s.crossObj || crossObj;
+    registryRaw = denormRegistry(regArr, registryRaw); searchRaw = denormSearch(seaArr, searchRaw);
+    crossRaw = (crossKind==='map') ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
+    toast('Restored pending changes from previous session','warn');
+  } catch {}
 }
 
-/* ------------------------------
-   Validate & Commit buttons
---------------------------------*/
-async function validateMerged() {
-  const merged = buildMerged();
-  const r = await fetch('/api/kb/validate', {
-    method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(merged)
-  });
-  const j = await r.json();
-  els.apiLog.textContent = JSON.stringify(j, null, 2);
-  alert(j.ok ? 'Validation OK (see log for warnings)' : 'Schema validation failed — see log');
+/* =============== Validate / Commit / Health =============== */
+function mergedPayload(){ return { registry: registryRaw, search: searchRaw, cross: crossRaw }; }
+
+async function validateSchemas(){
+  const payload = mergedPayload();
+  beacon('validate_click', { counts: {r: regArr.length, s: seaArr.length } });
+  const r = await fetch('/api/kb/validate', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload) });
+  const j = await r.json().catch(()=>({ok:false,error:'bad_json'}));
+  if (!r.ok || !j.ok){
+    qs('#commitOut').innerHTML = `<div class="badge err">Schema validation failed</div>
+      <div class="small">${(j.errors||[]).slice(0,3).map(e=>escapeHtml(JSON.stringify(e))).join('<br>')}</div>`;
+    toast('Schema validation failed','err');
+  } else {
+    qs('#commitOut').innerHTML = `<div class="badge ok">Validation OK</div>
+      <div class="small">registry:${j.counts?.registry_items||0} • search:${j.counts?.search_docs||0}</div>`;
+    toast('Validation OK','ok');
+  }
 }
 
-async function commitMerged() {
-  const merged = buildMerged();
-  merged.message = document.getElementById('commitMsg').value || 'KB: ingest';
-  const key = document.getElementById('kbKey').value || '';
+async function commitAll(){
+  const payload = mergedPayload();
+  const key = qs('#kbKey').value || '';
+  const message = qs('#commitMsg').value || 'KB: ingest';
+  beacon('commit_click', { msgLen: message.length });
+
   const r = await fetch('/api/kb/commit', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-kb-key': key },
-    body: JSON.stringify(merged)
+    method:'POST',
+    headers:{ 'content-type':'application/json', 'x-kb-key': key, 'x-roi-rate': '120' },
+    body: JSON.stringify({ ...payload, message })
   });
+  const j = await r.json().catch(()=>({ok:false,error:'bad_json'}));
+  if (!r.ok || !j.ok){
+    const filesMap = {
+      'registry.json': JSON.stringify(registryRaw,null,2),
+      'search.json': JSON.stringify(searchRaw,null,2),
+      'cross_links.json': JSON.stringify(crossRaw,null,2)
+    };
+    qs('#commitOut').innerHTML = `<div class="badge err">Commit failed</div>
+      <div class="small">You can download pending JSONs and commit manually.</div>`;
+    qs('#dlZip').disabled=false;
+    qs('#dlZip').onclick = ()=> downloadZip(filesMap);
+    toast('Commit failed — pending available for download','err');
+    return;
+  }
+  // Success
+  const cid = j.correlationId || '';
+  const roi = j.stats?.roi?.value_usd_est != null ? j.stats.roi.value_usd_est : null;
+  const blocks = j.stats?.roi?.blocks_added || 0;
+  qs('#commitOut').innerHTML = `
+    <div class="badge ok">Committed</div>
+    <div class="small">correlationId: <span class="hint" style="cursor:pointer" title="Click to copy" id="cid">${cid||'—'}</span></div>
+    <div class="small">Δ registry:${j.stats?.delta?.registry_items||0} • Δ search:${j.stats?.delta?.search_docs||0} • Δ edges:${j.stats?.delta?.edges||0}</div>
+    <div class="small">ROI: ${blocks} blocks ≈ $${roi ?? '—'}</div>`;
+  const cidEl = qs('#cid'); if (cidEl && cid) cidEl.onclick = async ()=>{ await navigator.clipboard.writeText(cid); toast('Correlation ID copied','ok'); };
+  toast('Committed to GitHub','ok');
+  // Clear session pending
+  sessionStorage.removeItem(storeKey);
+  undoStack.length=0; redoStack.length=0; qs('#undoBtn').disabled=true; qs('#redoBtn').disabled=true;
+}
+
+async function runHealth(){
+  beacon('health_checked',{});
+  const t0=ts();
+  const r = await fetch('/api/kb/health');
+  if (!r.ok){ toast('Health check failed','err'); return; }
   const j = await r.json();
-  els.apiLog.textContent = JSON.stringify(j, null, 2);
-  alert(r.ok ? 'Committed to GitHub ✔' : 'Commit failed — see log');
+  qs('#kpiReg').innerText = j.counts?.registry_items ?? '—';
+  qs('#kpiSearch').innerText = j.counts?.search_docs ?? '—';
+  qs('#kpiEdges').innerText = j.counts?.edges ?? '—';
+  qs('#kpiTags').innerText = j.counts?.unique_tags ?? '—';
+  qs('#kpiUnres').innerText = j.counts?.unresolved_edges ?? '—';
+  qs('#badgeSize').className = 'badge ' + (j.health?.size_ok ? 'ok' : 'warn'); qs('#badgeSize').innerText = j.health?.size_ok ? 'size OK' : 'size WARN';
+  qs('#badgeGraph').className = 'badge ' + (j.health?.graph_ok ? 'ok' : 'warn'); qs('#badgeGraph').innerText = j.health?.graph_ok ? 'graph OK' : 'graph WARN';
+  qs('#healthMs').innerText = `${j.elapsed_ms|| (ts()-t0)} ms`;
+  drawSparklines();
 }
 
-/* ------------------------------
-   Wire UI + boot
---------------------------------*/
-document.getElementById('reloadBtn').addEventListener('click', loadAll);
-document.getElementById('btnValidate').addEventListener('click', validateMerged);
-document.getElementById('btnCommit').addEventListener('click', commitMerged);
-
-// Drag & drop
-const dropEl = document.getElementById('drop');
-dropEl.addEventListener('dragover', (e) => { e.preventDefault(); dropEl.classList.add('drag'); });
-dropEl.addEventListener('dragleave', () => dropEl.classList.remove('drag'));
-dropEl.addEventListener('drop', (e) => { e.preventDefault(); dropEl.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
-document.getElementById('fileInput').addEventListener('change', (e) => handleFiles(e.target.files));
-
-// Download updated JSONs
-els.downloadRegistry.addEventListener('click', () => downloadJSON(denormalizeRegistry(registryArr, registryRaw), 'registry.json'));
-els.downloadSearch  .addEventListener('click', () => downloadJSON(denormalizeSearch (searchArr,  searchRaw),  'search.json'));
-els.downloadCross   .addEventListener('click', () => {
-  const out = (crossKind === 'map') ? (crossMap || {}) : denormalizeCross(crossObj);
-  downloadJSON(out, 'cross_links.json');
-});
-
-// Boot
-loadAll().catch(err => {
-  els.log.textContent = `Failed to load: ${err.message}\nCheck that /docs/*.json exist and Vercel rewrites are correct.`;
-});
-
-function beacon(type, extra = {}) {
-  return fetch('/api/kb/telemetry', {
-    method: 'POST',
-    headers: {'content-type':'application/json'},
-    body: JSON.stringify({ type, ...extra })
-  }).catch(()=>{});
+/* =============== Sparklines =============== */
+async function drawSparklines(){
+  try{
+    const r = await fetch(`${BASE}/kb_health_history.json?ts=${Date.now()}`);
+    if (!r.ok) return;
+    const hist = await r.json();
+    const docs = hist.map(h=>h.counts?.search_docs||0);
+    const edges = hist.map(h=>h.counts?.edges||0);
+    const roi = hist.map(h=>h.roi?.value_usd_est || 0);
+    spark(qs('#sparkGrowth'), [docs, edges]);
+    spark(qs('#sparkROI'), [roi]);
+  } catch {}
+}
+function spark(canvas, seriesArr){
+  const ctx = canvas.getContext('2d'); const W=canvas.width=canvas.clientWidth; const H=canvas.height=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  seriesArr.forEach((series, idx)=>{
+    const n = series.length; if (!n) return;
+    const min = Math.min(...series), max = Math.max(...series) || 1;
+    ctx.beginPath();
+    for (let i=0;i<n;i++){
+      const x = (i/(n-1||1))* (W-8) + 4;
+      const y = H - ((series[i]-min)/(max-min||1))*(H-8) - 4;
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = idx===0 ? '#E1BC56' : (idx===1 ? '#62b0ff' : '#a6a6a6');
+    ctx.stroke();
+  });
 }
 
-// fire on key actions
-document.getElementById('btnValidate').addEventListener('click', () => beacon('validate_click'));
-document.getElementById('btnCommit').addEventListener('click', () => beacon('commit_click'));
-document.getElementById('fileInput').addEventListener('change', (e) => beacon('upload_files', { files: e.target.files?.length || 0 }));
+/* =============== Search filters =============== */
+function filterAndRender(which){
+  const term = (which==='reg'? qs('#filterReg').value : qs('#filterSearch').value).toLowerCase().trim();
+  if (!term){ renderAllTrees(); return; }
+  const match = (it) => (String(it.title||'').toLowerCase().includes(term)
+                      || (Array.isArray(it.tags) && it.tags.some(t=>String(t).toLowerCase().includes(term))));
+  if (which==='reg'){
+    const arr = regArr.filter(match);
+    renderTree(qs('#paneReg'), denormRegistry(arr, {items:[]}), {expand:true, cap:200});
+  } else {
+    const arr = seaArr.filter(match);
+    renderTree(qs('#paneSearch'), denormSearch(arr, {docs:[]}), {expand:true, cap:200});
+  }
+}
 
+/* =============== Events =============== */
+qs('#reloadBtn').onclick = () => loadAll();
+qs('#fileInput').onchange = e => handleFiles(e.target.files);
+const drop = qs('#drop');
+drop.addEventListener('dragover', e=>{e.preventDefault(); drop.classList.add('drag');});
+drop.addEventListener('dragleave', ()=> drop.classList.remove('drag'));
+drop.addEventListener('drop', e=>{ e.preventDefault(); drop.classList.remove('drag'); handleFiles(e.dataTransfer.files);});
+qs('#undoBtn').onclick = undo; qs('#redoBtn').onclick = redo;
+qs('#dlReg').onclick = ()=> downloadJSON(registryRaw, 'registry.json');
+qs('#dlSearch').onclick = ()=> downloadJSON(searchRaw, 'search.json');
+qs('#dlCross').onclick = ()=> downloadJSON(crossRaw, 'cross_links.json');
+qs('#validateBtn').onclick = validateSchemas;
+qs('#commitBtn').onclick = commitAll;
+qs('#healthBtn').onclick = runHealth;
+qs('#dlStats').onclick = async()=>{ try{ const r=await fetch(`${BASE}/kb_stats.json`); if(!r.ok) return toast('kb_stats.json not found','warn'); const j=await r.json(); downloadJSON(j,'kb_stats.json'); }catch{} };
+qs('#expReg').onclick = ()=> renderTree(qs('#paneReg'), registryRaw, {expand:true,cap:500});
+qs('#expSearch').onclick = ()=> renderTree(qs('#paneSearch'), searchRaw, {expand:true,cap:500});
+qs('#expCross').onclick = ()=> renderTree(qs('#paneCross'), crossRaw, {expand:true,cap:500});
+qs('#filterReg').oninput = ()=> filterAndRender('reg');
+qs('#filterSearch').oninput = ()=> filterAndRender('search');
+
+document.addEventListener('keydown', e=>{
+  const k = e.key.toLowerCase();
+  if (['input','textarea'].includes((document.activeElement?.tagName||'').toLowerCase())) return;
+  if (k==='u'){ qs('#fileInput').focus(); e.preventDefault(); }
+  if (k==='v'){ validateSchemas(); e.preventDefault(); }
+  if (k==='c'){ commitAll(); e.preventDefault(); }
+  if (k==='h'){ runHealth(); e.preventDefault(); }
+  if (k==='z'){ undo(); e.preventDefault(); }
+  if (k==='y'){ redo(); e.preventDefault(); }
+  if (k==='r'){ loadAll(); e.preventDefault(); }
+});
+qs('#themeBtn').onclick = ()=>{
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur==='dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+};
+
+/* =============== Bootstrap =============== */
+(function initTheme(){
+  const saved = localStorage.getItem('theme'); if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+loadAll();
 </script>
 </body>
 </html>

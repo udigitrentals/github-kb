@@ -79,13 +79,17 @@ jobs:
             curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/docs/${f}" >/dev/null
           done
 
-  a11y:
-    needs: validate-kb
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
+a11y:
+  needs: validate-kb
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout
         uses: actions/checkout@v4
-      - name: Serve static site
-        run: npx http-server -p 5050 -c-1 . & sleep 2
-      - name: Run pa11y-ci (WCAG2AA, fail on serious+)
-        run: npx pa11y-ci "http://localhost:5050/index.html" --threshold 0
+
+    - name: Serve static site (index.html at repo root)
+      run: npx http-server -p 5050 -c-1 . & sleep 3
+
+    # Pa11y will auto-read .pa11yci.json from the repo root
+    - name: Run pa11y-ci (WCAG2AA, fail on serious+)
+      run: npx pa11y-ci@4.0.1 --threshold 0
