@@ -1,3 +1,14 @@
+“🔗 Canonical KB Endpoints”
+
+https://raw.githubusercontent.com/udigitrentals/github-kb/main/docs/registry.json
+
+https://raw.githubusercontent.com/udigitrentals/github-kb/main/docs/search.json
+
+https://raw.githubusercontent.com/udigitrentals/github-kb/main/docs/cross_links.json
+
+
+
+
 # U-Dig It KB — Cloudflare Pages Starter
 
 This starter lets you deploy your KB JSONs with clean headers and instant, cache-safe delivery.
