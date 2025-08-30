@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KB Health History (Rolling)",
+  "type": "array",
+  "items": { "$ref": "./kb_stats.schema.json" }
+}

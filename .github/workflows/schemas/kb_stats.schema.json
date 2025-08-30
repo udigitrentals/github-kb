@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KB Stats (Latest Snapshot)",
+  "type": "object",
+  "required": ["ts", "counts"],
+  "properties": {
+    "ts": { "type": "string", "minLength": 1 },
+    "updated_at": { "type": ["string", "null"] },
+    "counts": {
+      "type": "object",
+      "required": ["registry_items", "search_docs", "nodes", "edges", "unique_tags"],
+      "properties": {
+        "registry_items": { "type": "integer", "minimum": 0 },
+        "search_docs": { "type": "integer", "minimum": 0 },
+        "nodes": { "type": "integer", "minimum": 0 },
+        "edges": { "type": "integer", "minimum": 0 },
+        "unique_tags": { "type": "integer", "minimum": 0 },
+        "unresolved_edges": { "type": "integer", "minimum": 0 },
+        "orphans_est": { "type": ["integer", "null"], "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "sizes_kb": {
+      "type": "object",
+      "properties": {
+        "registry_kb": { "type": "integer", "minimum": 0 },
+        "search_kb": { "type": "integer", "minimum": 0 },
+        "cross_kb": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "pct_docs_with_content": { "type": "number", "minimum": 0, "maximum": 1 },
+        "pct_docs_with_attachments": { "type": "number", "minimum": 0, "maximum": 1 },
+        "pct_docs_with_tags": { "type": "number", "minimum": 0, "maximum": 1 },
+        "pct_docs_with_crosslinks": { "type": "number", "minimum": 0, "maximum": 1 },
+        "median_doc_age_days": { "type": ["number", "null"], "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "graph": {
+      "type": "object",
+      "properties": {
+        "avg_degree": { "type": ["number", "null"], "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "thresholds": {
+      "type": "object",
+      "properties": {
+        "search_max_kb": { "type": "integer", "minimum": 0 },
+        "registry_max_kb": { "type": "integer", "minimum": 0 },
+        "cross_max_kb": { "type": "integer", "minimum": 0 },
+        "unresolved_max": { "type": "integer", "minimum": 0 },
+        "orphans_max": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "delta": {
+      "type": "object",
+      "properties": {
+        "registry_items": { "type": "integer" },
+        "search_docs": { "type": "integer" },
+        "edges": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "roi": {
+      "type": "object",
+      "properties": {
+        "blocks_added": { "type": "integer", "minimum": 0 },
+        "saved_minutes_est": { "type": "number", "minimum": 0 },
+        "rate_usd_per_hour": { "type": "number", "minimum": 0 },
+        "value_usd_est": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "health": {
+      "type": "object",
+      "properties": {
+        "size_ok": { "type": "boolean" },
+        "graph_ok": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "notes": { "type": ["string", "null"] }
+  },
+  "additionalProperties": true
+}
