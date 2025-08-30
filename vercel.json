@@ -1,10 +1,4 @@
-{
-  "version": 2,
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "rewrites": [
-    { "source": "/ml/kb/(.*)", "destination": "/kb/$1" }
-  ]
-}
+{ "scripts": {
+  "build": "vite build",
+  "postbuild": "mkdir -p dist/kb && cp -R public/kb/. dist/kb/"
+}}
