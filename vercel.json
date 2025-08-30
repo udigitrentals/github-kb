@@ -1,18 +1,8 @@
 {
   "version": 2,
   "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/ml/kb/(.*)",
-      "destination": "/kb/$1"
-    }
+    { "src": "/ml/kb/(.*)", "dest": "/kb/$1" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
