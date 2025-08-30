@@ -1,18 +1,37 @@
 {
-  "kb-governance": [
-    "ci-guardrail",
-    "kb-search-synonyms",
-    "kb-versioning"
-  ],
-  "ci-guardrail": [
-    "kb-search-synonyms",
-    "kb-versioning"
-  ],
-  "kb-versioning": [
-    "kb-search-synonyms"
-  ],
-  "vMeta-Override-TaskGuard-JHA-v1": [
-    "vMeta-Governance-Automated-Wealth",
-    "vMeta-KB-Canonical-Mode"
+  "updated_at": "2025-08-30T04:25:07.302407Z",
+  "edges": [
+    {
+      "source": "vMeta-Override-TaskGuard-JHA-v1",
+      "target": "vMeta-KB-Canonical-Mode"
+    },
+    {
+      "source": "vMeta-Override-TaskGuard-JHA-v1",
+      "target": "vMeta-Governance-Automated-Wealth"
+    },
+    {
+      "source": "kb-governance",
+      "target": "kb-search-synonyms"
+    },
+    {
+      "source": "kb-governance",
+      "target": "kb-versioning"
+    },
+    {
+      "source": "kb-governance",
+      "target": "ci-guardrail"
+    },
+    {
+      "source": "ci-guardrail",
+      "target": "kb-search-synonyms"
+    },
+    {
+      "source": "ci-guardrail",
+      "target": "kb-versioning"
+    },
+    {
+      "source": "kb-versioning",
+      "target": "kb-search-synonyms"
+    }
   ]
 }
