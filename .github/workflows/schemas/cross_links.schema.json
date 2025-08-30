@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CrossLinks",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": ["string", "number"] },
+          "title": { "type": ["string", "null"] }
+        },
+        "required": ["id"],
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": { "type": ["string", "number"] },
+          "target": { "type": ["string", "number"] }
+        },
+        "required": ["source", "target"],
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

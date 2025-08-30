@@ -52,3 +52,5 @@ curl -s https://kb.udigit.ca/kb/registry.json | head -c 300 && echo
 ## Next steps
 - Replace placeholder JSON contents with your real merged KB outputs.
 - Commit and push. Cloudflare Pages redeploys automatically.
+
+![KB Mirror & Validate](https://github.com/udigitrentals/github-kb/actions/workflows/kb-validate.yml/badge.svg)
