@@ -1,14 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
+  "version": 3,
+  "rewrites": [
+    { "source": "/registry.json",    "destination": "/docs/registry.json" },
+    { "source": "/search.json",      "destination": "/docs/search.json" },
+    { "source": "/cross_links.json", "destination": "/docs/cross_links.json" },
 
+    { "source": "/kb/:path*",        "destination": "/docs/:path*" },
+    { "source": "/ml/kb/:path*",     "destination": "/docs/:path*" }
+  ],
   "headers": [
     {
-      "source": "/(kb|ml/kb)/(.*)\\.json",
+      "source": "/docs/(.*)\\.json",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
-        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+        { "key": "Content-Type",  "value": "application/json; charset=utf-8" }
       ]
     },
     {
@@ -16,17 +23,8 @@
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
-        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+        { "key": "Content-Type",  "value": "application/json; charset=utf-8" }
       ]
     }
-  ],
-
-  "rewrites": [
-    { "source": "/registry.json", "destination": "/kb/registry.json" },
-    { "source": "/search.json", "destination": "/kb/search.json" },
-    { "source": "/cross_links.json", "destination": "/kb/cross_links.json" },
-    { "source": "/ml/kb/:path*", "destination": "/kb/:path*" }
-
-    
   ]
 }
