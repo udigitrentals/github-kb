@@ -1,5 +1,7 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
+
   "headers": [
     {
       "source": "/(kb|ml/kb)/(.*)\\.json",
@@ -16,22 +18,18 @@
         { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
         { "key": "Content-Type", "value": "application/json; charset=utf-8" }
       ]
-    },
-    {
-      "source": "/kb/v1/(.*)\\.json",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800" },
-        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
-      ]
     }
   ],
-  "routes": [
-    { "src": "/registry.json", "dest": "/kb/registry.json" },
-    { "src": "/search.json", "dest": "/kb/search.json" },
-    { "src": "/cross_links.json", "dest": "/kb/cross_links.json" },
-    { "src": "/ml/kb/(.*)", "dest": "/kb/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+
+  "rewrites": [
+    { "source": "/registry.json", "destination": "/kb/registry.json" },
+    { "source": "/search.json", "destination": "/kb/search.json" },
+    { "source": "/cross_links.json", "destination": "/kb/cross_links.json" },
+    { "source": "/ml/kb/:path*", "destination": "/kb/:path*" }
+
+    /* Optional SPA fallback (uncomment if you want every unknown path to go to index.html)
+    ,{ "source": "/((?!kb/|registry\\.json|search\\.json|cross_links\\.json).*)",
+       "destination": "/index.html" }
+    */
   ]
 }
