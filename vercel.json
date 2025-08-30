@@ -1,17 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 3,
   "rewrites": [
     { "source": "/registry.json",    "destination": "/docs/registry.json" },
     { "source": "/search.json",      "destination": "/docs/search.json" },
     { "source": "/cross_links.json", "destination": "/docs/cross_links.json" },
-
     { "source": "/kb/:path*",        "destination": "/docs/:path*" },
     { "source": "/ml/kb/:path*",     "destination": "/docs/:path*" }
   ],
   "headers": [
     {
-      "source": "/docs/(.*)\\.json",
+      "source": "/(registry|search|cross_links)\\.json",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
@@ -19,7 +17,7 @@
       ]
     },
     {
-      "source": "/(registry|search|cross_links)\\.json",
+      "source": "/docs/(.*)\\.json",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" },
