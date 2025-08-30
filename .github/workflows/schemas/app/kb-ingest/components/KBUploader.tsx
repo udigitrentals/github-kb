@@ -86,3 +86,54 @@ export default function KBUploader() {
     </div>
   );
 }
+// inside KBUploader component, after setResult(...)
+const [commitMsg, setCommitMsg] = useState(`KB: ingest ${new Date().toISOString()}`);
+
+async function validateAndCommit() {
+  if (!result?.merged) return alert("Run Parse & Merge first.");
+  const payload = {
+    registry: result.merged.mergedRegistry,
+    search:   result.merged.mergedSearch,
+    cross:    result.merged.mergedXLinks,
+    message:  commitMsg
+  };
+
+  // 1) validate
+  const v = await fetch("/api/kb/validate", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload)
+  }).then(r=>r.json());
+
+  if (!v.ok) {
+    console.warn("Schema errors", v.errors);
+    return alert("Schema validation failed. See console for details.");
+  }
+
+  // 2) commit to GitHub (send shared key if set)
+  const res = await fetch("/api/kb/commit", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-kb-key": process.env.NEXT_PUBLIC_KB_KEY || ""
+    },
+    body: JSON.stringify(payload)
+  });
+  const j = await res.json();
+  if (!res.ok) return alert(`Commit failed: ${JSON.stringify(j)}`);
+  alert("Committed to GitHub ✔");
+}
+{result && (
+  <>
+    {/* ...existing previews... */}
+    <div style={{display:'flex', gap:8, alignItems:'center'}}>
+      <input
+        value={commitMsg}
+        onChange={e=>setCommitMsg(e.target.value)}
+        placeholder="Commit message"
+        style={{flex:1, padding:8, border:"1px solid #ddd", borderRadius:4}}
+      />
+      <button onClick={validateAndCommit}>Validate & Commit to GitHub</button>
+    </div>
+  </>
+)}
