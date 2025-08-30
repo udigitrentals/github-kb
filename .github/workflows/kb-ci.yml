@@ -5,34 +5,48 @@ on:
     branches: [ main ]
     paths:
       - 'docs/**'
+      - 'schemas/**'
       - 'scripts/**'
       - '.github/workflows/kb-ci.yml'
   pull_request:
     branches: [ main ]
     paths:
       - 'docs/**'
+      - 'schemas/**'
       - 'scripts/**'
 
 jobs:
   validate-kb:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install ajv-cli
+
+      - name: Install ajv-cli (Ajv v8)
         run: npm i -g ajv-cli@5
+
+      # ---- JSON Schema Validation (Ajv auto-detects draft via $schema) ----
       - name: Validate registry.json
-        run: ajv validate -s schemas/registry.schema.json -d docs/registry.json --spec=draft7
+        run: ajv validate -s schemas/registry.schema.json -d docs/registry.json
+
       - name: Validate cross_links.json
-        run: ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json --spec=draft7
+        run: ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json
+
       - name: Validate search.json
-        run: ajv validate -s schemas/search.schema.json -d docs/search.json --spec=draft7
-      - name: Check raw endpoints (HTTP 200)
+        run: ajv validate -s schemas/search.schema.json -d docs/search.json
+
+      # ---- RAW endpoints must be publicly fetchable (HTTP 200) ----
+      - name: Check RAW endpoints (HTTP 200)
+        shell: bash
         run: |
-          set -e
+          set -euxo pipefail
           for f in registry.json cross_links.json search.json; do
             curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/main/docs/${f}" >/dev/null
           done
-  
