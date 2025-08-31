@@ -6,7 +6,12 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "dev": "vercel dev --yes",
-    "build": "echo \"No build step\"",
+   {
+  "scripts": {
+    "build": "rm -rf public && mkdir -p public && cp -r docs/* public/"
+  }
+}
+
     "start": "node server.js",
     "ingest": "node scripts/ingest-and-commit.cjs --md",
     "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base https://YOUR-APP.vercel.app --origin https://YOUR-SITE"
