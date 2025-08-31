@@ -6,11 +6,10 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "dev": "vercel dev --yes",
-    "build": "powershell -NoProfile -Command \"Remove-Item -Recurse -Force public -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Force public; Copy-Item -Recurse docs/* public/\""
-
+    "build": "node -e \"const fs=require('fs'),p=require('path');const src='docs',dst='public';fs.rmSync(dst,{recursive:true,force:true});fs.mkdirSync(dst,{recursive:true});for(const f of fs.readdirSync(src)){fs.cpSync(p.join(src,f),p.join(dst,f),{recursive:true});}\"",
     "start": "node server.js",
     "ingest": "node scripts/ingest-and-commit.cjs --md",
-    "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base https://YOUR-APP.vercel.app --origin https://YOUR-SITE"
+    "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base"
   },
   "dependencies": {
     "ajv": "^8.12.0",
