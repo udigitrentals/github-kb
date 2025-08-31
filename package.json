@@ -6,11 +6,7 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "dev": "vercel dev --yes",
-   {
-  "scripts": {
-    "build": "rm -rf public && mkdir -p public && cp -r docs/* public/"
-  }
-}
+    "build": "powershell -NoProfile -Command \"Remove-Item -Recurse -Force public -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Force public; Copy-Item -Recurse docs/* public/\""
 
     "start": "node server.js",
     "ingest": "node scripts/ingest-and-commit.cjs --md",
