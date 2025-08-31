@@ -1,21 +1,18 @@
 {
   "name": "github-kb",
+  "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=18" },
   "scripts": {
-    "kb:fetch": "node scripts/kb_fetch_current.js",
-    "kb:merge": "node scripts/kb_sync_merge.js --in ./kb_current --delta ./kb_deltas --out ./kb_merged",
-    "kb:version": "node scripts/kb_write_versioned.js --version ${KB_VERSION:-1}",
-    "kb:build-bundle": "node scripts/kb_build_bundle.js --src ./docs --out ./bundle.json",
-    "kb:validate": "ajv validate -s schemas/registry.schema.json -d docs/registry.json && ajv validate -s schemas/cross_links.schema.json -d docs/cross_links.json && ajv validate -s schemas/search.schema.json -d docs/search.json"
+    "dev": "vercel dev --yes",
+    "build": "echo \"No build step\"",
+    "start": "node server.js",
+    "ingest": "node scripts/ingest-and-commit.cjs --md",
+    "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base https://YOUR-APP.vercel.app --origin https://YOUR-SITE"
   },
   "dependencies": {
-    "ajv": "^8.12.0"
-  },
-  "devDependencies": {
-    "ajv-cli": "^5.0.0"
+    "ajv": "^8.12.0",
+    "uuid": "^9.0.1"
   }
-  "scripts": {
-  "ingest": "node scripts/ingest-and-commit.cjs --md",
-  "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base https://YOUR-APP.vercel.app --origin https://YOUR-SITE"
-}
 }
