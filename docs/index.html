@@ -1,789 +1,230 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KB Live Viewer + Uploader (Enhanced)</title>
-  <meta name="description" content="Upload Markdown/ZIP, merge, validate (client or server), diff vs remote, visualize graph, and commit via API with local fallbacks." />
-
-  <!-- Optional libs (graceful fallback if blocked) -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/ajv@8/dist/ajv.min.js" defer></script>
-
-  <style>
-    :root {
-      --bg: #0b0b0b; --panel: #121212; --ink: #ececec; --muted: #a9a9a9;
-      --accent: #E1BC56; --cta: #C21C1C; --ok: #1f9d55; --warn: #d39e00; --err: #c0392b;
-      --radius: 12px; --border: #1e1e1e; --shadow: 0 10px 20px rgba(0,0,0,0.25);
-    }
-    [data-theme="light"] {
-      --bg: #f7f7f8; --panel: #ffffff; --ink: #1b1b1b; --muted: #5a5a5a;
-      --accent: #7a5c1c; --cta: #b21212; --border: #e7e7e7; --shadow: 0 8px 20px rgba(0,0,0,0.07);
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Roboto,Ubuntu,Inter,Arial}
-    a{color:var(--accent);text-decoration:none}
-    header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:18px 20px}
-    h1{margin:0;font-size:20px}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 10px;color:var(--muted);background:transparent}
-    .btn{background:var(--cta);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer}
-    .btn.secondary{background:#2a2a2a;color:var(--ink)}
-    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink)}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .grid3{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px;padding:0 20px 20px}
-    .grid2{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:16px;padding:0 20px 20px}
-    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
-    .card h3{margin:2px 0 10px}
-    .drop{border:2px dashed var(--border);border-radius:var(--radius);padding:18px;text-align:center;color:var(--muted)}
-    .drop.drag{border-color:var(--accent);color:var(--accent)}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--ink)}
-    .small{font-size:12px;color:var(--muted)}
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
-    .badge.ok{color:var(--ok);border-color:var(--ok)}
-    .badge.warn{color:var(--warn);border-color:var(--warn)}
-    .badge.err{color:var(--err);border-color:var(--err)}
-    .json-grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px;padding:0 20px 40px}
-    .json-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .json-pane{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-height:240px;max-height:420px;overflow:auto}
-    .json-raw{display:none}
-    .tree ul{list-style:none;margin:0;padding-left:18px}
-    .tree .item{cursor:default}
-    .tree .toggle{cursor:pointer;user-select:none;margin-right:6px;font-weight:700}
-    .skeleton{background:linear-gradient(90deg,#0000 0,#00000018 50%,#0000 100%);background-size:200% 100%;animation:sk 1.4s infinite}
-    @keyframes sk{to{background-position:-200% 0}}
-    footer{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:16px 20px;color:var(--muted);border-top:1px solid var(--border)}
-    .toast-wrap{position:fixed;top:16px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:9999}
-    .toast{padding:10px 12px;border-radius:10px;color:#fff}
-    .toast.ok{background:var(--ok)} .toast.warn{background:var(--warn)} .toast.err{background:var(--err)}
-    .kpi-row{display:flex;gap:8px;flex-wrap:wrap}
-    .kpi{min-width:120px;background:#0001;border:1px solid var(--border);border-radius:10px;padding:8px}
-    .kpi .v{font-weight:700;font-size:16px}
-    .hint{border-bottom:1px dotted var(--muted)}
-    .right{margin-left:auto}
-    .modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;z-index:9998}
-    .modal .inner{background:var(--panel);border:1px solid var(--border);border-radius:12px;width:min(1200px,96vw);height:min(760px,92vh);padding:10px;display:flex;flex-direction:column}
-    .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-    .fill{flex:1}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-    .hl{background:#E1BC5633}
-    .danger{color:#fff;background:#c0392b;border-color:#c0392b}
-    .success{color:#fff;background:#1f9d55;border-color:#1f9d55}
-    @media (max-width:1060px){.grid3,.json-grid,.grid2{grid-template-columns:1fr}}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>KB Live Viewer + Probe (Integrated)</title>
+<meta name="description" content="Load/diagnose KB (registry/search/cross_links), tolerant schemas, base/rawBase switching, and downloads."/>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
+<style>
+:root{--bg:#0b0b0b;--panel:#121212;--ink:#ececec;--muted:#a9a9a9;--accent:#E1BC56;--cta:#C21C1C;--ok:#1f9d55;--warn:#d39e00;--err:#c0392b;--radius:12px;--border:#1e1e1e;--shadow:0 10px 20px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,Segoe UI,Roboto,Arial;}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:#000;box-shadow:var(--shadow);position:sticky;top:0;z-index:5}
+h1{margin:0;font-size:18px;letter-spacing:.2px}
+small.muted{color:var(--muted)}
+.container{max-width:1200px;margin:20px auto;padding:0 16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.btn{background:var(--cta);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.btn.secondary{background:#232323}
+.btn.ghost{background:transparent;border:1px solid #333}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
+.badge.ok{background:rgba(31,157,85,.2);color:var(--ok)}
+.badge.err{background:rgba(192,57,43,.2);color:var(--err)}
+input,textarea{background:#0f0f0f;color:var(--ink);border:1px solid #2f2f2f;border-radius:10px;padding:9px 10px}
+code,pre{background:#0f0f0f;border:1px solid #2f2f2f;border-radius:10px;padding:10px;color:var(--accent)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #272727;text-align:left}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:12px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-top:8px}
+.hidden{display:none}
+footer{opacity:.6;text-align:center;padding:24px}
+</style>
 </head>
 <body>
-  <!-- Toasts -->
-  <div class="toast-wrap" id="toasts" aria-live="polite" aria-atomic="true" role="status"></div>
+<header>
+  <div>
+    <h1>KB Live Viewer <small class="muted">+ Integrated Probe</small></h1>
+  </div>
+  <div class="row">
+    <button class="btn secondary" id="theme">Theme</button>
+    <button class="btn ghost" id="reload">Reload</button>
+  </div>
+</header>
 
-  <header role="banner" aria-label="KB dashboard header">
-    <div class="row" aria-label="KB status">
-      <h1>KB Live Viewer</h1>
-
-      <span class="pill">Base: <span class="small mono" id="basePill">—</span></span>
-      <span class="pill small" id="countsPill" role="status" aria-live="polite">—</span>
+<div class="container">
+  <div class="card">
+    <div class="row">
+      <label>Local base&nbsp;<input id="base" placeholder="/docs" value="/docs"/></label>
+      <label>Raw base&nbsp;<input id="rawBase" placeholder="https://raw.githubusercontent.com/ORG/REPO/main/docs"/></label>
+      <button class="btn" id="apply">Apply</button>
+      <button class="btn ghost" id="clearCache">Clear cache</button>
+      <button class="btn ghost" id="probe">Run Probe</button>
+      <button class="btn" id="downloadAll">Download all JSONs</button>
     </div>
-
-    <div class="row" aria-label="KB actions">
-      <input id="globalSearch" class="input" placeholder="Global search (registry + search)…" style="width:280px" />
-      <button class="btn ghost" id="themeBtn" aria-label="Toggle theme">Theme</button>
-      <button class="btn secondary" id="reloadBtn" aria-keyshortcuts="R" title="Reload (R)">Reload</button>
-      <button class="btn ghost" id="graphBtn" title="Open cross-links graph">Graph</button>
-      <button class="btn ghost" id="diffBtn" title="Diff pending vs remote">Diff</button>
-      <button class="btn ghost" id="clearCacheBtn" title="Clear local/session + hard reload">Clear cache</button>
-      <button class="btn ghost" id="editModeBtn" title="Toggle raw JSON editors (E)">Edit Mode</button>
+    <div class="kv">
+      <div>Resolved:</div>
+      <div id="resolved">—</div>
+      <div>Status:</div>
+      <div id="status">Waiting…</div>
     </div>
-  </header>
+  </div>
 
-  <noscript>
-    <div style="padding:10px 20px">
-      <div class="card">
-        <h3>JavaScript disabled — fallback uploader</h3>
-        <p class="small">You can still upload a Markdown file and commit via the API.</p>
-        <form action="/api/kb/commit" method="POST">
-          <textarea name="search" hidden>{"docs":[{"title":"Paste title","content":"Paste content"}]}</textarea>
-          <input type="password" name="key" placeholder="KB_PROTECT_KEY" />
-          <button class="btn">Commit</button>
-        </form>
-        <p class="small">Direct data links:</p>
-        <ul>
-          <li><a href="/docs/registry.json" target="_blank">/docs/registry.json</a></li>
-          <li><a href="/docs/search.json" target="_blank">/docs/search.json</a></li>
-          <li><a href="/docs/cross_links.json" target="_blank">/docs/cross_links.json</a></li>
-        </ul>
-      </div>
+  <div class="grid">
+    <div class="card">
+      <h3>registry.json <span id="regStatus" class="badge">—</span></h3>
+      <div id="regCount">—</div>
+      <pre id="regPreview" class="hidden"></pre>
+      <button class="btn ghost" id="toggleReg">Toggle preview</button>
     </div>
-  </noscript>
-
-  <main class="grid3" id="top">
-    <!-- Upload & Append -->
-    <section class="card">
-      <h3>Upload & Append</h3>
-      <div id="drop" class="drop" tabindex="0" aria-label="Drop markdown/json/zip here">Drag & drop .md / .json / .zip here or use picker</div>
-      <div class="controls" style="margin-top:10px">
-        <input id="fileInput" class="input" type="file" accept=".md,.json,.zip,text/markdown,application/zip" multiple aria-label="Choose files" />
-        <button id="undoBtn" class="btn ghost" title="Undo (Z)" aria-keyshortcuts="Z" disabled>Undo</button>
-        <button id="redoBtn" class="btn ghost" title="Redo (Y)" aria-keyshortcuts="Y" disabled>Redo</button>
-      </div>
-      <div class="controls" style="margin-top:8px">
-        <button id="dlReg" class="btn secondary" disabled>Download updated registry.json</button>
-        <button id="dlSearch" class="btn secondary" disabled>Download updated search.json</button>
-        <button id="dlCross" class="btn secondary" disabled>Download updated cross_links.json</button>
-        <button id="dlZip" class="btn ghost right" disabled title="Download pending as ZIP (fallback to multiple)">Download pending</button>
-      </div>
-      <p id="uploadStatus" class="small" role="status" aria-live="polite"></p>
-      <div class="small">Tip: ZIP bundle can contain <b>/md/*.md</b> and/or JSONs named <b>registry.json</b>, <b>search.json</b>, <b>cross_links.json</b>.</div>
-    </section>
-
-    <!-- Debug & Diagnostics -->
-    <section class="card">
-      <h3>Debug & Diagnostics</h3>
-      <ul class="small" style="margin-top:0">
-        <li><a id="linkReg" href="/docs/registry.json" target="_blank">/docs/registry.json</a></li>
-        <li><a id="linkCross" href="/docs/cross_links.json" target="_blank">/docs/cross_links.json</a></li>
-        <li><a id="linkSearch" href="/docs/search.json" target="_blank">/docs/search.json</a></li>
-      </ul>
-      <details style="margin-bottom:8px" open>
-        <summary class="hint">Loader status</summary>
-        <pre id="log" class="small" style="max-height:140px;overflow:auto">Waiting…</pre>
-      </details>
-
-      <div class="row" style="margin-bottom:8px">
-        <button id="healthBtn" class="btn secondary" aria-keyshortcuts="H" title="Run Health Check (H)">Health Check</button>
-        <button id="dlStats" class="btn ghost" disabled>Download kb_stats.json</button>
-        <button id="checkLinksBtn" class="btn ghost">Broken links</button>
-        <button id="dedupeBtn" class="btn ghost">Dedupe titles/slugs</button>
-      </div>
-      <div class="kpi-row" id="kpis">
-        <div class="kpi"><div class="small">Registry items</div><div class="v" id="kpiReg">—</div></div>
-        <div class="kpi"><div class="small">Search docs</div><div class="v" id="kpiSearch">—</div></div>
-        <div class="kpi"><div class="small">Edges</div><div class="v" id="kpiEdges">—</div></div>
-        <div class="kpi"><div class="small">Tags</div><div class="v" id="kpiTags">—</div></div>
-        <div class="kpi"><div class="small">Unresolved</div><div class="v" id="kpiUnres">—</div></div>
-      </div>
-
-      <div class="row" style="margin-top:8px">
-        <span id="badgeSize" class="badge">size —</span>
-        <span id="badgeGraph" class="badge">graph —</span>
-        <span class="small right" id="healthMs"></span>
-      </div>
-
-      <div class="row" style="gap:12px;margin-top:10px">
-        <div style="flex:1">
-          <div class="small" style="margin-bottom:4px">KB growth (docs & edges)</div>
-          <canvas id="sparkGrowth" height="60" style="width:100%;border:1px solid var(--border);border-radius:10px"></canvas>
-        </div>
-        <div style="flex:1">
-          <div class="small" style="margin-bottom:4px">ROI trend ($/week)</div>
-          <canvas id="sparkROI" height="60" style="width:100%;border:1px solid var(--border);border-radius:10px"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- Validate & Commit -->
-    <section class="card">
-      <h3>Validate & Commit</h3>
-      <input id="commitMsg" class="input" placeholder="Commit message" />
-      <input id="kbKey" class="input" type="password" placeholder="Key (KB_PROTECT_KEY)" style="margin-top:8px" />
-      <div class="controls" style="margin-top:10px">
-        <button id="validateBtn" class="btn secondary" aria-keyshortcuts="V" title="Validate (V)">Validate (schemas)</button>
-        <button id="commitBtn" class="btn" aria-keyshortcuts="C" title="Validate & Commit (C)">Validate & Commit</button>
-        <button id="downloadAllBtn" class="btn ghost right">Download all JSONs</button>
-      </div>
-      <div id="commitOut" class="small" style="margin-top:10px"></div>
-    </section>
-  </main>
-
-  <!-- Search & JSON panes -->
-  <section class="json-grid">
-    <div>
-      <div class="json-head">
-        <div class="row"><h3 style="margin:0">registry.json</h3></div>
-        <div class="row">
-          <input id="filterReg" class="input" placeholder="Filter title/tag…" style="width:200px" />
-          <button class="btn ghost" id="expReg">Expand</button>
-          <button class="btn ghost" id="editRegBtn">Raw</button>
-          <button class="btn ghost danger" id="revertRegBtn" title="Revert to remote">Revert</button>
-        </div>
-      </div>
-      <div id="paneReg" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
-      <textarea id="rawReg" class="json-pane json-raw mono" spellcheck="false"></textarea>
+    <div class="card">
+      <h3>search.json <span id="sStatus" class="badge">—</span></h3>
+      <div id="sCount">—</div>
+      <pre id="sPreview" class="hidden"></pre>
+      <button class="btn ghost" id="toggleS">Toggle preview</button>
     </div>
-    <div>
-      <div class="json-head">
-        <div class="row"><h3 style="margin:0">cross_links.json</h3></div>
-        <div class="row">
-          <button class="btn ghost" id="expCross">Expand</button>
-          <button class="btn ghost" id="editCrossBtn">Raw</button>
-          <button class="btn ghost danger" id="revertCrossBtn" title="Revert to remote">Revert</button>
-        </div>
-      </div>
-      <div id="paneCross" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
-      <textarea id="rawCross" class="json-pane json-raw mono" spellcheck="false"></textarea>
+    <div class="card">
+      <h3>cross_links.json <span id="xStatus" class="badge">—</span></h3>
+      <div id="xCount">—</div>
+      <pre id="xPreview" class="hidden"></pre>
+      <button class="btn ghost" id="toggleX">Toggle preview</button>
     </div>
-    <div>
-      <div class="json-head">
-        <div class="row"><h3 style="margin:0">search.json</h3></div>
-        <div class="row">
-          <input id="filterSearch" class="input" placeholder="Filter title/tag…" style="width:200px" />
-          <button class="btn ghost" id="expSearch">Expand</button>
-          <button class="btn ghost" id="editSearchBtn">Raw</button>
-          <button class="btn ghost danger" id="revertSearchBtn" title="Revert to remote">Revert</button>
-        </div>
-      </div>
-      <div id="paneSearch" class="json-pane tree"><div class="skeleton" style="height:200px"></div></div>
-      <textarea id="rawSearch" class="json-pane json-raw mono" spellcheck="false"></textarea>
-    </div>
-  </section>
+  </div>
 
-  <section class="grid2">
-    <section class="card">
-      <h3>Global Results</h3>
-      <div id="globalResults" class="json-pane"></div>
-    </section>
-    <section class="card">
-      <h3>Diff (pending vs remote)</h3>
-      <div class="row">
-        <button class="btn ghost" id="refreshDiffBtn">Recompute diff</button>
-        <span id="diffSummary" class="small"></span>
-      </div>
-      <pre id="diffOut" class="json-pane mono" style="white-space:pre-wrap"></pre>
-    </section>
-  </section>
-
-  <footer>
-    <div class="small">Tip: add <span class="hint">?nosw=1</span> once to bypass any old Service Worker.</div>
-    <div class="small">Shortcuts: <b>U</b>pload • <b>V</b>alidate • <b>C</b>ommit • <b>H</b>ealth • <b>Z</b> Undo • <b>Y</b> Redo • <b>E</b> Edit Mode • <b>/</b> Search</div>
-  </footer>
-
-<!-- ===== Modals ===== -->
-<div id="graphModal" class="modal" role="dialog" aria-modal="true" aria-label="Cross-links graph">
-  <div class="inner">
-    <div class="toolbar">
-      <b>Graph</b>
-      <span class="small">Drag to pan, wheel to zoom</span>
-      <div class="fill"></div>
-      <button class="btn ghost" id="graphExportBtn">Export PNG</button>
-      <button class="btn secondary" id="graphCloseBtn">Close</button>
-    </div>
-    <canvas id="graphCanvas" style="width:100%;height:100%;border:1px solid var(--border);border-radius:12px"></canvas>
+  <div class="card">
+    <h3>Diagnostic Log</h3>
+    <pre id="log" style="max-height:320px;overflow:auto"></pre>
   </div>
 </div>
 
+<footer class="container">
+  <small>Tip: you can pass <code>?base=/docs&rawBase=https://raw.githubusercontent.com/udigitrentals/github-kb/main/docs</code></small>
+</footer>
+
 <script>
-/* =============== Utilities =============== */
-const qs = s => document.querySelector(s);
-const ce = (t,p={}) => Object.assign(document.createElement(t), p);
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
-const ts = () => Date.now();
-const idle = cb => (window.requestIdleCallback||setTimeout)(cb,1);
-const uuid = ()=>'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>((crypto.getRandomValues(new Uint8Array(1))[0]&15)|(c==='x'?0:8)).toString(16));
-const slugify = s => (s||'').toLowerCase().replace(/[`~!@#$%^&*()+=\\[\\]{}|\\\\'\";:.,<>/?]/g,'').replace(/\\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-function toast(msg, kind='ok'){ const t=ce('div',{className:'toast '+kind,innerText:msg}); qs('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4000); }
-function beacon(type, extra={}) { try { fetch('/api/kb/telemetry',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({type,ts:new Date().toISOString(),...extra})}).catch(()=>{});} catch {} }
-function downloadBlob(name, blob){ const url=URL.createObjectURL(blob); const a=ce('a',{href:url,download:name}); document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 1000); }
-function downloadJSON(obj, filename) { const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'}); downloadBlob(filename, blob); }
-async function downloadZip(filesMap){ if(window.JSZip){const zip=new JSZip(); for(const [n,c] of Object.entries(filesMap)) zip.file(n, typeof c==='string'?c:JSON.stringify(c,null,2)); const blob=await zip.generateAsync({type:'blob'}); downloadBlob('kb_pending.zip', blob);} else {Object.entries(filesMap).forEach(([n,c])=>downloadJSON(c,n));} }
-function escapeHtml(s){return s.replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',\"'\":'&#39;','\"':'&quot;'}[c]))}
+// ---------- Theme toggle (light/dark minimal) ----------
+document.getElementById('theme').onclick = () => {
+  document.body.classList.toggle('light');
+};
 
-/* =============== JSON tree (light) =============== */
-function renderTree(el, data, {expand=false, cap=250}={}) {
-  el.innerHTML = '';
-  const root = ce('ul'); el.appendChild(root);
-  function node(k,v,depth=0) {
-    const li = ce('li', {className:'item'});
-    const isObj = v && typeof v === 'object';
-    const isArr = Array.isArray(v);
-    const label = ce('span'); const toggle = ce('span',{className:'toggle',innerText: isObj?'▸':''});
-    if (isObj) { label.style.fontWeight='600'; label.innerText = (k!==null? `${k}:` : (isArr?'[ ]':'{ }')); }
-    else { label.innerHTML = `<span style="color:#a6a6a6">${k}:</span> ${escapeHtml(String(v))}`; }
-    const head = ce('div'); head.appendChild(toggle); head.appendChild(label); li.appendChild(head);
-    let child;
-    if (isObj) {
-      child = ce('ul', {style:'display:none'});
-      const entries = isArr ? v.slice(0,cap).map((val,i)=>[i,val]) : Object.entries(v).slice(0,cap);
-      for (const [ck,cv] of entries) child.appendChild(node(ck,cv, depth+1));
-      if ((isArr? v.length: Object.keys(v).length) > cap) { child.appendChild( ce('li',{innerHTML:`… <i>${(isArr? v.length: Object.keys(v).length)-cap} more</i>`}) ); }
-      li.appendChild(child);
-      const open = expand && depth<1;
-      if (open){ toggle.innerText='▾'; child.style.display='block'; }
-      toggle.onclick = () => { const open = child.style.display==='none'; child.style.display = open?'block':'none'; toggle.innerText = open?'▾':'▸'; };
-    }
-    return li;
-  }
-  root.appendChild(node(null, data, 0));
+// ---------- Params & inputs ----------
+const qs = new URLSearchParams(location.search);
+const baseInput = document.getElementById('base');
+const rawInput  = document.getElementById('rawBase');
+baseInput.value = qs.get('base') || localStorage.getItem('kb.base') || baseInput.value;
+rawInput.value  = qs.get('rawBase') || localStorage.getItem('kb.rawBase') || rawInput.value;
+document.getElementById('apply').onclick = () => {
+  localStorage.setItem('kb.base', baseInput.value);
+  localStorage.setItem('kb.rawBase', rawInput.value);
+  location.search = `?base=${encodeURIComponent(baseInput.value)}&rawBase=${encodeURIComponent(rawInput.value)}`;
+};
+document.getElementById('clearCache').onclick = () => { caches && caches.keys && caches.keys().then(keys=>keys.forEach(k=>caches.delete(k))); localStorage.clear(); alert('Cache cleared. Reloading.'); location.reload(); };
+document.getElementById('reload').onclick = () => location.reload();
+
+// ---------- Logging ----------
+const logEl = document.getElementById('log');
+function log(...args){ const s = args.map(a=>typeof a==='string'?a:JSON.stringify(a)).join(' '); logEl.textContent += s + "\n"; console.log(...args); }
+
+// ---------- Candidate URL builder ----------
+function candidates(base, raw, file){
+  const list = [];
+  if (base) list.push(`${base.replace(/\/$/,'')}/${file}`);
+  list.push(`/${file}`);
+  if (raw) list.push(`${raw.replace(/\/$/,'')}/${file}`);
+  return list;
 }
 
-/* =============== Normalization helpers =============== */
-function normRegistry(r){ if (Array.isArray(r)) return r; if (r?.items && Array.isArray(r.items)) return r.items; if (r?.registry && Array.isArray(r.registry)) return r.registry; return []; }
-function denormRegistry(arr, tmpl){ if (!tmpl || Array.isArray(tmpl)) return arr; if (tmpl.items) return {...tmpl, items: arr}; if (tmpl.registry) return {...tmpl, registry: arr}; return arr; }
-function normSearch(s){ if (Array.isArray(s)) return s; if (s?.docs && Array.isArray(s.docs)) return s.docs; if (s?.items && Array.isArray(s.items)) return s.items; return []; }
-function denormSearch(arr, tmpl){ if (!tmpl || Array.isArray(tmpl)) return arr; if (tmpl.docs) return {...tmpl, docs: arr}; if (tmpl.items) return {...tmpl, items: arr}; return arr; }
-function parseCross(raw){ if (!raw) return {kind:'graph', nodes:[], edges:[], map:null}; if (Array.isArray(raw.nodes) || Array.isArray(raw.edges)) return {kind:'graph', nodes: raw.nodes||[], edges: raw.edges||[], map:null}; if (raw.graph) return {kind:'graph', nodes: raw.graph.nodes||[], edges: raw.graph.edges||[], map:null}; const vals = Object.values(raw||{}); const map = vals.length && vals.every(v=>v && typeof v==='object' && Array.isArray(v.neighbors)) ? raw : null; return map ? {kind:'map', nodes:[], edges:[], map} : {kind:'graph', nodes:[], edges:[], map:null}; }
-function denormCross(obj, rawTmpl, kind, map) { if (kind==='map') return map || {}; if (rawTmpl?.graph) return {...rawTmpl, graph:{...rawTmpl.graph, nodes: obj.nodes, edges: obj.edges}}; if (Array.isArray(rawTmpl?.nodes) || Array.isArray(rawTmpl?.edges)) return {...rawTmpl, nodes: obj.nodes, edges: obj.edges}; return obj; }
+// ---------- Normalizers ----------
+function normSearch(j){ if (Array.isArray(j)) return j; if (j && typeof j==='object') return j.items||j.docs||j.search||j.results||j.index||[]; return []; }
+function normReg(j){ if (Array.isArray(j)) return j; if (j && typeof j==='object') return j.registry||j.items||j.docs||[]; return []; }
+function normX(j){ if (Array.isArray(j)) return {edges:j}; if (j && typeof j==='object'){ if (Array.isArray(j.edges)) return {edges:j.edges}; if (j.graph && Array.isArray(j.graph.edges)) return {edges:j.graph.edges}; if (Array.isArray(j.links)) return {edges:j.links}; if (Array.isArray(j.relations)) return {edges:j.relations}; } return {edges:[]}; }
 
-/* =============== State =============== */
-let BASE = '/docs';
-let registryRaw=null, searchRaw=null, crossRaw=null;
-let regArr=[], seaArr=[], crossObj={nodes:[],edges:[]}, crossKind='graph', crossMap=null;
-let undoStack=[], redoStack=[];
-const storeKey = 'kb_pending_append_v2';
-let remoteSnapshots = { registry:null, search:null, cross:null };
-
-/* =============== Load pipeline =============== */
-async function tryLoad(base){
-  const to = p => `${base}/${p}?ts=${Date.now()}${location.search.includes('nosw=1') ? '&nosw=1':''}`;
-  const [r,s,x] = await Promise.all([fetch(to('registry.json')), fetch(to('search.json')), fetch(to('cross_links.json'))]);
-  if (!r.ok || !s.ok || !x.ok) throw new Error(`failed: ${r.status}/${s.status}/${x.status}`);
-  const jsons = { reg: await r.json(), sea: await s.json(), xln: await x.json(), base };
-  // Keep remote snapshots for diff/revert
-  remoteSnapshots.registry = JSON.parse(JSON.stringify(jsons.reg));
-  remoteSnapshots.search   = JSON.parse(JSON.stringify(jsons.sea));
-  remoteSnapshots.cross    = JSON.parse(JSON.stringify(jsons.xln));
-  return jsons;
-}
-async function loadAll(){
-  qs('#log').textContent='Loading…';
-  try {
-    let loaded = null;
-    for (const b of ['/docs','/kb','/ml/kb']) { try { loaded = await tryLoad(b); if (loaded) break; } catch {} }
-    if (!loaded) throw new Error('Could not load from /docs, /kb, or /ml/kb.');
-    BASE = loaded.base;
-    registryRaw = loaded.reg; searchRaw = loaded.sea; crossRaw = loaded.xln;
-    regArr = normRegistry(registryRaw);
-    seaArr = normSearch(searchRaw);
-    const parsed = parseCross(crossRaw); crossKind=parsed.kind;
-    if (crossKind==='map'){ crossMap = JSON.parse(JSON.stringify(parsed.map||{})); crossObj={nodes:[],edges:[]}; }
-    else { crossObj = {nodes: parsed.nodes, edges: parsed.edges}; crossMap=null; }
-    restorePending();
-    qs('#basePill').innerText = BASE;
-    qs('#linkReg').href = `${BASE}/registry.json`; qs('#linkSearch').href = `${BASE}/search.json`; qs('#linkCross').href = `${BASE}/cross_links.json`;
-    setCounts(); renderAllTrees();
-    [qs('#dlReg'),qs('#dlSearch'),qs('#dlCross'),qs('#dlZip'),qs('#dlStats')].forEach(b=>b.disabled=false);
-    qs('#log').textContent = `Loaded from ${BASE}.`;
-    recomputeDiff();
-    beacon('viewer_loaded', { base: BASE });
-  } catch (e) { qs('#log').textContent = 'Error: '+ e.message; toast('Failed to load KB JSONs', 'err'); }
-}
-
-/* =============== Counts & rendering =============== */
-function setCounts(){
-  const nodesCount = crossKind==='map' ? Object.keys(crossMap||{}).length : (crossObj.nodes||[]).length;
-  qs('#countsPill').innerText = `registry: ${regArr.length} • search: ${seaArr.length} • nodes: ${nodesCount}`;
-  qs('#kpiReg').innerText = regArr.length; qs('#kpiSearch').innerText = seaArr.length;
-  const eCnt = crossKind==='map' ? Object.values(crossMap||{}).reduce((a,v)=>a+((v.neighbors||[]).length),0) : (crossObj.edges||[]).length;
-  qs('#kpiEdges').innerText = eCnt;
-  const tags = new Set(); seaArr.forEach(d=>Array.isArray(d.tags)&&d.tags.forEach(t=>tags.add(String(t).toLowerCase()))); qs('#kpiTags').innerText = tags.size;
-  const unres = (crossObj.edges||[]).filter(e=>!e?.source||!e?.target).length; qs('#kpiUnres').innerText = unres;
-}
-function renderAllTrees(){ idle(()=>renderTree(qs('#paneReg'), registryRaw, {expand:false,cap:300})); idle(()=>renderTree(qs('#paneSearch'), searchRaw, {expand:false,cap:200})); idle(()=>renderTree(qs('#paneCross'), crossRaw, {expand:false,cap:200})); updateRawEditors(); }
-
-/* =============== Upload & append =============== */
-function extractTitle(md,fallback) { const m = md.match(/^\\s*#\\s+(.+?)\\s*$/m) || md.match(/^\\s*(.+)\\n=+\\s*$/m); return (m && m[1]) ? m[1].trim() : fallback.replace(/\\.[^/.]+$/,''); }
-function tokenizeForSearch(md){ return md.toLowerCase().replace(/[`*_>#\\-]/g,' ').replace(/[^\\w\\s]/g,' ').replace(/\\s+/g,' ').trim(); }
-function ensureUniqueSlug(base){ let slug = base, i=2; const taken = new Set(regArr.map(it=>String(it.slug||it.path||'').toLowerCase())); while (taken.has(slug) || regArr.some(it=>String(it.title||'').toLowerCase()===slug)) slug = `${base}-${i++}`; return slug; }
-async function handleFiles(fileList){
-  const files = Array.from(fileList);
-  if (!files.length){ toast('No files detected','warn'); return; }
-  const t0=ts(); let added=0; const steps=[];
-  for (const f of files){
-    const name = f.name.toLowerCase();
-    if (name.endsWith('.zip') && window.JSZip){
-      const zip = await JSZip.loadAsync(await f.arrayBuffer());
-      const mdEntries = []; const jsonEntries = {};
-      await Promise.all(Object.keys(zip.files).map(async path=>{
-        const ent = zip.files[path]; if (ent.dir) return;
-        if (path.toLowerCase().endsWith('.md')){ const text = await ent.async('text'); mdEntries.push({name:path.split('/').pop(), text}); }
-        if (path.toLowerCase().endsWith('registry.json')) jsonEntries.registry = JSON.parse(await ent.async('text'));
-        if (path.toLowerCase().endsWith('search.json'))   jsonEntries.search   = JSON.parse(await ent.async('text'));
-        if (path.toLowerCase().endsWith('cross_links.json')) jsonEntries.cross = JSON.parse(await ent.async('text'));
-      }));
-      if (jsonEntries.registry){ registryRaw = jsonEntries.registry; regArr = normRegistry(registryRaw); }
-      if (jsonEntries.search){ searchRaw = jsonEntries.search; seaArr = normSearch(searchRaw); }
-      if (jsonEntries.cross){ crossRaw = jsonEntries.cross; const parsed=parseCross(crossRaw); crossKind=parsed.kind; crossMap=parsed.map||null; crossObj={nodes:parsed.nodes||[],edges:parsed.edges||[]}; }
-      for (const {name:textName, text} of mdEntries){
-        const title = extractTitle(text, textName);
-        let slug = ensureUniqueSlug(slugify(title||textName)); const id=uuid(); const when=new Date().toISOString(); const path = `/docs/md/${slug}.md`;
-        const regItem = { id, title, slug, path, tags: [], created_at: when }; regArr.push(regItem);
-        const searchItem = { id, title, content: text, tokens: tokenizeForSearch(text), tags: [], created_at: when }; seaArr.push(searchItem);
-        if (crossKind==='map'){ if (!crossMap) crossMap={}; crossMap[path]={neighbors:[]}; }
-        else { (crossObj.nodes||[]).push({ id, title, slug, path }); }
-        steps.push({type:'add', regItem, searchItem, path});
-        added++;
-      }
-      continue;
-    }
-    if (name.endsWith('.json')){
-      const text = await f.text(); const obj = JSON.parse(text);
-      if (name.includes('registry')){ registryRaw=obj; regArr=normRegistry(obj); }
-      else if (name.includes('search')){ searchRaw=obj; seaArr=normSearch(obj); }
-      else if (name.includes('cross')){ crossRaw=obj; const parsed=parseCross(obj); crossKind=parsed.kind; crossMap=parsed.map||null; crossObj={nodes:parsed.nodes||[],edges:parsed.edges||[]}; }
-      added++; continue;
-    }
-    if (name.endsWith('.md')){
-      const text = await f.text(); const title = extractTitle(text, f.name);
-      let slug = ensureUniqueSlug(slugify(title||f.name)); const id=uuid(); const when=new Date().toISOString(); const path = `/docs/md/${slug}.md`;
-      const regItem = { id, title, slug, path, tags: [], created_at: when }; regArr.push(regItem);
-      const searchItem = { id, title, content: text, tokens: tokenizeForSearch(text), tags: [], created_at: when }; seaArr.push(searchItem);
-      if (crossKind==='map'){ if (!crossMap) crossMap={}; crossMap[path]={neighbors:[]}; }
-      else { (crossObj.nodes||[]).push({ id, title, slug, path }); }
-      steps.push({type:'add', regItem, searchItem, path}); added++;
-    }
-  }
-  pushUndo(steps);
-  persistPending();
-  setCounts();
-  registryRaw = denormRegistry(regArr, registryRaw);
-  searchRaw = denormSearch(seaArr, searchRaw);
-  const crossOut = crossKind==='map' ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
-  crossRaw = crossOut;
-  renderAllTrees();
-  const dur = ts()-t0;
-  qs('#uploadStatus').innerHTML = `<span class="badge ok">+${added} item(s)</span> processed in ${dur}ms.`;
-  toast(`Processed ${added} file(s)`, 'ok');
-  recomputeDiff();
-}
-function pushUndo(steps){ if(!steps?.length) return; undoStack.push(steps); qs('#undoBtn').disabled = !undoStack.length; redoStack.length=0; qs('#redoBtn').disabled=true; }
-function applySteps(steps, reverse=false){
-  for (const s of steps){
-    const { regItem, searchItem, path } = s;
-    if (reverse){ const ri = regArr.findIndex(x=>x.id===regItem.id); if (ri>=0) regArr.splice(ri,1); const si = seaArr.findIndex(x=>x.id===searchItem.id); if (si>=0) seaArr.splice(si,1); if (crossKind==='map'){ if (crossMap?.[path]) delete crossMap[path]; } else { const ni = (crossObj.nodes||[]).findIndex(n=>n.id===regItem.id); if (ni>=0) crossObj.nodes.splice(ni,1); crossObj.edges = (crossObj.edges||[]).filter(e=>e.source!==regItem.id && e.target!==regItem.id); } }
-  }
-  registryRaw = denormRegistry(regArr, registryRaw); searchRaw = denormSearch(seaArr, searchRaw);
-  crossRaw = (crossKind==='map') ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap);
-  renderAllTrees(); setCounts();
-}
-function undo(){ const steps = undoStack.pop(); if (!steps) return; applySteps(steps, true); redoStack.push(steps); qs('#redoBtn').disabled=false; qs('#undoBtn').disabled=!undoStack.length; saveSession(); toast('Undo', 'warn'); recomputeDiff(); }
-function redo(){ const steps = redoStack.pop(); if (!steps) return; for (const s of steps){ regArr.push(s.regItem); seaArr.push(s.searchItem); if (crossKind==='map'){ if (!crossMap) crossMap={}; crossMap[s.path]={neighbors:[]}; } else (crossObj.nodes||[]).push({id:s.regItem.id,title:s.regItem.title,slug:s.regItem.slug,path:s.path}); } registryRaw = denormRegistry(regArr, registryRaw); searchRaw = denormSearch(seaArr, searchRaw); crossRaw = (crossKind==='map') ? crossMap : denormCross(crossObj, crossRaw, crossKind, crossMap); renderAllTrees(); setCounts(); undoStack.push(steps); qs('#undoBtn').disabled=false; qs('#redoBtn').disabled=!redoStack.length; saveSession(); toast('Redo','ok'); recomputeDiff(); }
-
-/* =============== Session persistence of pending =============== */
-function saveSession(){ try { const payload = { registryRaw, searchRaw, crossRaw, regArr, seaArr, crossKind, crossMap, crossObj, pending:true }; sessionStorage.setItem(storeKey, JSON.stringify(payload)); } catch {} }
-function persistPending(){ saveSession(); }
-function restorePending(){ try{ const raw = sessionStorage.getItem(storeKey); if (!raw) return; const s = JSON.parse(raw); if (!s?.pending) return; registryRaw=s.registryRaw||registryRaw; searchRaw=s.searchRaw||searchRaw; crossRaw=s.crossRaw||crossRaw; regArr = s.regArr || regArr; seaArr = s.seaArr || seaArr; crossKind = s.crossKind || crossKind; crossMap = s.crossMap || crossMap; crossObj = s.crossObj || crossObj; toast('Restored pending changes','warn'); } catch {} }
-
-/* =============== Validate / Commit / Health =============== */
-function mergedPayload(){ return { registry: registryRaw, search: searchRaw, cross: crossRaw }; }
-
-let schemas = null;
-async function loadSchemas(){
-  if (schemas) return schemas;
-  const base = `${BASE}/schemas`;
-  const tryFetch = async (p)=>{ try{ const r = await fetch(`${base}/${p}?ts=${Date.now()}`); return r.ok? await r.json():null; } catch { return null; } };
-  schemas = {
-    registry: await tryFetch('registry.schema.json'),
-    search:   await tryFetch('search.schema.json'),
-    cross:    await tryFetch('cross_links.schema.json')
-  };
-  return schemas;
-}
-async function validateClientSide(){
-  try{
-    await loadSchemas();
-    if (!window.ajv || !schemas?.registry){ throw new Error('AJV or schemas unavailable'); }
-    const Ajv = window.ajv.default || window.ajv; // cdn may expose global ajv
-    const ajv = new Ajv({allErrors:true, strict:false});
-    const v1 = ajv.compile(schemas.registry); const v2 = ajv.compile(schemas.search); const v3 = ajv.compile(schemas.cross);
-    const ok1 = v1(registryRaw); const ok2 = v2(searchRaw); const ok3 = v3(crossRaw);
-    const errors = [...(v1.errors||[]),(v2.errors||[]),(v3.errors||[])];
-    return { ok: ok1 && ok2 && ok3, errors };
-  } catch(e){ return { ok:false, errors:[String(e.message||e)] }; }
-}
-async function validateSchemas(){
-  const payload = mergedPayload();
-  beacon('validate_click', { counts: {r: regArr.length, s: seaArr.length } });
-  // Try local first, then server
-  let j = await validateClientSide();
-  if (!j.ok){
+// ---------- Fetch with fallbacks ----------
+async function fetchOne(url){ const t0=performance.now(); const res = await fetch(url,{cache:'no-store'}); const txt = await res.text(); if(!res.ok) throw new Error(`HTTP ${res.status}: ${txt.slice(0,120)}`); let j; try{ j = JSON.parse(txt); }catch(e){ throw new Error(`Parse error: ${e.message}. First 200: ${txt.slice(0,200)}`); } return { j, ms:(performance.now()-t0).toFixed(1) }; }
+async function getJson(name, file, base, raw){
+  const urls = candidates(base, raw, file);
+  let lastErr = null;
+  for(const u of urls){
     try{
-      const r = await fetch('/api/kb/validate', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload) });
-      j = await r.json().catch(()=>({ok:false,error:'bad_json'}));
-    } catch {}
+      log('Trying', name, '→', u);
+      const {j, ms} = await fetchOne(u);
+      log('OK', name, '@', u, `${ms}ms`);
+      return { url:u, json:j };
+    }catch(e){ lastErr = e; log('FAIL', name, '@', u, String(e)); }
   }
-  if (!j.ok){
-    qs('#commitOut').innerHTML = `<div class="badge err">Validation failed</div>
-      <div class="small">${(j.errors||[]).slice(0,5).map(e=>escapeHtml(typeof e==='string'?e:JSON.stringify(e))).join('<br>')}</div>`;
-    toast('Validation failed','err');
-  } else {
-    qs('#commitOut').innerHTML = `<div class="badge ok">Validation OK</div>
-      <div class="small">registry:${regArr.length} • search:${seaArr.length}</div>`;
-    toast('Validation OK','ok');
-  }
+  throw new Error(`Could not load ${name}: ${lastErr}`);
 }
-async function commitAll(){
-  const payload = mergedPayload();
-  const key = qs('#kbKey').value || '';
-  const message = qs('#commitMsg').value || 'KB: ingest';
-  beacon('commit_click', { msgLen: message.length });
-  // Validate first
-  const val = await validateClientSide();
-  if (!val.ok){ toast('Local validation failed — attempting server-side', 'warn'); }
-  async function tryEndpoint(url){
-    try{
-      const r = await fetch(url, { method:'POST', headers:{ 'content-type':'application/json', 'x-kb-key': key, 'x-roi-rate': '120' }, body: JSON.stringify({ ...payload, message }) });
-      if (!r.ok) return null; const j = await r.json(); return j?.ok ? j : null;
-    }catch{return null;}
-  }
-  let j = await tryEndpoint('/api/kb/commit');
-  if (!j) j = await tryEndpoint('/api/commit'); // fallback route
-  if (!j){
-    const filesMap = { 'registry.json': registryRaw, 'search.json': searchRaw, 'cross_links.json': crossRaw };
-    qs('#commitOut').innerHTML = `<div class="badge err">Commit failed</div>
-      <div class="small">Download pending JSONs or open GitHub to upload.</div>
-      <div class="small"><a href="https://github.com/" target="_blank">Open GitHub</a></div>`;
-    qs('#dlZip').disabled=false; qs('#dlZip').onclick = ()=> downloadZip(filesMap);
-    toast('Commit failed — pending available for download','err'); return;
-  }
-  const cid = j.correlationId || ''; const roi = j.stats?.roi?.value_usd_est ?? '—'; const blocks = j.stats?.roi?.blocks_added || 0;
-  qs('#commitOut').innerHTML = `<div class="badge ok">Committed</div>
-    <div class="small">correlationId: <span class="hint" style="cursor:pointer" title="Click to copy" id="cid">${cid||'—'}</span></div>
-    <div class="small">Δ registry:${j.stats?.delta?.registry_items||0} • Δ search:${j.stats?.delta?.search_docs||0} • Δ edges:${j.stats?.delta?.edges||0}</div>
-    <div class="small">ROI: ${blocks} blocks ≈ $${roi}</div>`;
-  const cidEl = qs('#cid'); if (cidEl && cid) cidEl.onclick = async ()=>{ await navigator.clipboard.writeText(cid); toast('Correlation ID copied','ok'); };
-  toast('Committed to GitHub','ok');
-  sessionStorage.removeItem(storeKey); undoStack.length=0; redoStack.length=0; qs('#undoBtn').disabled=true; qs('#redoBtn').disabled=true; recomputeDiff();
-}
-async function runHealth(){
-  beacon('health_checked',{});
-  const t0=ts();
+
+// ---------- Probe routine ----------
+async function probe(){
+  const base = baseInput.value.trim();
+  const raw  = rawInput.value.trim();
+  logEl.textContent='';
+  document.getElementById('status').textContent='Probing…';
+
+  let reg, s, x;
   try{
-    const r = await fetch('/api/kb/health');
-    if (!r.ok) throw new Error('no health api');
-    const j = await r.json();
-    qs('#kpiReg').innerText = j.counts?.registry_items ?? '—'; qs('#kpiSearch').innerText = j.counts?.search_docs ?? '—'; qs('#kpiEdges').innerText = j.counts?.edges ?? '—'; qs('#kpiTags').innerText = j.counts?.unique_tags ?? '—'; qs('#kpiUnres').innerText = j.counts?.unresolved_edges ?? '—';
-    qs('#badgeSize').className = 'badge ' + (j.health?.size_ok ? 'ok' : 'warn'); qs('#badgeSize').innerText = j.health?.size_ok ? 'size OK' : 'size WARN';
-    qs('#badgeGraph').className = 'badge ' + (j.health?.graph_ok ? 'ok' : 'warn'); qs('#badgeGraph').innerText = j.health?.graph_ok ? 'graph OK' : 'graph WARN';
-    qs('#healthMs').innerText = `${j.elapsed_ms|| (ts()-t0)} ms`;
-    drawSparklines();
-  } catch {
-    // Client-side quick health
-    const sizeOK = JSON.stringify(searchRaw).length < 18_000_000;
-    qs('#badgeSize').className = 'badge '+ (sizeOK?'ok':'warn'); qs('#badgeSize').innerText = sizeOK? 'size OK' : 'size WARN';
-    const graphOK = (crossKind==='map' ? Object.keys(crossMap||{}).length : (crossObj.nodes||[]).length) > 0;
-    qs('#badgeGraph').className = 'badge '+ (graphOK?'ok':'warn'); qs('#badgeGraph').innerText = graphOK ? 'graph OK' : 'graph WARN';
-    qs('#healthMs').innerText = `${ts()-t0} ms`;
-  }
-}
-
-/* =============== Sparklines =============== */
-async function drawSparklines(){
+    reg = await getJson('registry.json','registry.json',base,raw);
+  }catch(e){}
   try{
-    const r = await fetch(`${BASE}/kb_health_history.json?ts=${Date.now()}`);
-    if (!r.ok) return;
-    const hist = await r.json();
-    const docs = hist.map(h=>h.counts?.search_docs||0);
-    const edges = hist.map(h=>h.counts?.edges||0);
-    const roi = hist.map(h=>h.roi?.value_usd_est || 0);
-    spark(qs('#sparkGrowth'), [docs, edges]); spark(qs('#sparkROI'), [roi]);
-  } catch {}
-}
-function spark(canvas, seriesArr){
-  const ctx = canvas.getContext('2d'); const W=canvas.width=canvas.clientWidth; const H=canvas.height=canvas.height;
-  ctx.clearRect(0,0,W,H);
-  seriesArr.forEach((series, idx)=>{
-    const n = series.length; if (!n) return;
-    const min = Math.min(...series), max = Math.max(...series) || 1;
-    ctx.beginPath();
-    for (let i=0;i<n;i++){ const x = (i/(n-1||1))* (W-8) + 4; const y = H - ((series[i]-min)/(max-min||1))*(H-8) - 4; i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y); }
-    ctx.lineWidth = 1.5; ctx.strokeStyle = idx===0 ? '#E1BC56' : (idx===1 ? '#62b0ff' : '#a6a6a6'); ctx.stroke();
-  });
-}
+    s = await getJson('search.json','search.json',base,raw);
+  }catch(e){}
+  try{
+    x = await getJson('cross_links.json','cross_links.json',base,raw);
+  }catch(e){}
 
-/* =============== Search filters & global search =============== */
-function filterAndRender(which){
-  const term = (which==='reg'? qs('#filterReg').value : qs('#filterSearch').value).toLowerCase().trim();
-  if (!term){ renderAllTrees(); return; }
-  const match = (it) => (String(it.title||'').toLowerCase().includes(term) || (Array.isArray(it.tags) && it.tags.some(t=>String(t).toLowerCase().includes(term))));
-  if (which==='reg'){ const arr = regArr.filter(match); renderTree(qs('#paneReg'), denormRegistry(arr, {items:[]}), {expand:true, cap:200}); }
-  else { const arr = seaArr.filter(match); renderTree(qs('#paneSearch'), denormSearch(arr, {docs:[]}), {expand:true, cap:200}); }
-}
-function globalSearch(term){
-  term = (term||'').toLowerCase().trim();
-  const out = qs('#globalResults'); if (!term){ out.innerHTML='<div class="small">Type to search registry + search…</div>'; return; }
-  const tis = regArr.filter(it => (it.title||'').toLowerCase().includes(term) || (it.slug||'').includes(term));
-  const sis = seaArr.filter(d => (d.title||'').toLowerCase().includes(term) || (Array.isArray(d.tags)&&d.tags.some(t=>String(t).toLowerCase().includes(term))) || (d.tokens||'').includes(term)).slice(0,100);
-  const frag = document.createDocumentFragment();
-  const renderList = (title, arr, isSearch) => {
-    const h = ce('div',{innerHTML:`<b>${title}</b> <span class="small">(${arr.length})</span>`}); frag.appendChild(h);
-    const ul = ce('ul'); arr.forEach(it=>{ const li=ce('li'); li.innerHTML = `<span class="hl">${escapeHtml(it.title||'untitled')}</span> <span class="small mono">${escapeHtml(it.slug||it.path||'')}</span>`; ul.appendChild(li); }); frag.appendChild(ul);
-  };
-  renderList('Registry', tis.slice(0,100)); renderList('Search', sis);
-  out.innerHTML=''; out.appendChild(frag);
-}
+  const REG = reg ? normReg(reg.json) : [];
+  const SEA = s   ? normSearch(s.json) : [];
+  const XL  = x   ? normX(x.json).edges : [];
 
-/* =============== Raw editor toggles & revert =============== */
-function updateRawEditors(){ qs('#rawReg').value = JSON.stringify(registryRaw, null, 2); qs('#rawSearch').value = JSON.stringify(searchRaw, null, 2); qs('#rawCross').value = JSON.stringify(crossRaw, null, 2); }
-function toggleEditor(which){
-  const pane = which==='reg' ? qs('#paneReg') : (which==='search'? qs('#paneSearch') : qs('#paneCross'));
-  const raw  = which==='reg' ? qs('#rawReg') : (which==='search'? qs('#rawSearch') : qs('#rawCross'));
-  const showRaw = raw.style.display !== 'block';
-  if (showRaw){ raw.style.display='block'; pane.style.display='none'; } else { raw.style.display='none'; pane.style.display='block'; try{ const obj=JSON.parse(raw.value); if (which==='reg'){ registryRaw=obj; regArr=normRegistry(obj);} if (which==='search'){ searchRaw=obj; seaArr=normSearch(obj);} if (which==='cross'){ crossRaw=obj; const parsed=parseCross(obj); crossKind=parsed.kind; crossMap=parsed.map||null; crossObj={nodes:parsed.nodes||[],edges:parsed.edges||[]}; } renderAllTrees(); setCounts(); persistPending(); recomputeDiff(); }catch(e){ toast('Invalid JSON, keeping previous','err'); } }
-}
-function revertToRemote(which){
-  if (!confirm('Revert local changes for '+which+' to remote snapshot?')) return;
-  if (which==='reg'){ registryRaw=JSON.parse(JSON.stringify(remoteSnapshots.registry)); regArr=normRegistry(registryRaw); }
-  if (which==='search'){ searchRaw=JSON.parse(JSON.stringify(remoteSnapshots.search)); seaArr=normSearch(searchRaw); }
-  if (which==='cross'){ crossRaw=JSON.parse(JSON.stringify(remoteSnapshots.cross)); const parsed=parseCross(crossRaw); crossKind=parsed.kind; crossMap=parsed.map||null; crossObj={nodes:parsed.nodes||[],edges:parsed.edges||[]}; }
-  renderAllTrees(); setCounts(); persistPending(); recomputeDiff(); toast('Reverted '+which,'warn');
-}
+  // Update UI
+  const regBadge = document.getElementById('regStatus');
+  const sBadge   = document.getElementById('sStatus');
+  const xBadge   = document.getElementById('xStatus');
 
-/* =============== Diff (client-side) =============== */
-function diffCounts(a,b){ const ax=JSON.stringify(a).length, bx=JSON.stringify(b).length; const dl = (ax-bx); return dl; }
-function computeListDiff(arrA, arrB, key='id'){
-  const a = new Map(arrA.map(x=>[String(x[key]??x.slug??x.path??x.title), x]));
-  const b = new Map(arrB.map(x=>[String(x[key]??x.slug??x.path??x.title), x]));
-  const added=[], removed=[];
-  for (const k of b.keys()) if (!a.has(k)) added.push(b.get(k));
-  for (const k of a.keys()) if (!b.has(k)) removed.push(a.get(k));
-  return {added, removed};
-}
-function recomputeDiff(){
-  if (!remoteSnapshots.registry) return;
-  const regA = normRegistry(remoteSnapshots.registry), regB = regArr;
-  const seaA = normSearch(remoteSnapshots.search), seaB = seaArr;
-  const d1 = computeListDiff(regA, regB, 'id'), d2 = computeListDiff(seaA, seaB, 'id');
-  const summary = `registry +${d1.added.length}/-${d1.removed.length} • search +${d2.added.length}/-${d2.removed.length} • sizeΔ ${(diffCounts({reg:regB,sea:seaB,cross:crossRaw},{reg:regA,sea:seaA,cross:remoteSnapshots.cross})/1024).toFixed(1)} KB`;
-  qs('#diffSummary').textContent = summary;
-  const lines = [];
-  if (d1.added.length) { lines.push('registry added:'); d1.added.slice(0,20).forEach(x=>lines.push('  + '+(x.title||x.slug))); if (d1.added.length>20) lines.push(`  … ${d1.added.length-20} more`); }
-  if (d1.removed.length){ lines.push('registry removed:'); d1.removed.slice(0,20).forEach(x=>lines.push('  - '+(x.title||x.slug))); if (d1.removed.length>20) lines.push(`  … ${d1.removed.length-20} more`); }
-  if (d2.added.length) { lines.push('search added:'); d2.added.slice(0,20).forEach(x=>lines.push('  + '+(x.title||x.slug))); if (d2.added.length>20) lines.push(`  … ${d2.added.length-20} more`); }
-  if (d2.removed.length){ lines.push('search removed:'); d2.removed.slice(0,20).forEach(x=>lines.push('  - '+(x.title||x.slug))); if (d2.removed.length>20) lines.push(`  … ${d2.removed.length-20} more`); }
-  qs('#diffOut').textContent = lines.join('\\n') || 'No changes vs remote.';
-}
+  function setBadge(el, ok){ el.textContent = ok ? 'OK' : 'ERR'; el.className = 'badge ' + (ok?'ok':'err'); }
+  setBadge(regBadge, !!reg);
+  setBadge(sBadge, !!s);
+  setBadge(xBadge, !!x);
 
-/* =============== Graph viewer (simple force layout) =============== */
-const graphModal = qs('#graphModal'); const canvas = qs('#graphCanvas'); const ctx = canvas.getContext('2d');
-let graph = { nodes:[], links:[] }, transform = {x:0,y:0,k:1};
-function buildGraph(){
-  let nodes = [], links = [];
-  if (crossKind==='map'){
-    const keys = Object.keys(crossMap||{});
-    nodes = keys.map((p,i)=>({id:p,i}));
-    links = keys.flatMap(p => (crossMap[p]?.neighbors||[]).map(q=>({source:p,target:q})));
-  } else {
-    nodes = (crossObj.nodes||[]).map(n=>({id:n.id,label:n.title, path:n.path}));
-    links = (crossObj.edges||[]).filter(e=>e.source && e.target).map(e=>({source:e.source, target:e.target}));
+  document.getElementById('regCount').textContent = REG.length + ' items';
+  document.getElementById('sCount').textContent   = SEA.length + ' docs';
+  document.getElementById('xCount').textContent   = XL.length  + ' edges';
+
+  document.getElementById('regPreview').textContent = reg ? JSON.stringify(REG.slice(0,3),null,2) : '';
+  document.getElementById('sPreview').textContent   = s   ? JSON.stringify(SEA.slice(0,3),null,2) : '';
+  document.getElementById('xPreview').textContent   = x   ? JSON.stringify(XL.slice(0,3),null,2) : '';
+
+  document.getElementById('resolved').textContent = JSON.stringify({
+    registry: reg && reg.url, search: s && s.url, cross_links: x && x.url
+  }, null, 2);
+
+  const allOk = !!(reg && s && x);
+  document.getElementById('status').innerHTML = allOk ? '<span class="badge ok">Healthy</span>' : '<span class="badge err">Issues detected</span>';
+
+  // Stash globally for download
+  window.__KB = { reg, s, x, REG, SEA, XL };
+}
+document.getElementById('probe').onclick = probe;
+
+// ---------- Auto-probe on load ----------
+window.addEventListener('load', ()=>{ probe(); });
+
+// ---------- Preview toggles ----------
+document.getElementById('toggleReg').onclick = ()=> document.getElementById('regPreview').classList.toggle('hidden');
+document.getElementById('toggleS').onclick   = ()=> document.getElementById('sPreview').classList.toggle('hidden');
+document.getElementById('toggleX').onclick   = ()=> document.getElementById('xPreview').classList.toggle('hidden');
+
+// ---------- Download all JSONs as a zip ----------
+document.getElementById('downloadAll').onclick = async () => {
+  try{
+    if(!window.__KB) throw new Error('Nothing loaded yet');
+    const zip = new JSZip();
+    const {reg, s, x} = window.__KB;
+    if(reg) zip.file('registry.json', JSON.stringify(reg.json, null, 2));
+    if(s)   zip.file('search.json',   JSON.stringify(s.json,   null, 2));
+    if(x)   zip.file('cross_links.json', JSON.stringify(x.json, null, 2));
+    const blob = await zip.generateAsync({type:'blob'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'kb_payload.zip';
+    a.click();
+  }catch(e){
+    alert('Download failed: ' + e.message);
   }
-  graph = {nodes, links};
-}
-function forceLayout(iter=300){
-  const W = canvas.width=canvas.clientWidth, H = canvas.height=canvas.clientHeight;
-  const n = graph.nodes.length; if (!n){ return; }
-  const pos = new Map(graph.nodes.map((nd,i)=>[nd.id,{x:Math.random()*W,y:Math.random()*H,vx:0,vy:0}]));
-  const m = graph.links;
-  const repulse = 4000, spring = 0.01, rest = 80, damp = 0.85;
-  for (let t=0;t<iter;t++){
-    // repulsion
-    for (let i=0;i<n;i++){
-      for (let j=i+1;j<n;j++){
-        const a = pos.get(graph.nodes[i].id), b = pos.get(graph.nodes[j].id);
-        const dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy+0.01, f=repulse/d2; const fx=f*dx, fy=f*dy; a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
-      }
-    }
-    // springs
-    for (const e of m){ const a=pos.get(e.source), b=pos.get(e.target); if(!a||!b) continue; const dx=b.x-a.x, dy=b.y-a.y; const d=Math.sqrt(dx*dx+dy*dy)+0.01; const f=spring*(d-rest); const fx=f*dx/d, fy=f*dy/d; a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy; }
-    // integrate
-    for (const p of pos.values()){ p.vx*=damp; p.vy*=damp; p.x+=p.vx*0.02; p.y+=p.vy*0.02; p.x=Math.max(20,Math.min(W-20,p.x)); p.y=Math.max(20,Math.min(H-20,p.y)); }
-  }
-  graph.nodes.forEach(n=>Object.assign(n, pos.get(n.id)));
-}
-let pan = {drag:false, sx:0, sy:0, ox:0, oy:0};
-function drawGraph(){
-  const W=canvas.width=canvas.clientWidth, H=canvas.height=canvas.clientHeight; ctx.save(); ctx.clearRect(0,0,W,H); ctx.translate(transform.x, transform.y); ctx.scale(transform.k, transform.k);
-  ctx.strokeStyle='#444'; ctx.lineWidth=1; for(const e of graph.links){ const a=graph.nodes.find(n=>n.id===e.source), b=graph.nodes.find(n=>n.id===e.target); if(!a||!b) continue; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
-  for (const n of graph.nodes){ ctx.beginPath(); ctx.fillStyle='#E1BC56'; ctx.arc(n.x,n.y,3,0,Math.PI*2); ctx.fill(); }
-  ctx.restore();
-}
-function openGraph(){ buildGraph(); forceLayout(200); graphModal.style.display='flex'; transform={x:0,y:0,k:1}; drawGraph(); }
-function exportGraph(){ canvas.toBlob(b => downloadBlob('kb_graph.png', b)); }
-(function attachGraphHandlers(){
-  canvas.addEventListener('wheel', e=>{ e.preventDefault(); const scale = Math.exp(-e.deltaY/500); const rect=canvas.getBoundingClientRect(); const cx=e.clientX-rect.left, cy=e.clientY-rect.top; transform.x = cx - scale*(cx - transform.x); transform.y = cy - scale*(cy - transform.y); transform.k *= scale; drawGraph(); }, {passive:false});
-  canvas.addEventListener('mousedown', e=>{ pan.drag=true; pan.sx=e.clientX; pan.sy=e.clientY; pan.ox=transform.x; pan.oy=transform.y; });
-  window.addEventListener('mousemove', e=>{ if(!pan.drag) return; transform.x=pan.ox+(e.clientX-pan.sx); transform.y=pan.oy+(e.clientY-pan.sy); drawGraph(); });
-  window.addEventListener('mouseup', ()=>{ pan.drag=false; });
-})();
-
-/* =============== Maintenance tools =============== */
-function checkBrokenLinks(){
-  const missing = [];
-  if (crossKind==='map'){
-    const keys = new Set(Object.keys(crossMap||{}));
-    for (const [p,obj] of Object.entries(crossMap||{})){ for (const n of (obj.neighbors||[])) if (!keys.has(n)) missing.push({from:p,to:n}); }
-  } else {
-    const ids = new Set((crossObj.nodes||[]).map(n=>n.id));
-    for (const e of (crossObj.edges||[])){ if (!ids.has(e.source) || !ids.has(e.target)) missing.push({from:e.source,to:e.target}); }
-  }
-  if (!missing.length) { toast('No broken links found','ok'); return; }
-  qs('#diffOut').textContent = 'Broken links (first 100):\\n' + missing.slice(0,100).map(m=>`  ${m.from} -> ${m.to}`).join('\\n');
-  toast(`Broken links: ${missing.length}`,'warn');
-}
-function dedupeTitles(){
-  const byTitle = new Map(); const dups=[];
-  regArr.forEach(it=>{ const k=(it.title||'').trim().toLowerCase(); if(!k) return; if(byTitle.has(k)) dups.push(it); else byTitle.set(k,true); });
-  if (!dups.length){ toast('No duplicate titles in registry','ok'); return; }
-  dups.forEach((it,i)=>{ const base=slugify(it.title||('doc-'+i)); const unique=ensureUniqueSlug(base); it.slug=unique; it.path=`/docs/md/${unique}.md`; });
-  registryRaw = denormRegistry(regArr, registryRaw); renderAllTrees(); persistPending(); recomputeDiff();
-  toast(`Deduped ${dups.length} duplicate titles (slug/path updated)`, 'ok');
-}
-
-/* =============== Events =============== */
-qs('#reloadBtn').onclick = () => loadAll();
-qs('#fileInput').onchange = e => handleFiles(e.target.files);
-const drop = qs('#drop');
-drop.addEventListener('dragover', e=>{e.preventDefault(); drop.classList.add('drag');});
-drop.addEventListener('dragleave', ()=> drop.classList.remove('drag'));
-drop.addEventListener('drop', e=>{ e.preventDefault(); drop.classList.remove('drag'); handleFiles(e.dataTransfer.files);});
-qs('#undoBtn').onclick = undo; qs('#redoBtn').onclick = redo;
-qs('#dlReg').onclick = ()=> downloadJSON(registryRaw, 'registry.json');
-qs('#dlSearch').onclick = ()=> downloadJSON(searchRaw, 'search.json');
-qs('#dlCross').onclick = ()=> downloadJSON(crossRaw, 'cross_links.json');
-qs('#downloadAllBtn').onclick = ()=> downloadZip({'registry.json':registryRaw,'search.json':searchRaw,'cross_links.json':crossRaw});
-qs('#validateBtn').onclick = validateSchemas;
-qs('#commitBtn').onclick = commitAll;
-qs('#healthBtn').onclick = runHealth;
-qs('#dlStats').onclick = async()=>{ try{ const r=await fetch(`${BASE}/kb_stats.json`); if(!r.ok) return toast('kb_stats.json not found','warn'); const j=await r.json(); downloadJSON(j,'kb_stats.json'); }catch{} };
-qs('#expReg').onclick = ()=> renderTree(qs('#paneReg'), registryRaw, {expand:true,cap:500});
-qs('#expSearch').onclick = ()=> renderTree(qs('#paneSearch'), searchRaw, {expand:true,cap:500});
-qs('#expCross').onclick = ()=> renderTree(qs('#paneCross'), crossRaw, {expand:true,cap:500});
-qs('#filterReg').oninput = ()=> filterAndRender('reg');
-qs('#filterSearch').oninput = ()=> filterAndRender('search');
-qs('#editRegBtn').onclick = ()=> toggleEditor('reg');
-qs('#editSearchBtn').onclick = ()=> toggleEditor('search');
-qs('#editCrossBtn').onclick = ()=> toggleEditor('cross');
-qs('#revertRegBtn').onclick = ()=> revertToRemote('reg');
-qs('#revertSearchBtn').onclick = ()=> revertToRemote('search');
-qs('#revertCrossBtn').onclick = ()=> revertToRemote('cross');
-qs('#clearCacheBtn').onclick = ()=>{ sessionStorage.clear(); localStorage.clear(); toast('Local/session storage cleared','ok'); setTimeout(()=>location.reload(true), 300); };
-qs('#diffBtn').onclick = recomputeDiff;
-qs('#refreshDiffBtn').onclick = recomputeDiff;
-qs('#globalSearch').oninput = e => globalSearch(e.target.value);
-qs('#graphBtn').onclick = openGraph;
-qs('#graphCloseBtn').onclick = ()=>{ graphModal.style.display='none'; };
-qs('#graphExportBtn').onclick = exportGraph;
-qs('#checkLinksBtn').onclick = checkBrokenLinks;
-qs('#dedupeBtn').onclick = dedupeTitles;
-
-document.addEventListener('keydown', e=>{
-  const k = e.key.toLowerCase();
-  const activeTag = (document.activeElement?.tagName||'').toLowerCase();
-  if (k==='/' && activeTag!=='input' && activeTag!=='textarea'){ e.preventDefault(); qs('#globalSearch').focus(); return; }
-  if (['input','textarea'].includes(activeTag)) return;
-  if (k==='u'){ qs('#fileInput').focus(); e.preventDefault(); }
-  if (k==='v'){ validateSchemas(); e.preventDefault(); }
-  if (k==='c'){ commitAll(); e.preventDefault(); }
-  if (k==='h'){ runHealth(); e.preventDefault(); }
-  if (k==='z'){ undo(); e.preventDefault(); }
-  if (k==='y'){ redo(); e.preventDefault(); }
-  if (k==='r'){ loadAll(); e.preventDefault(); }
-  if (k==='e'){ toggleEditor('reg'); toggleEditor('search'); toggleEditor('cross'); e.preventDefault(); }
-});
-qs('#editModeBtn').onclick = ()=>{ toggleEditor('reg'); toggleEditor('search'); toggleEditor('cross'); };
-qs('#themeBtn').onclick = ()=>{ const cur = document.documentElement.getAttribute('data-theme') || 'dark'; const next = cur==='dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); };
-
-/* =============== Bootstrap =============== */
-(function initTheme(){ const saved = localStorage.getItem('theme'); if (saved) document.documentElement.setAttribute('data-theme', saved); })();
-loadAll();
+};
 </script>
 </body>
 </html>
