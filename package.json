@@ -14,4 +14,8 @@
   "devDependencies": {
     "ajv-cli": "^5.0.0"
   }
+  "scripts": {
+  "ingest": "node scripts/ingest-and-commit.cjs --md",
+  "ingest:commit": "node scripts/ingest-and-commit.cjs --md ./Block1-2215_KBReady_Master_FULL_AllBlocks_MERGED.md --commit --base https://YOUR-APP.vercel.app --origin https://YOUR-SITE"
+}
 }
